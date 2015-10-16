@@ -27,7 +27,7 @@ Tracer tracer = Tracer.builder()
         .trace("X-Trace-ID")
         .trace("X-Request-ID")
         .generator(new UUIDGenerator())
-        .listener(new MdcTraceListener())
+        .listener(new MDCTraceListener())
         .build();
 
 ...
