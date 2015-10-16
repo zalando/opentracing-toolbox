@@ -29,7 +29,6 @@ import org.zalando.tracer.Tracer;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.*;
-import static org.zalando.tracer.slf4j.MdcTraceListener.mdc;
 
 public final class MdcTraceListenerTest {
 
@@ -39,7 +38,7 @@ public final class MdcTraceListenerTest {
     private final Tracer unit = Tracer.builder()
             .trace("X-Trace-ID")
             .generator(() -> "52aecbf6-73e1-11e5-b508-10ddb1ee7671")
-            .listener(mdc())
+            .listener(new MdcTraceListener())
             .build();
 
     @Test

@@ -35,8 +35,4 @@ public final class MdcTraceListener implements TraceListener {
         MDC.remove(name);
     }
 
-    static TraceListener mdc() {
-        return new MdcTraceListener();
-    }
-
 }
