@@ -41,8 +41,8 @@ public class TracerFilter implements HttpFilter {
             throws ServletException, IOException {
 
         tracer.start(request::getHeader);
-        chain.doFilter(request, response);
         tracer.forEach(response::setHeader);
+        chain.doFilter(request, response);
         tracer.stop();
     }
 

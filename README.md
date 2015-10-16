@@ -1,7 +1,6 @@
 # Tracer
 
-TODO change picture URL
-[![Highway at Night](https://github.com/whiskeysierra/tracer/raw/master/docs/highway.jpg)](https://pixabay.com/en/highway-at-night-long-long-exposure-371009/)
+[![Highway at Night](https://github.com/zalando/tracer/raw/master/docs/highway.jpg)](https://pixabay.com/en/highway-at-night-long-long-exposure-371009/)
 
 [![Build Status](https://img.shields.io/travis/zalando/tracer.svg)](https://travis-ci.org/zalando/tracer)
 [![Coverage Status](https://img.shields.io/coveralls/zalando/tracer.svg)](https://coveralls.io/r/zalando/tracer)
@@ -15,7 +14,7 @@ TODO change picture URL
 ```xml
 <dependency>
     <groupId>org.zalando</groupId>
-    <artifactId>tracer</artifactId>
+    <artifactId>tracer-core</artifactId>
     <version>${tracer.version}</version>
 </dependency>
 ```
@@ -23,14 +22,81 @@ TODO change picture URL
 ## Usage
 
 ```java
+Tracer tracer = Tracer.create("X-Trace-ID");
+```
+
+### Generators
+
+```java
 Tracer tracer = Tracer.builder()
         .trace("X-Trace-ID")
-        .trace("X-Request-ID")
-        .generator(new UUIDGenerator())
+        .generator(new CustomGenerator())
+        .build();
+```
+
+### Listeners
+
+```java
+Tracer tracer = Tracer.builder()
+        .trace("X-Trace-ID")
+        .listener(new CustomTraceListener())
+        .build();
+```
+
+## Logging
+
+```xml
+<dependency>
+    <groupId>org.zalando</groupId>
+    <artifactId>tracer-slf4j</artifactId>
+    <version>${tracer.version}</version>
+</dependency>
+```
+
+```java
+Tracer tracer = Tracer.builder()
+        .trace("X-Trace-ID")
         .listener(new MDCTraceListener())
         .build();
+```
 
-...
+## Apache HTTP Client
+
+```xml
+<dependency>
+    <groupId>org.zalando</groupId>
+    <artifactId>tracer-httpclient</artifactId>
+    <version>${tracer.version}</version>
+</dependency>
+```
+
+## Servlet
+
+```xml
+<dependency>
+    <groupId>org.zalando</groupId>
+    <artifactId>tracer-servlet</artifactId>
+    <version>${tracer.version}</version>
+</dependency>
+```
+
+You have to register the `TracerFilter` as a `Filter` in your filter chain:
+
+```java
+context.addFilter("TracerFilter", new TracerFilter(tracer))
+    .addMappingForUrlPatterns(EnumSet.of(REQUEST, ASYNC, ERROR), true, "/*"); 
+```
+
+### Background Job, Tests, ...
+
+```java
+tracer.start();
+
+try {
+    // do work
+} finally {
+    tracer.stop();
+}
 ```
 
 ## License
