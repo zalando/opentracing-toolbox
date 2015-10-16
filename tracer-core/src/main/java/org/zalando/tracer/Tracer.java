@@ -49,7 +49,7 @@ public interface Tracer {
     /**
      * @throws IllegalStateException
      */
-    Trace get(final String name);
+    Trace get(final String trace);
 
     /**
      * @throws IllegalStateException

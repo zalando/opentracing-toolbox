@@ -62,23 +62,23 @@ final class DefaultTracer implements Tracer {
     }
 
     @Override
-    public Trace get(final String name) {
-        final ThreadLocal<String> state = getAndCheckState(name);
+    public Trace get(final String trace) {
+        final ThreadLocal<String> state = getAndCheckState(trace);
 
         return () ->
-                getAndCheckValue(state);
+                getAndCheckValue(trace, state);
     }
 
     @Override
     public void forEach(final BiConsumer<String, String> consumer) {
         traces.forEach((trace, state) ->
-                consumer.accept(trace, getAndCheckValue(state)));
+                consumer.accept(trace, getAndCheckValue(trace, state)));
     }
 
     @Override
     public void stop() {
         traces.forEach((trace, state) -> {
-            final String value = getAndCheckValue(state);
+            final String value = getAndCheckValue(trace, state);
             state.remove();
             listeners.forEach(listener ->
                     listener.onStop(trace, value));
@@ -91,9 +91,9 @@ final class DefaultTracer implements Tracer {
         return state;
     }
 
-    private String getAndCheckValue(final ThreadLocal<String> state) {
+    private String getAndCheckValue(final String trace, final ThreadLocal<String> state) {
         @Nullable final String value = state.get();
-        checkState(value != null, "%s has not been started");
+        checkState(value != null, "%s has not been started", trace);
         return value;
     }
 

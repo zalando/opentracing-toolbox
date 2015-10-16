@@ -48,12 +48,14 @@
         <module>tracer-servlet</module>
         <module>tracer-slf4j</module>
     <module>tracer-httpclient</module>
+    <module>tracer-aspectj</module>
   </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
 
     <build>
