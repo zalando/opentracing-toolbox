@@ -26,16 +26,16 @@ import org.aspectj.lang.annotation.Aspect;
 import org.zalando.tracer.Tracer;
 
 @Aspect
-public final class TraceAspect {
+public final class TracedAspect {
 
-    private final Tracer tracer;
+    private Tracer tracer;
 
-    public TraceAspect() {
-        this.tracer = Tracer.create("X-Trace-ID");
+    public void setTracer(final Tracer tracer) {
+        this.tracer = tracer;
     }
 
-    @Around("@annotation(org.zalando.tracer.aspectj.Traced)")
-    public Object advice(final ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around("execution(@Traced * *(..))")
+    public final Object advice(final ProceedingJoinPoint joinPoint) throws Throwable {
         tracer.start();
 
         try {

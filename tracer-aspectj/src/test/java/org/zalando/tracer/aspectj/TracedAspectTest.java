@@ -20,17 +20,22 @@ package org.zalando.tracer.aspectj;
  * ​⁣
  */
 
+import org.aspectj.lang.Aspects;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-public class TraceAspectTest {
+public final class TracedAspectTest {
+
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
 
     private final Tracer tracer = Tracer.builder()
             .trace("X-Trace-ID", () -> "f09f5896-73fd-11e5-bc6f-10ddb1ee7671")
@@ -38,23 +43,38 @@ public class TraceAspectTest {
 
     private final Trace trace = tracer.get("X-Trace-ID");
 
-    private final AtomicReference<String> capture = new AtomicReference<>();
 
     @Before
-    public void setUp() throws Exception {
-        
+    public void setUp() {
+        Aspects.aspectOf(TracedAspect.class).setTracer(tracer);
     }
 
     @Traced
-    public void perform() {
-        capture.set(trace.getValue());
+    public String withAspect() {
+        return trace.getValue();
+    }
+
+    public String withoutAspect() {
+        return trace.getValue();
     }
 
     @Test
     public void shouldStartTracer() {
-        perform();
+        assertThat(withAspect(), is("f09f5896-73fd-11e5-bc6f-10ddb1ee7671"));
+    }
 
-        assertThat(capture.get(), is("f09f5896-73fd-11e5-bc6f-10ddb1ee7671"));
+    @Test
+    public void shouldStopTracer() {
+        withAspect();
+
+        exception.expect(IllegalStateException.class);
+        trace.getValue();
+    }
+
+    @Test
+    public void shouldNotStartTracer() {
+        exception.expect(IllegalStateException.class);
+        withoutAspect();
     }
 
 }
