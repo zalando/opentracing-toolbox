@@ -20,19 +20,20 @@ package org.zalando.tracer.slf4j;
  * ​⁣
  */
 
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
 import org.slf4j.MDC;
-import org.zalando.tracer.TraceListener;
 
-public final class MdcTraceListener implements TraceListener {
+public final class MDCRule extends TestWatcher {
 
     @Override
-    public void onStart(final String name, final String value) {
-        MDC.put(name, value);
+    protected void starting(final Description description) {
+        MDC.clear();
     }
 
     @Override
-    public void onStop(final String name, final String value) {
-        MDC.remove(name);
+    protected void finished(final Description description) {
+        MDC.clear();
     }
 
 }

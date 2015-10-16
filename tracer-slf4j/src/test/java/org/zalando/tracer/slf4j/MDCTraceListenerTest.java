@@ -30,15 +30,15 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.*;
 
-public final class MdcTraceListenerTest {
+public final class MDCTraceListenerTest {
 
     @Rule
-    public final TestRule mdc = new MdcRule();
+    public final TestRule mdc = new MDCRule();
 
     private final Tracer unit = Tracer.builder()
             .trace("X-Trace-ID")
             .generator(() -> "52aecbf6-73e1-11e5-b508-10ddb1ee7671")
-            .listener(new MdcTraceListener())
+            .listener(new MDCTraceListener())
             .build();
 
     @Test
