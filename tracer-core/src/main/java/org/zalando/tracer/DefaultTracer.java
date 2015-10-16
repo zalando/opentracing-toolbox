@@ -35,14 +35,13 @@ import static com.google.common.collect.Maps.toMap;
 final class DefaultTracer implements Tracer {
 
     private final ImmutableMap<String, ThreadLocal<String>> traces;
-    private final Generator generator;
+    private final ImmutableMap<String, Generator> generators;
     private final ImmutableList<TraceListener> listeners;
 
-    DefaultTracer(final ImmutableList<String> traces,
-            final Generator generator,
+    DefaultTracer(final ImmutableMap<String, Generator> generators,
             final ImmutableList<TraceListener> listeners) {
-        this.traces = toMap(traces, trace -> new ThreadLocal<>());
-        this.generator = generator;
+        this.traces = toMap(generators.keySet(), trace -> new ThreadLocal<>());
+        this.generators = generators;
         this.listeners = listeners;
     }
 
@@ -53,7 +52,7 @@ final class DefaultTracer implements Tracer {
 
             @Nullable final String present = provider.apply(trace);
             final String value = Optional.ofNullable(present)
-                    .orElseGet(generator::generate);
+                    .orElseGet(() -> generators.get(trace).generate());
 
             state.set(value);
 

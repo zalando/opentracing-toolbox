@@ -26,7 +26,7 @@ import java.util.UUID;
 import static com.google.common.primitives.Bytes.concat;
 import static com.google.common.primitives.Longs.toByteArray;
 
-public final class FlowIdGenerator implements Generator {
+public final class FlowIDGenerator implements Generator {
 
     private final Base64.Encoder encoder = Base64.getUrlEncoder();
 

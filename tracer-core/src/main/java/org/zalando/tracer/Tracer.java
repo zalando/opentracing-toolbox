@@ -22,13 +22,14 @@ package org.zalando.tracer;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import lombok.Singular;
 
-import javax.annotation.Nullable;
 import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 
-import static com.google.common.base.MoreObjects.firstNonNull;
+import static com.google.common.collect.Maps.toMap;
 import static java.util.Arrays.asList;
 
 public interface Tracer {
@@ -60,6 +61,7 @@ public interface Tracer {
      */
     void stop();
 
+    // TODO should those methods be somewhere else?
     <V> Callable<V> preserve(final Callable<V> callable);
 
     Runnable preserve(final Runnable runnable);
@@ -69,13 +71,19 @@ public interface Tracer {
     }
 
     @lombok.Builder(builderClassName = "Builder")
-    static Tracer create(@Singular final ImmutableList<String> traces,
-            @Nullable final Generator generator,
+    static Tracer create(
+            @Singular final ImmutableList<String> traces,
+            @Singular("trace") final ImmutableMap<String, Generator> customs,
             @Singular final ImmutableList<TraceListener> listeners) {
 
-        return new DefaultTracer(traces,
-                firstNonNull(generator, new UUIDGenerator()),
-                listeners);
+        final UUIDGenerator defaultGenerator = new UUIDGenerator();
+        final ImmutableMap<String, Generator> combined = ImmutableMap.<String, Generator>builder()
+                .putAll(customs)
+                .putAll(toMap(traces, trace -> defaultGenerator))
+                .build();
+
+        return new DefaultTracer(combined, listeners);
     }
+
 
 }

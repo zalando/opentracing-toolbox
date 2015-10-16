@@ -36,7 +36,7 @@ public class GeneratorTest {
 
     @Test
     public void testFlowId() throws Exception {
-        final String value = new FlowIdGenerator().generate();
+        final String value = new FlowIDGenerator().generate();
 
         assertThat(value.length(), is(22));
     }

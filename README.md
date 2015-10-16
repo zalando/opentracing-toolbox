@@ -34,8 +34,7 @@ entity.setLastModifiedBy(trace.getValue());
 
 ```java
 Tracer tracer = Tracer.builder()
-        .trace("X-Trace-ID")
-        .generator(new CustomGenerator())
+        .trace("X-Trace-ID", new CustomGenerator())
         .build();
 ```
 
@@ -73,6 +72,11 @@ Tracer tracer = Tracer.builder()
     <artifactId>tracer-httpclient</artifactId>
     <version>${tracer.version}</version>
 </dependency>
+```
+
+```java
+DefaultHttpClient client = new DefaultHttpClient();
+client.addRequestInterceptor(new TracerHttpRequestInterceptor(tracer));
 ```
 
 ## Servlet

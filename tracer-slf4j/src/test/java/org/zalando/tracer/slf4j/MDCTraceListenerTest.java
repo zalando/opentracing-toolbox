@@ -36,8 +36,7 @@ public final class MDCTraceListenerTest {
     public final TestRule mdc = new MDCRule();
 
     private final Tracer unit = Tracer.builder()
-            .trace("X-Trace-ID")
-            .generator(() -> "52aecbf6-73e1-11e5-b508-10ddb1ee7671")
+            .trace("X-Trace-ID", () -> "52aecbf6-73e1-11e5-b508-10ddb1ee7671")
             .listener(new MDCTraceListener())
             .build();
 
