@@ -23,6 +23,11 @@
 
 ```java
 Tracer tracer = Tracer.create("X-Trace-ID");
+Trace trace = tracer.get("X-Trace-ID");
+
+...
+
+entity.setLastModifiedBy(trace.getValue());
 ```
 
 ### Generators
