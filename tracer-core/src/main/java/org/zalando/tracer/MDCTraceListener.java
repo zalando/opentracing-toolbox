@@ -2,7 +2,7 @@ package org.zalando.tracer;
 
 /*
  * ⁣​
- * Tracer
+ * Tracer: SLF4J
  * ⁣⁣
  * Copyright (C) 2015 Zalando SE
  * ⁣⁣
@@ -20,24 +20,19 @@ package org.zalando.tracer;
  * ​⁣
  */
 
-import java.util.concurrent.Callable;
+import org.slf4j.MDC;
+import org.zalando.tracer.TraceListener;
 
-// TODO better name
-@FunctionalInterface
-public interface Closure<V, X extends Throwable> {
+public final class MDCTraceListener implements TraceListener {
 
-    V run() throws X;
-
-    // TODO better name
-    static <V> Closure<V, Exception> valueOf(final Callable<V> callable) {
-        return callable::call;
+    @Override
+    public void onStart(final String name, final String value) {
+        MDC.put(name, value);
     }
 
-    static Closure<Void, RuntimeException> valueOf(final Runnable runnable) {
-        return () -> {
-            runnable.run();
-            return null;
-        };
+    @Override
+    public void onStop(final String name, final String value) {
+        MDC.remove(name);
     }
 
 }

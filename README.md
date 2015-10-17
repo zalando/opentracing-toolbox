@@ -49,14 +49,6 @@ Tracer tracer = Tracer.builder()
 
 ## Logging
 
-```xml
-<dependency>
-    <groupId>org.zalando</groupId>
-    <artifactId>tracer-slf4j</artifactId>
-    <version>${tracer.version}</version>
-</dependency>
-```
-
 ```java
 Tracer tracer = Tracer.builder()
         .trace("X-Trace-ID")

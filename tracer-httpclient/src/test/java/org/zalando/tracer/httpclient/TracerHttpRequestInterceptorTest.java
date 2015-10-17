@@ -20,6 +20,9 @@ package org.zalando.tracer.httpclient;
  * ​⁣
  */
 
+import org.apache.http.impl.bootstrap.HttpServer;
+
 public final class TracerHttpRequestInterceptorTest {
+
 
 }

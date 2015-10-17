@@ -59,18 +59,6 @@ public interface Tracer {
      */
     void stop();
 
-    default <V, X extends Throwable> Closure<V, X> manage(final Closure<V, X> closure) {
-        return () -> {
-            start();
-
-            try {
-                return closure.run();
-            } finally {
-                stop();
-            }
-        };
-    }
-
     default <V, X extends Throwable> Closure<V, X> delegate(final Closure<V, X> closure) {
         final ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
         forEach(builder::put);

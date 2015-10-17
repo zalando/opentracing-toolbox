@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <prerequisites>
@@ -45,25 +46,27 @@
 
     <modules>
         <module>tracer-core</module>
+        <module>tracer-aspectj</module>
         <module>tracer-servlet</module>
-        <module>tracer-slf4j</module>
-    <module>tracer-httpclient</module>
-    <module>tracer-aspectj</module>
-  </modules>
+        <module>tracer-httpclient</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+
+        <!-- to make it configurable in sub modules -->
+        <jacoco.line-coverage.minimum>1.0</jacoco.line-coverage.minimum>
+        <jacoco.branch-coverage.minimum>1.0</jacoco.branch-coverage.minimum>
     </properties>
 
     <build>
         <pluginManagement>
             <plugins>
-
                 <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>2.6</version>
                 </plugin>
@@ -141,12 +144,12 @@
                                             <limit>
                                                 <counter>LINE</counter>
                                                 <value>COVEREDRATIO</value>
-                                                <minimum>1.0</minimum>
+                                                <minimum>${jacoco.line-coverage.minimum}</minimum>
                                             </limit>
                                             <limit>
                                                 <counter>BRANCH</counter>
                                                 <value>COVEREDRATIO</value>
-                                                <minimum>1.0</minimum>
+                                                <minimum>${jacoco.branch-coverage.minimum}</minimum>
                                             </limit>
                                         </limits>
                                     </rule>

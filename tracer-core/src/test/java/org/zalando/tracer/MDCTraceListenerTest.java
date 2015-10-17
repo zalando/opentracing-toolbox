@@ -1,4 +1,4 @@
-package org.zalando.tracer.slf4j;
+package org.zalando.tracer;
 
 /*
  * ⁣​
@@ -24,12 +24,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.slf4j.MDC;
-import org.zalando.tracer.Tracer;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+// TODO is this thread safe?
 public final class MDCTraceListenerTest {
 
     @Rule

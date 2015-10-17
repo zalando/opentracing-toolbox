@@ -1,8 +1,8 @@
-package org.zalando.tracer.slf4j;
+package org.zalando.tracer;
 
 /*
  * ⁣​
- * Tracer: SLF4J
+ * Tracer
  * ⁣⁣
  * Copyright (C) 2015 Zalando SE
  * ⁣⁣
@@ -20,20 +20,21 @@ package org.zalando.tracer.slf4j;
  * ​⁣
  */
 
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
-import org.slf4j.MDC;
+import com.google.gag.annotation.remark.Hack;
+import com.google.gag.annotation.remark.OhNoYouDidnt;
+import org.junit.Test;
 
-public final class MDCRule extends TestWatcher {
+import static org.hamcrest.Matchers.hasToString;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
-    @Override
-    protected void starting(final Description description) {
-        MDC.clear();
-    }
+@Hack
+@OhNoYouDidnt
+public final class EnforceCoverageTest {
 
-    @Override
-    protected void finished(final Description description) {
-        MDC.clear();
+    @Test
+    public void shouldCoverTracerBuilderToString() {
+        assertThat(Tracer.builder(), hasToString(notNullValue()));
     }
 
 }
