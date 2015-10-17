@@ -1,8 +1,8 @@
-package org.zalando.tracer.httpclient;
+package org.zalando.tracer;
 
 /*
  * ⁣​
- * Tracer: HttpClient
+ * Tracer
  * ⁣⁣
  * Copyright (C) 2015 Zalando SE
  * ⁣⁣
@@ -20,6 +20,24 @@ package org.zalando.tracer.httpclient;
  * ​⁣
  */
 
-public final class TracerHttpRequestInterceptorTest {
+import java.util.concurrent.Callable;
+
+// TODO better name
+@FunctionalInterface
+public interface Closure<V, X extends Throwable> {
+
+    V run() throws X;
+
+    // TODO better name
+    static <V> Closure<V, Exception> valueOf(final Callable<V> callable) {
+        return callable::call;
+    }
+
+    static Closure<Void, Exception> valueOf(final Runnable runnable) {
+        return () -> {
+            runnable.run();
+            return null;
+        };
+    }
 
 }

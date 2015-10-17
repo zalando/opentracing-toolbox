@@ -22,8 +22,6 @@ package org.zalando.tracer;
 
 public interface Trace {
 
-    // TODO boolean isActive()?
-
     /**
      * @return the current value of this trace
      * @throws IllegalStateException if this trace is not active

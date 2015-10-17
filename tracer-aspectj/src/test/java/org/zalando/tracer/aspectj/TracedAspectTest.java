@@ -29,7 +29,6 @@ import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public final class TracedAspectTest {

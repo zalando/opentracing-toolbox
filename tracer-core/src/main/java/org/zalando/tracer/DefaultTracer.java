@@ -26,7 +26,6 @@ import com.google.common.collect.ImmutableMap;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
-import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 
 import static com.google.common.base.Preconditions.checkState;
@@ -95,44 +94,6 @@ final class DefaultTracer implements Tracer {
         @Nullable final String value = state.get();
         checkState(value != null, "%s has not been started", trace);
         return value;
-    }
-
-    @Override
-    public Runnable preserve(final Runnable runnable) {
-        final Task<Void, RuntimeException> task = () -> {
-            runnable.run();
-            return null;
-        };
-        return task.preserve(this)::run;
-    }
-
-    @Override
-    public <V> Callable<V> preserve(final Callable<V> callable) {
-        final Task<V, Exception> task = callable::call;
-        return task.preserve(this)::run;
-    }
-
-    @FunctionalInterface
-    interface Task<V, X extends Exception> {
-
-        V run() throws X;
-
-        default Task<V, X> preserve(final Tracer tracer) {
-            final ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-            tracer.forEach(builder::put);
-            final ImmutableMap<String, String> copy = builder.build();
-
-            return () -> {
-                tracer.start(copy::get);
-
-                try {
-                    return run();
-                } finally {
-                    tracer.stop();
-                }
-            };
-        }
-
     }
 
 }

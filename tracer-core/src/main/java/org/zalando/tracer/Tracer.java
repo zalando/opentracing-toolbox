@@ -23,10 +23,8 @@ package org.zalando.tracer;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import lombok.Singular;
 
-import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 
 import static com.google.common.collect.Maps.toMap;
@@ -61,10 +59,33 @@ public interface Tracer {
      */
     void stop();
 
-    // TODO should those methods be somewhere else?
-    <V> Callable<V> preserve(final Callable<V> callable);
+    default <V, X extends Throwable> Closure<V, X> manage(final Closure<V, X> closure) {
+        return () -> {
+            start();
 
-    Runnable preserve(final Runnable runnable);
+            try {
+                return closure.run();
+            } finally {
+                stop();
+            }
+        };
+    }
+
+    default <V, X extends Throwable> Closure<V, X> delegate(final Closure<V, X> closure) {
+        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+        forEach(builder::put);
+        final ImmutableMap<String, String> copy = builder.build();
+
+        return () -> {
+            start(copy::get);
+
+            try {
+                return closure.run();
+            } finally {
+                stop();
+            }
+        };
+    }
 
     static Tracer create(final String... traces) {
         return builder().traces(asList(traces)).build();
@@ -84,6 +105,5 @@ public interface Tracer {
 
         return new DefaultTracer(combined, listeners);
     }
-
 
 }
