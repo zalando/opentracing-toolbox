@@ -30,6 +30,7 @@ import java.util.function.BiConsumer;
 import static com.google.common.collect.Maps.toMap;
 import static java.util.Arrays.asList;
 
+// TODO AutoCloseable?
 public interface Tracer {
 
     /**

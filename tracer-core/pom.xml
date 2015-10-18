@@ -16,7 +16,7 @@
 
     <artifactId>tracer-core</artifactId>
 
-    <name>Tracer</name>
+    <name>Tracer: Core</name>
     <description>Tracing requests through a distributed system.</description>
 
     <scm>
