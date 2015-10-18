@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class TracerFilter implements HttpFilter {
+public final class TracerFilter implements HttpFilter {
 
     private final Tracer tracer;
 
@@ -40,7 +40,8 @@ public class TracerFilter implements HttpFilter {
     public void doFilter(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain)
             throws ServletException, IOException {
 
-        tracer.start(request::getHeader);
+        tracer.start(request::getHeader); // TODO or attribute
+        tracer.forEach(request::setAttribute);
         tracer.forEach(response::setHeader);
         chain.doFilter(request, response);
         tracer.stop();
