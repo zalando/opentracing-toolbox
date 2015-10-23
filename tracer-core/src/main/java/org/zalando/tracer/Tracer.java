@@ -20,12 +20,12 @@ package org.zalando.tracer;
  * ​⁣
  */
 
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import lombok.Singular;
 
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import static com.google.common.collect.Maps.toMap;
 import static java.util.Arrays.asList;
