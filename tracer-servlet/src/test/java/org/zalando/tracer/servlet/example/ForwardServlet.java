@@ -1,4 +1,4 @@
-package org.zalando.tracer.servlet;
+package org.zalando.tracer.servlet.example;
 
 /*
  * ⁣​
@@ -20,34 +20,17 @@ package org.zalando.tracer.servlet;
  * ​⁣
  */
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-import java.util.concurrent.Callable;
+public final class ForwardServlet extends HttpServlet {
 
-@Controller
-@RequestMapping
-class ExampleController {
-
-    @RequestMapping("/traced")
-    public String foo() {
-        return "foo";
-    }
-
-    @RequestMapping("/not-traced")
-    public String bar() {
-        return "bar";
-    }
-
-    @RequestMapping("/traced-async")
-    public Callable<String> fooAsync() {
-        return () ->
-                "foo";
-    }
-
-    @RequestMapping("/traced-forward")
-    public String fooForward() {
-        return "forward:/traced";
+    @Override
+    protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/foo").forward(request, response);
     }
 
 }

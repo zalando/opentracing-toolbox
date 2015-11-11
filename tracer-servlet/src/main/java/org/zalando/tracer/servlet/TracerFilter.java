@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public final class TracerFilter implements HttpFilter {
@@ -98,8 +99,9 @@ public final class TracerFilter implements HttpFilter {
     }
 
     private void persistTraces(final HttpServletRequest request, final HttpServletResponse response) {
-        tracer.forEach(request::setAttribute);
-        tracer.forEach(response::setHeader);
+        final BiConsumer<String, String> setAttribute = request::setAttribute;
+        final BiConsumer<String, String> setHeader = response::setHeader;
+        tracer.forEach(setAttribute.andThen(setHeader));
     }
 
 }

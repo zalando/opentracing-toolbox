@@ -20,44 +20,42 @@ package org.zalando.tracer.servlet;
  * ​⁣
  */
 
+import com.jayway.restassured.RestAssured;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
+import org.zalando.tracer.FlowIDGenerator;
 import org.zalando.tracer.Generator;
+import org.zalando.tracer.Tracer;
+import org.zalando.tracer.UUIDGenerator;
 
-import javax.servlet.DispatcherType;
-
+import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 
-// TODO verify async support
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestConfiguration.class)
-@WebAppConfiguration
 public final class TracerFilterTest {
 
-    @Autowired
-    private MockMvc mvc;
+    @Rule
+    public final JettyRule jetty;
 
-    @Autowired
-    private Generator uuidGenerator;
+    private final Generator uuidGenerator = spy(new MockGenerator(new UUIDGenerator()));
+    private final Generator flowIDGenerator = spy(new MockGenerator(new FlowIDGenerator()));
 
-    @Autowired
-    private Generator flowIDGenerator;
+    public TracerFilterTest() {
+        this.jetty = new JettyRule(new TracerFilter(Tracer.builder()
+                .trace("X-Trace-ID", uuidGenerator)
+                .trace("X-Flow-ID", flowIDGenerator)
+                .build()));
+    }
+
+    @Before
+    public void setPort() {
+        RestAssured.port = jetty.getPort();
+    }
 
     @Before
     public void resetMocks() {
@@ -66,72 +64,62 @@ public final class TracerFilterTest {
 
     @Test
     public void shouldAddResponseHeadersWhenTraceIsActive() throws Exception {
-        mvc.perform(request(GET, "/traced"))
-                .andExpect(header().string("X-Trace-ID", notNullValue()))
-                .andExpect(header().string("X-Flow-ID", notNullValue()));
+        given().
+                when().
+                get("/foo").
+                then()
+                .header("X-Trace-ID", notNullValue())
+                .header("X-Flow-ID", notNullValue());
     }
 
     @Test
     public void shouldNotAddResponseHeadersWhenTraceIsNotActive() throws Exception {
-        mvc.perform(request(GET, "/not-traced"))
-                .andExpect(header().doesNotExist("X-Trace-ID"))
-                .andExpect(header().doesNotExist("X-Flow-ID"));
+        given().
+                when().
+                get("/bar").
+                then()
+                .header("X-Trace-ID", nullValue())
+                .header("X-Flow-ID", nullValue());
     }
 
     @Test
     public void shouldManageTraceForAsyncDispatch() throws Exception {
-        final MvcResult result = mvc.perform(request(GET, "/traced-async"))
-                .andReturn();
-
-        mvc.perform(async(result))
-                .andExpect(header().string("X-Trace-ID", notNullValue()))
-                .andExpect(header().string("X-Flow-ID", notNullValue()));
+        given().
+                when().
+                get("/async");
 
         verify(uuidGenerator, times(1)).generate();
         verify(flowIDGenerator, times(1)).generate();
     }
 
-    private RequestBuilder async(final MvcResult result) {
-        final RequestBuilder builder = asyncDispatch(result);
-        return context -> {
-            final MockHttpServletRequest request = builder.buildRequest(context);
-            request.setDispatcherType(DispatcherType.ASYNC);
-            return request;
-        };
+    @Test
+    public void shouldNotManageTraceForAsyncDispatch() throws Exception {
+        given().
+                when().
+                get("/async");
+
+        verify(uuidGenerator, times(1)).generate();
+        verify(flowIDGenerator, times(1)).generate();
     }
 
     @Test
     public void shouldNotManageTraceForForwardDispatch() throws Exception {
-        final MvcResult result = mvc.perform(request(GET, "/traced-forward"))
-                .andReturn();
-
-        mvc.perform(forward(result))
-                .andExpect(header().string("X-Trace-ID", notNullValue()))
-                .andExpect(header().string("X-Flow-ID", notNullValue()));
+        given().
+                when().
+                get("/forward");
 
         verify(uuidGenerator, times(1)).generate();
         verify(flowIDGenerator, times(1)).generate();
     }
 
-    // https://github.com/spring-projects/spring-mvc-showcase/issues/42
-    private static RequestBuilder forward(final MvcResult result) {
-        return context -> {
-            final MockHttpServletRequest request = result.getRequest();
-            request.setRequestURI(result.getResponse().getForwardedUrl());
-            request.setDispatcherType(DispatcherType.FORWARD);
-            return request;
-        };
-    }
+    @Test
+    public void shouldNotManageTraceForIncludeDispatch() throws Exception {
+        given().
+                when().
+                get("/include");
 
-    // TODO include
-
-    private static RequestBuilder include(final MvcResult result) {
-        return context -> {
-            final MockHttpServletRequest request = result.getRequest();
-            request.setRequestURI(result.getResponse().getIncludedUrl());
-            request.setDispatcherType(DispatcherType.INCLUDE);
-            return request;
-        };
+        verify(uuidGenerator, times(1)).generate();
+        verify(flowIDGenerator, times(1)).generate();
     }
 
 }
