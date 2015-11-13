@@ -30,8 +30,8 @@ public final class IncludeServlet extends HttpServlet {
 
     @Override
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/foo").include(request, response);
-        request.getRequestDispatcher("/bar").include(request, response);
+        request.getRequestDispatcher("/traced").include(request, response);
+        request.getRequestDispatcher("/untraced").include(request, response);
     }
 
 }

@@ -20,106 +20,126 @@ package org.zalando.tracer.servlet;
  * ​⁣
  */
 
-import com.jayway.restassured.RestAssured;
+import org.eclipse.jetty.servlet.DefaultServlet;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.zalando.tracer.FlowIDGenerator;
 import org.zalando.tracer.Generator;
+import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
-import org.zalando.tracer.UUIDGenerator;
+import org.zalando.tracer.servlet.example.AsyncServlet;
+import org.zalando.tracer.servlet.example.ForwardServlet;
+import org.zalando.tracer.servlet.example.IncludeServlet;
+import org.zalando.tracer.servlet.example.TraceServlet;
+
+import javax.servlet.DispatcherType;
+import java.util.EnumSet;
 
 import static com.jayway.restassured.RestAssured.given;
+import static java.lang.String.format;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public final class TracerFilterTest {
 
+    private final String generatedValue = "c33a55a8-89e8-11e5-9ce2-dbc276b3cf7d";
+    private final String presentValue = "c72f1216-89e8-11e5-af44-f3f1713f954e";
+
+    private final Generator generator = mock(Generator.class);
+
+    private final Tracer tracer = Tracer.builder()
+            .trace("X-Trace-ID", generator)
+            .build();
+
+    private final Trace trace = tracer.get("X-Trace-ID");
+
     @Rule
-    public final JettyRule jetty;
-
-    private final Generator uuidGenerator = spy(new MockGenerator(new UUIDGenerator()));
-    private final Generator flowIDGenerator = spy(new MockGenerator(new FlowIDGenerator()));
-
-    public TracerFilterTest() {
-        this.jetty = new JettyRule(new TracerFilter(Tracer.builder()
-                .trace("X-Trace-ID", uuidGenerator)
-                .trace("X-Flow-ID", flowIDGenerator)
-                .build()));
-    }
+    public final JettyRule jetty = new JettyRule(new TracerFilter(tracer), trace);
 
     @Before
-    public void setPort() {
-        RestAssured.port = jetty.getPort();
+    public void defaultBehaviour() {
+        when(generator.generate()).thenReturn(generatedValue);
     }
 
-    @Before
-    public void resetMocks() {
-        reset(uuidGenerator, flowIDGenerator);
+    private String url(final String path) {
+        return format("http://localhost:%d%s", jetty.getPort(), path);
     }
 
     @Test
-    public void shouldAddResponseHeadersWhenTraceIsActive() throws Exception {
+    public void shouldAddPresentValueAsResponseHeader() throws Exception {
         given().
-                when().
-                get("/foo").
-                then()
-                .header("X-Trace-ID", notNullValue())
-                .header("X-Flow-ID", notNullValue());
+                when()
+                .header("X-Trace-ID", presentValue)
+                .get(url("/traced"))
+                .then()
+                .header("X-Trace-ID", presentValue);
     }
 
     @Test
-    public void shouldNotAddResponseHeadersWhenTraceIsNotActive() throws Exception {
+    public void shouldAddGeneratedValueAsResponseHeader() {
         given().
-                when().
-                get("/bar").
-                then()
-                .header("X-Trace-ID", nullValue())
-                .header("X-Flow-ID", nullValue());
+                when()
+                .get(url("/traced"))
+                .then()
+                .header("X-Trace-ID", generatedValue);
+    }
+
+    @Test
+    public void shouldNotAddPresentValueAsResponseHeadersWhenTraceIsNotActive() throws Exception {
+        given().
+                when()
+                .header("X-Trace-ID", presentValue)
+                .get(url("/untraced"))
+                .then()
+                .header("X-Trace-ID", nullValue());
+    }
+
+    @Test
+    public void shouldNotAddGeneratedValueAsResponseHeadersWhenTraceIsNotActive() throws Exception {
+        given().
+                when()
+                .get(url("/untraced"))
+                .then()
+                .header("X-Trace-ID", nullValue());
     }
 
     @Test
     public void shouldManageTraceForAsyncDispatch() throws Exception {
         given().
-                when().
-                get("/async");
+                when()
+                .get(url("/async"));
 
-        verify(uuidGenerator, times(1)).generate();
-        verify(flowIDGenerator, times(1)).generate();
+        verify(generator, times(1)).generate();
     }
 
     @Test
     public void shouldNotManageTraceForAsyncDispatch() throws Exception {
         given().
-                when().
-                get("/async");
+                when()
+                .get(url("/async"));
 
-        verify(uuidGenerator, times(1)).generate();
-        verify(flowIDGenerator, times(1)).generate();
+        verify(generator, times(1)).generate();
     }
 
     @Test
     public void shouldNotManageTraceForForwardDispatch() throws Exception {
         given().
-                when().
-                get("/forward");
+                when()
+                .get(url("/forward"));
 
-        verify(uuidGenerator, times(1)).generate();
-        verify(flowIDGenerator, times(1)).generate();
+        verify(generator, times(1)).generate();
     }
 
     @Test
     public void shouldNotManageTraceForIncludeDispatch() throws Exception {
         given().
-                when().
-                get("/include");
+                when()
+                .get(url("/include"));
 
-        verify(uuidGenerator, times(1)).generate();
-        verify(flowIDGenerator, times(1)).generate();
+        verify(generator, times(1)).generate();
     }
 
 }

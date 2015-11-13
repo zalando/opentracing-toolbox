@@ -30,7 +30,7 @@ public final class ForwardServlet extends HttpServlet {
 
     @Override
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/foo").forward(request, response);
+        request.getRequestDispatcher("/traced").forward(request, response);
     }
 
 }

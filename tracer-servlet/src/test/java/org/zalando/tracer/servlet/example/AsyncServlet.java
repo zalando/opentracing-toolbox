@@ -20,6 +20,8 @@ package org.zalando.tracer.servlet.example;
  * ​⁣
  */
 
+import org.zalando.tracer.Trace;
+
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -32,13 +34,20 @@ import java.util.concurrent.Executors;
 public final class AsyncServlet extends HttpServlet {
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
+
+    private final Trace trace;
+
+    public AsyncServlet(Trace trace) {
+        this.trace = trace;
+    }
     
     @Override
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
         final AsyncContext context = request.startAsync(request, response);
+        context.setTimeout(100);
 
         executor.submit(() -> {
-            context.getResponse().getWriter().write("async");
+            context.getResponse().getWriter().println(trace.getValue());
             context.complete();
             return null;
         });

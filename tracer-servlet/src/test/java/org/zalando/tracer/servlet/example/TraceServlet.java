@@ -20,17 +20,25 @@ package org.zalando.tracer.servlet.example;
  * ​⁣
  */
 
+import org.zalando.tracer.Trace;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public final class FooServlet extends HttpServlet {
+public final class TraceServlet extends HttpServlet {
+
+    private final Trace trace;
+
+    public TraceServlet(Trace trace) {
+        this.trace = trace;
+    }
 
     @Override
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-        response.getWriter().print("foo");
+        response.getWriter().println(trace.getValue());
     }
 
 }
