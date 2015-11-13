@@ -7,7 +7,7 @@
 [![Release](https://img.shields.io/github/release/zalando/tracer.svg)](https://github.com/zalando/tracer/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/org.zalando/tracer.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/tracer)
 
-*Tracer* is a library that ... 
+*Tracer* manages custom trace identifiers and carries them through your system. This is usually a custom HTTP header the is created on the very first request and that get's added to any subsequent request and response, especially to transitive dependencies.
 
 ## Dependency
 
@@ -21,16 +21,22 @@
 
 ## Usage
 
+You need to create a `Tracer` and specify the name of the traces you want to manage:
+
 ```java
 Tracer tracer = Tracer.create("X-Trace-ID");
-Trace trace = tracer.get("X-Trace-ID");
+```
 
-...
+If you need access to the current trace's value you just call `getValue()` on it:
 
+```java
+Trace trace = tracer.get("X-Trace-ID"); // this is a live-view that can be a shared as a singleton
 entity.setLastModifiedBy(trace.getValue());
 ```
 
 ### Generators
+
+When starting a new trace *Tracer* by default will create a time-based UUID. This can be overridden on a per trace level:
 
 ```java
 Tracer tracer = Tracer.builder()
@@ -38,7 +44,11 @@ Tracer tracer = Tracer.builder()
         .build();
 ```
 
+For legacy reasons we use a different generator interally, the `FlowIDGenerator`. It basically renders a UUID as a bsae64-encoded byte array, e.g. `REcCvlqMSReeo7adheiYFA`.
+
 ### Listeners
+
+For some use cases it might be useful to register a listener that get's notified everytime a trace is either started or stopped:
 
 ```java
 Tracer tracer = Tracer.builder()
@@ -49,6 +59,8 @@ Tracer tracer = Tracer.builder()
 
 ## Logging
 
+*Tracer* comes with a useful listener by default, the `MDCTraceListener`:
+
 ```java
 Tracer tracer = Tracer.builder()
         .trace("X-Trace-ID")
@@ -56,7 +68,15 @@ Tracer tracer = Tracer.builder()
         .build();
 ```
 
+It allows to prepend the trace id to every log line:
+
+```xml
+<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} [%X{X-Trace-ID}] - %msg%n"/>
+```
+
 ## Apache HTTP Client
+
+Many client-side HTTP libraries on the JVM use the Apache HTTPClient, which is why *Tracer* comes with a request interceptor:
 
 ```xml
 <dependency>
@@ -72,6 +92,8 @@ client.addRequestInterceptor(new TracerHttpRequestInterceptor(tracer));
 ```
 
 ## Servlet
+
+On the server side there is a single filter that needs to be registered in your filter chain. Make sure it runs very early, otherwise you might be missing some crucial information when debugging.
 
 ```xml
 <dependency>
@@ -90,6 +112,8 @@ context.addFilter("TracerFilter", new TracerFilter(tracer))
 
 ### Background Job, Tests, ...
 
+For background jobs you can either manage the lifecycle yourself:
+
 ```java
 tracer.start();
 
@@ -97,6 +121,23 @@ try {
     // do work
 } finally {
     tracer.stop();
+}
+```
+
+or you can use an aspect for it:
+
+```xml
+<dependency>
+    <groupId>org.zalando</groupId>
+    <artifactId>tracer-aspectj</artifactId>
+    <version>${tracer.version}</version>
+</dependency>
+```
+
+```java
+@Traced
+public void performBackgroundJob() {
+    // do work
 }
 ```
 
