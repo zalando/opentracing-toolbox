@@ -1,6 +1,6 @@
 # Tracer
 
-[![Highway at Night](https://github.com/zalando/tracer/raw/master/docs/highway.jpg)](https://pixabay.com/en/highway-at-night-long-long-exposure-371009/)
+[![Highway at Night](docs/highway.jpg)](https://pixabay.com/en/highway-at-night-long-long-exposure-371009/)
 
 [![Build Status](https://img.shields.io/travis/zalando/tracer.svg)](https://travis-ci.org/zalando/tracer)
 [![Coverage Status](https://img.shields.io/coveralls/zalando/tracer.svg)](https://coveralls.io/r/zalando/tracer)
