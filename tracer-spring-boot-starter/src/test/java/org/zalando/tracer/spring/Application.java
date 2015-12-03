@@ -41,6 +41,7 @@ package org.zalando.tracer.spring;
  */
 
 import org.springframework.boot.autoconfigure.test.ImportAutoConfiguration;
+import org.springframework.context.annotation.Import;
 
 @ImportAutoConfiguration(TracerAutoConfiguration.class)
 public class Application {

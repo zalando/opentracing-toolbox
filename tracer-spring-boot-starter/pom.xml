@@ -50,6 +50,11 @@
         </dependency>
         <dependency>
             <groupId>org.zalando</groupId>
+            <artifactId>tracer-aspectj</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.zalando</groupId>
             <artifactId>tracer-servlet</artifactId>
             <version>${project.version}</version>
         </dependency>

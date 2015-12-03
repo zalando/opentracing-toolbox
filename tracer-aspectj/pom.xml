@@ -27,34 +27,10 @@
 
     <properties>
         <aspectj.version>1.8.7</aspectj.version>
-
-        <!-- AspectJ generates some methods that are impossible to test -->
-        <jacoco.line-coverage.minimum>0.7</jacoco.line-coverage.minimum>
-        <jacoco.branch-coverage.minimum>0.2</jacoco.branch-coverage.minimum>
     </properties>
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>aspectj-maven-plugin</artifactId>
-                <version>1.8</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <complianceLevel>${java.version}</complianceLevel>
-                    <verbose>true</verbose>
-                    <showWeaveInfo>true</showWeaveInfo>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                            <goal>test-compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>license-maven-plugin</artifactId>
@@ -67,8 +43,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <threadCount>1</threadCount>
-                    <perCoreThreadCount>false</perCoreThreadCount>
+                    <parallel>classes</parallel>
                 </configuration>
             </plugin>
         </plugins>
@@ -94,11 +69,6 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>18.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>${aspectj.version}</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -133,6 +103,24 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>1.10.19</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>4.2.3.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.2.3.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>4.2.3.RELEASE</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

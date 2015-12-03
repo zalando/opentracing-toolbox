@@ -20,6 +20,7 @@ package org.zalando.tracer.spring;
  * ​⁣
  */
 
+import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,12 +34,14 @@ import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 import org.zalando.tracer.LoggingTraceListener;
 import org.zalando.tracer.MDCTraceListener;
 import org.zalando.tracer.TraceListener;
 import org.zalando.tracer.Tracer;
+import org.zalando.tracer.aspectj.TracedAspect;
 import org.zalando.tracer.servlet.TracerFilter;
 
 import javax.servlet.Filter;
@@ -55,7 +58,7 @@ import static javax.servlet.DispatcherType.REQUEST;
 @ConditionalOnClass(Tracer.class)
 @EnableConfigurationProperties(TracerProperties.class)
 @AutoConfigureAfter(WebMvcAutoConfiguration.class)
-@Import(DefaultGeneratorResolver.class)
+@Import({DefaultGeneratorResolver.class, TracerAutoConfiguration.AspectConfiguration.class})
 public class TracerAutoConfiguration {
 
     public static final String FILTER_NAME = "tracerFilter";
@@ -80,6 +83,20 @@ public class TracerAutoConfiguration {
         registration.setDispatcherTypes(REQUEST, ASYNC);
         registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return registration;
+    }
+
+    @ConditionalOnClass(Aspect.class)
+    @ConditionalOnProperty(name = "tracer.aspect.enabled", havingValue = "true", matchIfMissing = true)
+    @EnableAspectJAutoProxy
+    public static class AspectConfiguration {
+
+        @Bean
+        public TracedAspect tracedAspect(final Tracer tracer) {
+            final TracedAspect aspect = new TracedAspect();
+            aspect.setTracer(tracer);
+            return aspect;
+        }
+
     }
 
     @Bean
