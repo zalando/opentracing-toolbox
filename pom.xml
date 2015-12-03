@@ -49,6 +49,7 @@
         <module>tracer-aspectj</module>
         <module>tracer-servlet</module>
         <module>tracer-httpclient</module>
+        <module>tracer-spring-boot-starter</module>
     </modules>
 
     <properties>

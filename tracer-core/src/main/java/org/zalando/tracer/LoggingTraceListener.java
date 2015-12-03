@@ -20,6 +20,7 @@ package org.zalando.tracer;
  * ​⁣
  */
 
+import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +32,13 @@ public final class LoggingTraceListener implements TraceListener {
         this(LoggerFactory.getLogger(Tracer.class));
     }
 
-    LoggingTraceListener(final Logger logger) {
+    public LoggingTraceListener(final Logger logger) {
         this.logger = logger;
+    }
+
+    @VisibleForTesting
+    public Logger getLogger() {
+        return logger;
     }
 
     @Override
