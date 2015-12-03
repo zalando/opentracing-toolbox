@@ -74,6 +74,8 @@ It allows to prepend the trace id to every log line:
 <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} [%X{X-Trace-ID}] - %msg%n"/>
 ```
 
+Another builtin listener is the `LoggingTraceListener` which logs the start and end of every trace.
+
 ## Apache HTTP Client
 
 Many client-side HTTP libraries on the JVM use the Apache HTTPClient, which is why *Tracer* comes with a request interceptor:
@@ -110,9 +112,9 @@ context.addFilter("TracerFilter", new TracerFilter(tracer))
     .addMappingForUrlPatterns(EnumSet.of(REQUEST, ASYNC, ERROR), true, "/*"); 
 ```
 
-### Background Job, Tests, ...
+## Aspect
 
-For background jobs you can either manage the lifecycle yourself:
+For background jobs and tests you can either manage the lifecycle yourself:
 
 ```java
 tracer.start();
@@ -124,7 +126,7 @@ try {
 }
 ```
 
-or you can use an aspect for it:
+or you can use the builtin aspect for it:
 
 ```xml
 <dependency>
@@ -140,6 +142,51 @@ public void performBackgroundJob() {
     // do work
 }
 ```
+
+## Spring Boot Starter
+
+Tracer comes with a convenient auto configuration for Spring Boot users:
+
+```xml
+<dependency>
+    <groupId>org.zalando</groupId>
+    <artifactId>tracer-spring-boot-starter</artifactId>
+    <version>${tracer.version}</version>
+</dependency>
+```
+
+It sets up all of the following parts automatically with sensible defaults:
+- Aspect
+- Servlet Filter
+- MDC support
+
+### Configuration
+
+The following tables shows the available configuration. The only mandatory part is the actual traces, i.e. `tracer.traces`:
+
+| Configuration             | Description                                                                       | Default                     |
+|---------------------------|-----------------------------------------------------------------------------------|-----------------------------|
+| `tracer.aspect.enabled`   | Enable the [`TracedAspect`](#aspect)                                              | `true`                      |
+| `tracer.filter.enabled`   | Enable the [`TracerFilter`](#servlet)                                             | `true`                      |
+| `tracer.logging.enabled`  | Enable the [`LoggingTraceListener`](#logging)                                     | `false`                     |
+| `tracer.logging.category` | Changes the category of the [`LoggingTraceListener`](#logging)                    | `org.zalando.tracer.Tracer` |
+| `tracer.mdc.enabled`      | Enable the [`MdcTraceListener`](#logging)                                         | `true`                      |
+| `tracer.traces`           | Configure actual traces, mapping from name to generator type (`uuid` or`flow-id`) |                             |
+
+```yaml
+tracer:
+    aspect.enabled: true
+    filter.enabled: true
+    logging:
+        enabled: false
+        category: org.zalando.tracer.Tracer
+    mdc.enabled: true
+    traces:
+        X-Trace-ID: uuid
+        X-Flow-ID: flow-id
+```
+
+The `TracerAutoConfiguration` will automatically pickup any `TraceListener` bound in the application context.
 
 ## License
 
