@@ -17,7 +17,7 @@
     <artifactId>tracer-servlet</artifactId>
 
     <name>Tracer: Servlet</name>
-    <description>Tracing requests through a distributed system.</description>
+    <description>Servlet 3 filter for tracing requests through a distributed system.</description>
 
     <scm>
         <url>https://github.com/zalando/tracer</url>

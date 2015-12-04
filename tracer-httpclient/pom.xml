@@ -17,7 +17,7 @@
     <artifactId>tracer-httpclient</artifactId>
 
     <name>Tracer: HttpClient</name>
-    <description>Tracing requests through a distributed system.</description>
+    <description>HTTP Client interceptor for Tracing requests through a distributed system.</description>
 
     <scm>
         <url>https://github.com/zalando/tracer</url>

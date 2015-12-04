@@ -17,7 +17,7 @@
     <artifactId>tracer-aspectj</artifactId>
 
     <name>Tracer: AspectJ</name>
-    <description>Tracing requests through a distributed system.</description>
+    <description>Annotation-driven aspect for tracing requests through a distributed system.</description>
 
     <scm>
         <url>https://github.com/zalando/tracer</url>
