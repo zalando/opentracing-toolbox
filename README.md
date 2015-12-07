@@ -7,7 +7,7 @@
 [![Release](https://img.shields.io/github/release/zalando/tracer.svg)](https://github.com/zalando/tracer/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/org.zalando/tracer.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/tracer)
 
-*Tracer* manages custom trace identifiers and carries them through your system. This is usually a custom HTTP header the is created on the very first request and that get's added to any subsequent request and response, especially to transitive dependencies.
+*Tracer* manages custom trace identifiers and carries them through your system. This is usually a custom HTTP header the is created on the very first request and that gets added to any subsequent request and response, especially to transitive dependencies.
 
 ## Dependency
 
@@ -44,11 +44,11 @@ Tracer tracer = Tracer.builder()
         .build();
 ```
 
-For legacy reasons we use a different generator interally, the `FlowIDGenerator`. It basically renders a UUID as a bsae64-encoded byte array, e.g. `REcCvlqMSReeo7adheiYFA`.
+For legacy reasons we use a different generator interally, the `FlowIDGenerator`. It basically renders a UUID as a base64-encoded byte array, e.g. `REcCvlqMSReeo7adheiYFA`.
 
 ### Listeners
 
-For some use cases it might be useful to register a listener that get's notified everytime a trace is either started or stopped:
+For some use cases it might be useful to register a listener that gets notified everytime a trace is either started or stopped:
 
 ```java
 Tracer tracer = Tracer.builder()
