@@ -30,6 +30,7 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.servlet.example.AsyncServlet;
+import org.zalando.tracer.servlet.example.FailingServlet;
 import org.zalando.tracer.servlet.example.ForwardServlet;
 import org.zalando.tracer.servlet.example.IncludeServlet;
 import org.zalando.tracer.servlet.example.TraceServlet;
@@ -52,6 +53,7 @@ public final class JettyRule extends TestWatcher {
         handler.addServlet(new ServletHolder(new TraceServlet(trace)), "/untraced");
         handler.addServlet(ForwardServlet.class, "/forward");
         handler.addServlet(IncludeServlet.class, "/include");
+        handler.addServlet(FailingServlet.class, "/failure");
         handler.addServlet(DefaultServlet.class, "/");
 
         handler.addFilter(new FilterHolder(filter), "/async", EnumSet.allOf(DispatcherType.class));
@@ -59,6 +61,7 @@ public final class JettyRule extends TestWatcher {
         handler.addFilter(new FilterHolder(filter), "/traced", EnumSet.allOf(DispatcherType.class));
         handler.addFilter(new FilterHolder(filter), "/forward", EnumSet.allOf(DispatcherType.class));
         handler.addFilter(new FilterHolder(filter), "/include", EnumSet.allOf(DispatcherType.class));
+        handler.addFilter(new FilterHolder(filter), "/failure", EnumSet.allOf(DispatcherType.class));
 
         server.setHandler(handler);
     }

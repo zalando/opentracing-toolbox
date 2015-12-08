@@ -20,28 +20,21 @@ package org.zalando.tracer.servlet;
  * ​⁣
  */
 
-import org.eclipse.jetty.servlet.DefaultServlet;
-import org.eclipse.jetty.servlet.FilterHolder;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.zalando.tracer.Generator;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
-import org.zalando.tracer.servlet.example.AsyncServlet;
-import org.zalando.tracer.servlet.example.ForwardServlet;
-import org.zalando.tracer.servlet.example.IncludeServlet;
-import org.zalando.tracer.servlet.example.TraceServlet;
-
-import javax.servlet.DispatcherType;
-import java.util.EnumSet;
 
 import static com.jayway.restassured.RestAssured.given;
 import static java.lang.String.format;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public final class TracerFilterTest {
 
@@ -50,9 +43,9 @@ public final class TracerFilterTest {
 
     private final Generator generator = mock(Generator.class);
 
-    private final Tracer tracer = Tracer.builder()
+    private final Tracer tracer = spy(Tracer.builder()
             .trace("X-Trace-ID", generator)
-            .build();
+            .build());
 
     private final Trace trace = tracer.get("X-Trace-ID");
 
@@ -140,6 +133,15 @@ public final class TracerFilterTest {
                 .get(url("/include"));
 
         verify(generator, times(1)).generate();
+    }
+
+    @Test
+    public void shouldStopTracesOnFailure() throws Exception {
+        given().
+                when()
+                .get(url("/failure"));
+
+        verify(tracer).stop();
     }
 
 }

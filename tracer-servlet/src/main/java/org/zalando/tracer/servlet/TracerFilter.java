@@ -48,9 +48,13 @@ public final class TracerFilter implements HttpFilter {
             final Function<String, String> provider = selectProvider(request);
 
             tracer.start(provider);
-            persistTraces(request, response);
-            chain.doFilter(request, response);
-            tracer.stop();
+            try {
+                persistTraces(request, response);
+                chain.doFilter(request, response);
+            } finally {
+                tracer.stop();
+            }
+
         } else {
             persistTraces(request, response);
             chain.doFilter(request, response);
