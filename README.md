@@ -5,7 +5,7 @@
 [![Build Status](https://img.shields.io/travis/zalando/tracer.svg)](https://travis-ci.org/zalando/tracer)
 [![Coverage Status](https://img.shields.io/coveralls/zalando/tracer.svg)](https://coveralls.io/r/zalando/tracer)
 [![Release](https://img.shields.io/github/release/zalando/tracer.svg)](https://github.com/zalando/tracer/releases)
-[![Maven Central](https://img.shields.io/maven-central/v/org.zalando/tracer.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/tracer)
+[![Maven Central](https://img.shields.io/maven-central/v/org.zalando/tracer-parent.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/tracer-parent)
 
 *Tracer* manages custom trace identifiers and carries them through your system. This is usually a custom HTTP header the is created on the very first request and that gets added to any subsequent request and response, especially to transitive dependencies.
 
