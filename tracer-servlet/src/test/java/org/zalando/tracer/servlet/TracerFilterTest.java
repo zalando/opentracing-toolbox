@@ -31,7 +31,6 @@ import static com.jayway.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -43,9 +42,9 @@ public final class TracerFilterTest {
 
     private final Generator generator = mock(Generator.class);
 
-    private final Tracer tracer = spy(Tracer.builder()
+    private final Tracer tracer = Tracer.builder()
             .trace("X-Trace-ID", generator)
-            .build());
+            .build();
 
     private final Trace trace = tracer.get("X-Trace-ID");
 
@@ -133,15 +132,6 @@ public final class TracerFilterTest {
                 .get(url("/include"));
 
         verify(generator, times(1)).generate();
-    }
-
-    @Test
-    public void shouldStopTracesOnFailure() throws Exception {
-        given().
-                when()
-                .get(url("/failure"));
-
-        verify(tracer).stop();
     }
 
 }
