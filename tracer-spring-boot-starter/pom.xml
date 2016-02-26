@@ -14,10 +14,10 @@
         <maven>3.0.4</maven>
     </prerequisites>
 
-    <artifactId>tracer-servlet</artifactId>
+    <artifactId>tracer-spring-boot-starter</artifactId>
 
-    <name>Tracer: Servlet</name>
-    <description>Servlet 3 filter for tracing requests through a distributed system.</description>
+    <name>Tracer: Spring Boot Starter</name>
+    <description>Spring Boot Auto Configuration for Tracer and most of its libraries/adapters..</description>
 
     <scm>
         <url>https://github.com/zalando/tracer</url>
@@ -25,39 +25,51 @@
         <developerConnection>scm:git:git@github.com:zalando/tracer.git</developerConnection>
     </scm>
 
-    <properties>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.zalando</groupId>
             <artifactId>tracer-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.zalando</groupId>
+            <artifactId>tracer-aspectj</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.zalando</groupId>
+            <artifactId>tracer-servlet</artifactId>
+        </dependency>
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-nop</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
+            <artifactId>slf4j-simple</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.jayway.restassured</groupId>
-            <artifactId>rest-assured</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-servlet</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

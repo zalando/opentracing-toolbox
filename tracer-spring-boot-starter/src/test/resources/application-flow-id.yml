@@ -1,0 +1,4 @@
+spring.main.show-banner: false
+
+tracer.traces:
+  X-Flow-ID: flow-id
