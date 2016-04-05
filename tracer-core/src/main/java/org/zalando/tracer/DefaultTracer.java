@@ -45,7 +45,7 @@ final class DefaultTracer implements Tracer {
     }
 
     @Override
-    public void start(final Function<String, String> provider) {
+    public Stoppable start(final Function<String, String> provider) {
         traces.forEach((trace, state) -> {
             checkState(state.get() == null, "%s is already started", trace);
 
@@ -58,6 +58,7 @@ final class DefaultTracer implements Tracer {
             listeners.forEach(listener ->
                     listener.onStart(trace, value));
         });
+        return this::stop;
     }
 
     @Override
