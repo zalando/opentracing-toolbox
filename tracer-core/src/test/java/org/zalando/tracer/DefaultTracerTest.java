@@ -98,6 +98,13 @@ public final class DefaultTracerTest {
         tracer.get("X-Trace-ID").getValue();
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void shouldFailToGetCurrentTraceIfStopped() {
+        try (Stoppable s = tracer.start()) {
+        }
+        tracer.get("X-Trace-ID").getValue();
+    }
+
     @Test
     public void shouldIterateAllTraces() {
         tracer.start();

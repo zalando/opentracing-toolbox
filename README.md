@@ -126,6 +126,14 @@ try {
 }
 ```
 
+or use try-with-resources:
+
+```java
+try (Stoppable s = tracer.start()) {
+    // do work
+}
+```
+
 or you can use the builtin aspect for it:
 
 ```xml

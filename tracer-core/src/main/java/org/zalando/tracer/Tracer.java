@@ -30,20 +30,19 @@ import java.util.function.Function;
 import static com.google.common.collect.Maps.toMap;
 import static java.util.Arrays.asList;
 
-// TODO AutoCloseable?
 public interface Tracer {
 
     /**
      * @throws IllegalStateException
      */
-    default void start() {
-        start(trace -> null);
+    default Stoppable start() {
+        return start(trace -> null);
     }
 
     /**
      * @throws IllegalStateException
      */
-    void start(Function<String, String> provider);
+    Stoppable start(Function<String, String> provider);
 
     /**
      * @throws IllegalStateException
