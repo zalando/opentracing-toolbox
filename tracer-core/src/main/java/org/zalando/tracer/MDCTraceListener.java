@@ -21,7 +21,6 @@ package org.zalando.tracer;
  */
 
 import org.slf4j.MDC;
-import org.zalando.tracer.TraceListener;
 
 public final class MDCTraceListener implements TraceListener {
 

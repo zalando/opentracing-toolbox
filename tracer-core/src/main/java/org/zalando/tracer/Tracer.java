@@ -24,13 +24,13 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import lombok.Singular;
 
+import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import static com.google.common.collect.Maps.toMap;
 import static java.util.Arrays.asList;
 
-// TODO AutoCloseable?
 public interface Tracer {
 
     /**
@@ -43,7 +43,7 @@ public interface Tracer {
     /**
      * @throws IllegalStateException
      */
-    void start(Function<String, String> provider);
+    void start(final Function<String, String> provider);
 
     /**
      * @throws IllegalStateException
@@ -54,22 +54,61 @@ public interface Tracer {
      * @throws IllegalStateException
      */
     void forEach(final BiConsumer<String, String> consumer);
+    
+    /**
+     * @throws IllegalStateException
+     */
+    default ImmutableMap<String, String> snapshot() {
+        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+        forEach(builder::put);
+        return builder.build();
+    }
 
     /**
      * @throws IllegalStateException
      */
     void stop();
 
-    default <V, X extends Throwable> Closure<V, X> delegate(final Closure<V, X> closure) {
-        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-        forEach(builder::put);
-        final ImmutableMap<String, String> copy = builder.build();
+    default Runnable manage(final Runnable task) {
+        return delegate(task, trace -> null);
+    }
 
+    /**
+     * @throws IllegalStateException
+     */
+    default Runnable preserve(final Runnable task) {
+        return delegate(task, snapshot()::get);
+    }
+
+    default Runnable delegate(final Runnable task, final Function<String, String> provider) {
         return () -> {
-            start(copy::get);
+            start(provider);
 
             try {
-                return closure.run();
+                task.run();
+            } finally {
+                stop();
+            }
+        };
+    }
+
+    default <V> Callable<V> manage(final Callable<V> task) {
+        return delegate(task, trace -> null);
+    }
+
+    /**
+     * @throws IllegalStateException
+     */
+    default <V> Callable<V> preserve(final Callable<V> task) {
+        return delegate(task, snapshot()::get);
+    }
+
+    default <V> Callable<V> delegate(final Callable<V> task, final Function<String, String> provider) {
+        return () -> {
+            start(provider);
+
+            try {
+                return task.call();
             } finally {
                 stop();
             }

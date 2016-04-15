@@ -21,7 +21,6 @@ package org.zalando.tracer.httpclient;
  */
 
 import com.github.restdriver.clientdriver.ClientDriverRule;
-import com.google.common.io.ByteStreams;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -33,7 +32,6 @@ import org.junit.Test;
 import org.zalando.tracer.Tracer;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 import static com.github.restdriver.clientdriver.RestClientDriver.giveResponse;
 import static com.github.restdriver.clientdriver.RestClientDriver.onRequestTo;

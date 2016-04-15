@@ -164,14 +164,15 @@ It sets up all of the following parts automatically with sensible defaults:
 
 The following tables shows the available configuration. The only mandatory part is the actual traces, i.e. `tracer.traces`:
 
-| Configuration             | Description                                                                       | Default                     |
-|---------------------------|-----------------------------------------------------------------------------------|-----------------------------|
-| `tracer.aspect.enabled`   | Enable the [`TracedAspect`](#aspect)                                              | `true`                      |
-| `tracer.filter.enabled`   | Enable the [`TracerFilter`](#servlet)                                             | `true`                      |
-| `tracer.logging.enabled`  | Enable the [`LoggingTraceListener`](#logging)                                     | `false`                     |
-| `tracer.logging.category` | Changes the category of the [`LoggingTraceListener`](#logging)                    | `org.zalando.tracer.Tracer` |
-| `tracer.mdc.enabled`      | Enable the [`MdcTraceListener`](#logging)                                         | `true`                      |
-| `tracer.traces`           | Configure actual traces, mapping from name to generator type (`uuid` or`flow-id`) |                             |
+| Configuration               | Description                                                                       | Default                     |
+|-----------------------------|-----------------------------------------------------------------------------------|-----------------------------|
+| `tracer.aspect.enabled`     | Enable the [`TracedAspect`](#aspect)                                              | `true`                      |
+| `tracer.filter.enabled`     | Enable the [`TracerFilter`](#servlet)                                             | `true`                      |
+| `tracer.logging.enabled`    | Enable the [`LoggingTraceListener`](#logging)                                     | `false`                     |
+| `tracer.logging.category`   | Changes the category of the [`LoggingTraceListener`](#logging)                    | `org.zalando.tracer.Tracer` |
+| `tracer.mdc.enabled`        | Enable the [`MdcTraceListener`](#logging)                                         | `true`                      |
+| `tracer.scheduling.enabled` | Enables support for Task Scheduling, e.g. `@Scheduled`                            | `true`                      |
+| `tracer.traces`             | Configure actual traces, mapping from name to generator type (`uuid` or`flow-id`) |                             |
 
 ```yaml
 tracer:
@@ -181,6 +182,7 @@ tracer:
         enabled: false
         category: org.zalando.tracer.Tracer
     mdc.enabled: true
+    scheduling.enabled: true
     traces:
         X-Trace-ID: uuid
         X-Flow-ID: flow-id

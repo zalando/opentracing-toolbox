@@ -21,11 +21,7 @@ package org.zalando.tracer.spring;
  */
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
 import org.zalando.tracer.FlowIDGenerator;
-import org.zalando.tracer.Trace;
-import org.zalando.tracer.Tracer;
 import org.zalando.tracer.UUIDGenerator;
 
 import static org.hamcrest.Matchers.instanceOf;

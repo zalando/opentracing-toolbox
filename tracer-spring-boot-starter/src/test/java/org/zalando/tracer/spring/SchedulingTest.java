@@ -2,9 +2,9 @@ package org.zalando.tracer.spring;
 
 /*
  * ⁣​
- * Tracer: Servlet
+ * Tracer: Spring Boot Starter
  * ⁣⁣
- * Copyright (C) 2015 Zalando SE
+ * Copyright (C) 2015 - 2016 Zalando SE
  * ⁣⁣
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,11 +33,11 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-@ContextConfiguration(classes = AspectTest.TestConfiguration.class)
+@ContextConfiguration(classes = SchedulingTest.TestConfiguration.class)
 @ActiveProfiles("uuid")
-public class AspectTest extends AbstractTest {
-
-    @Import(TracedService.class)
+public class SchedulingTest extends AbstractTest {
+    
+    @Import(BackgroundTask.class)
     public static class TestConfiguration {
 
         @Bean
@@ -46,14 +46,13 @@ public class AspectTest extends AbstractTest {
         }
 
     }
-
+    
     @Autowired
-    private TracedService service;
-
+    private BackgroundTask task;
+    
     @Test
-    public void shouldTrace() {
-        final String trace = service.withAspect();
-        assertThat(trace, is(notNullValue()));
+    public void shouldScheduleWithTracer() throws InterruptedException {
+        assertThat(task.getValue(), is(notNullValue()));
     }
 
 }

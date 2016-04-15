@@ -2,9 +2,9 @@ package org.zalando.tracer.spring;
 
 /*
  * ⁣​
- * Tracer: Servlet
+ * Tracer: Spring Boot Starter
  * ⁣⁣
- * Copyright (C) 2015 Zalando SE
+ * Copyright (C) 2015 - 2016 Zalando SE
  * ⁣⁣
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,24 +20,28 @@ package org.zalando.tracer.spring;
  * ​⁣
  */
 
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.TestPropertySource;
-import org.zalando.tracer.LoggingTraceListener;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import org.zalando.tracer.Trace;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import java.util.concurrent.atomic.AtomicReference;
 
-@TestPropertySource(properties = "tracer.logging.enabled = true")
-public final class EnabledLoggingTest extends AbstractTest {
+@Component
+public class BackgroundTask {
 
+    private final AtomicReference<String> ref = new AtomicReference<>();
+    
     @Autowired
-    private LoggingTraceListener loggingTraceListener;
+    private Trace trace;
+    
+    @Scheduled(fixedDelay = 1)
+    public void scheduledFixedDelay() {
+        ref.set(trace.getValue());
+    }
 
-    @Test
-    public void shouldDisableLoggingTraceListenerByDefault() {
-        assertThat(loggingTraceListener, is(notNullValue()));
+    public String getValue() {
+        return ref.get();
     }
 
 }
