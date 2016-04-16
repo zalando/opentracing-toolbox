@@ -30,9 +30,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
-@ActiveProfiles("uuid")
 @ContextConfiguration(classes = DisabledAspectTest.TestConfiguration.class)
 @TestPropertySource(properties = "tracer.aspect.enabled = false")
+@ActiveProfiles("uuid")
 public class DisabledAspectTest extends AbstractTest {
 
     @Import(TracedService.class)
