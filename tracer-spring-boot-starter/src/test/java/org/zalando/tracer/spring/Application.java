@@ -41,8 +41,12 @@ package org.zalando.tracer.spring;
  */
 
 import org.springframework.boot.autoconfigure.test.ImportAutoConfiguration;
-import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
-@ImportAutoConfiguration(TracerAutoConfiguration.class)
+@EnableScheduling
+@ImportAutoConfiguration({
+        TracerAutoConfiguration.class,
+        TracerSchedulingAutoConfiguration.class
+})
 public class Application {
 }
