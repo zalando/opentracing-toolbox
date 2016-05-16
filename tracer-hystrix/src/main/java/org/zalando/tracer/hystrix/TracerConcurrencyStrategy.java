@@ -42,7 +42,7 @@ public final class TracerConcurrencyStrategy extends ForwardingHystrixConcurrenc
 
     @Override
     public <T> Callable<T> wrapCallable(final Callable<T> callable) {
-        return tracer.preserve(super.wrapCallable(callable));
+        return super.wrapCallable(tracer.preserve(callable));
     }
 
 }
