@@ -51,6 +51,11 @@ Selectively add the following dependencies to your project:
 </dependency>
 <dependency>
     <groupId>org.zalando</groupId>
+    <artifactId>tracer-hystrix</artifactId>
+    <version>${tracer.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.zalando</groupId>
     <artifactId>tracer-aspectj</artifactId>
     <version>${tracer.version}</version>
 </dependency>
@@ -134,6 +139,16 @@ Many client-side HTTP libraries on the JVM use the Apache HTTPClient, which is w
 ```java
 DefaultHttpClient client = new DefaultHttpClient();
 client.addRequestInterceptor(new TracerHttpRequestInterceptor(tracer));
+```
+
+## Hystrix
+
+*Tracer* comes with built-in Hystrix support in form of a custom `HystrixConcurrencyStrategy`:
+
+```java
+final HystrixPlugins plugins = HystrixPlugins.getInstance();
+final HystrixConcurrencyStrategy delegate = HystrixConcurrencyStrategyDefault.getInstance(); // or another
+plugins.registerConcurrencyStrategy(new TracerConcurrencyStrategy(tracer, delegate));
 ```
 
 ## AspectJ
