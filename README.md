@@ -166,16 +166,18 @@ Tracer comes with a convenient auto configuration for Spring Boot users that set
 | Configuration               | Description                                                                        | Default                     |
 |-----------------------------|------------------------------------------------------------------------------------|-----------------------------|
 | `tracer.aspect.enabled`     | Enables the [`TracedAspect`](#aspect)                                              | `true`                      |
+| `tracer.async.enabled`      | Enables for asynchronous tasks, i.e. `@Async`                                      | `true`                      |
 | `tracer.filter.enabled`     | Enables the [`TracerFilter`](#servlet)                                             | `true`                      |
 | `tracer.logging.enabled`    | Enables the [`LoggingTraceListener`](#logging)                                     | `false`                     |
 | `tracer.logging.category`   | Changes the category of the [`LoggingTraceListener`](#logging)                     | `org.zalando.tracer.Tracer` |
 | `tracer.mdc.enabled`        | Enables the [`MdcTraceListener`](#logging)                                         | `true`                      |
-| `tracer.scheduling.enabled` | Enables support for Task Scheduling, e.g. `@Scheduled`                             | `true`                      |
+| `tracer.scheduling.enabled` | Enables support for Task Scheduling, i.e. `@Scheduled`                             | `true`                      |
 | `tracer.traces`             | Configures actual traces, mapping from name to generator type (`uuid` or`flow-id`) |                             |
 
 ```yaml
 tracer:
     aspect.enabled: true
+    async.enabled: true
     filter.enabled: true
     logging:
         enabled: false
