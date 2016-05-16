@@ -86,7 +86,7 @@ public class AsyncTest extends AbstractTest {
         tracer.start();
 
         try {
-            final String value = service.getTraceId().get(100, MILLISECONDS);
+            final String value = service.getTraceId().get(500, MILLISECONDS);
 
             assertThat(value, is(notNullValue()));
         } finally {
