@@ -215,5 +215,4 @@ more details, check the [contribution guidelines](CONTRIBUTING.md).
 
 ## Open Issues
 
-* [Hystrix Support](issues/20)
 * [Zipkin Support](issues/18) (*debatable*)
