@@ -206,6 +206,10 @@ tracer:
 
 The `TracerAutoConfiguration` will automatically pick up any `TraceListener` bound in the application context.
 
+**Be aware**: The TracerAutoConfiguration will, as long as `tracer.async.enabled` is set to `true`, register a 
+`AsyncConfigurer` and Spring only allows one per Application Context. If this turns out to be a problem please disable
+the async support and configure it manually. Let us know if you think this needs to be improved.
+
 ## Getting Help with Tracer
 
 If you have questions, concerns, bug reports, etc., please file an issue in this repository's [Issue Tracker](issues).
