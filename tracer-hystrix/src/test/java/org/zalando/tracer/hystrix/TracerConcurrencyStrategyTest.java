@@ -32,6 +32,8 @@ import org.junit.Test;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
+import java.util.concurrent.Callable;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -48,7 +50,16 @@ public final class TracerConcurrencyStrategyTest {
     @Before
     public void setUp() {
         final HystrixPlugins plugins = HystrixPlugins.getInstance();
-        final HystrixConcurrencyStrategy delegate = HystrixConcurrencyStrategyDefault.getInstance();
+        final HystrixConcurrencyStrategy delegate = new HystrixConcurrencyStrategy() {
+            @Override
+            public <T> Callable<T> wrapCallable(final Callable<T> callable) {
+                return () -> {
+                    // to verify that the delegate has already access to the trace
+                    assertThat(trace.getValue(), is("76f6046c-1b56-11e6-8c85-8fc9ee29f631"));
+                    return callable.call();
+                };
+            }
+        };
         plugins.registerConcurrencyStrategy(new TracerConcurrencyStrategy(tracer, delegate));
     }
 
