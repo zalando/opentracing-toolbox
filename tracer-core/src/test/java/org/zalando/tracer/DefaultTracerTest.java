@@ -92,10 +92,12 @@ public final class DefaultTracerTest {
         tracer.start();
 
         final Trace trace = tracer.get("X-Trace-ID");
+
+        assertThat(trace.getName(), is("X-Trace-ID"));
         assertThat(trace.getValue(), is(notNullValue()));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void shouldFailToGetTraceIfUnknown() {
         tracer.get("X-Foo");
     }
