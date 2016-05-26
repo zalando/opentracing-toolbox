@@ -28,6 +28,7 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Maps.toMap;
 
@@ -39,60 +40,69 @@ final class DefaultTracer implements Tracer {
 
     DefaultTracer(final ImmutableMap<String, Generator> generators,
             final ImmutableList<TraceListener> listeners) {
-        this.traces = toMap(generators.keySet(), trace -> new ThreadLocal<>());
+        this.traces = toMap(generators.keySet(), name -> new ThreadLocal<>());
         this.generators = generators;
         this.listeners = listeners;
     }
 
     @Override
     public void start(final Function<String, String> provider) {
-        traces.forEach((trace, state) -> {
-            checkState(state.get() == null, "%s is already started", trace);
+        traces.forEach((name, state) -> {
+            checkState(state.get() == null, "%s is already started", name);
 
-            @Nullable final String present = provider.apply(trace);
+            @Nullable final String present = provider.apply(name);
             final String value = Optional.ofNullable(present)
-                    .orElseGet(() -> generators.get(trace).generate());
+                    .orElseGet(() -> generators.get(name).generate());
 
             state.set(value);
 
             listeners.forEach(listener ->
-                    listener.onStart(trace, value));
+                    listener.onStart(name, value));
         });
     }
 
     @Override
-    public Trace get(final String trace) {
-        final ThreadLocal<String> state = getAndCheckState(trace);
+    public Trace get(final String name) {
+        final ThreadLocal<String> state = getAndCheckState(name);
 
-        return () ->
-                getAndCheckValue(trace, state);
+        return new Trace() {
+            @Override
+            public String getName() {
+                return name;
+            }
+
+            @Override
+            public String getValue() {
+                return getAndCheckValue(name, state);
+            }
+        };
     }
 
     @Override
     public void forEach(final BiConsumer<String, String> consumer) {
-        traces.forEach((trace, state) ->
-                consumer.accept(trace, getAndCheckValue(trace, state)));
+        traces.forEach((name, state) ->
+                consumer.accept(name, getAndCheckValue(name, state)));
     }
 
     @Override
     public void stop() {
-        traces.forEach((trace, state) -> {
-            final String value = getAndCheckValue(trace, state);
+        traces.forEach((name, state) -> {
+            final String value = getAndCheckValue(name, state);
             state.remove();
             listeners.forEach(listener ->
-                    listener.onStop(trace, value));
+                    listener.onStop(name, value));
         });
     }
 
     private ThreadLocal<String> getAndCheckState(final String name) {
         @Nullable final ThreadLocal<String> state = traces.get(name);
-        checkState(state != null, "No such trace: %s", name);
+        checkArgument(state != null, "No such trace: %s", name);
         return state;
     }
 
-    private String getAndCheckValue(final String trace, final ThreadLocal<String> state) {
+    private String getAndCheckValue(final String name, final ThreadLocal<String> state) {
         @Nullable final String value = state.get();
-        checkState(value != null, "%s has not been started", trace);
+        checkState(value != null, "%s has not been started", name);
         return value;
     }
 
