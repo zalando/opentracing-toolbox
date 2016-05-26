@@ -80,6 +80,9 @@ public interface Tracer {
      *     tracer.stop();
      * }
      * </pre>
+     * <p>
+     * If the provider returns null a value will be created using the configured {@link Generator generator}.
+     * </p>
      *
      * @param provider a provider for trace identifiers, will be called with individual trace names
      * @throws IllegalStateException if this tracer is already started
