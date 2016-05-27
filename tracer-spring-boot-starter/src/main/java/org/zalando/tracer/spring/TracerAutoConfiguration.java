@@ -41,6 +41,7 @@ import org.zalando.tracer.MDCTraceListener;
 import org.zalando.tracer.TraceListener;
 import org.zalando.tracer.Tracer;
 import org.zalando.tracer.aspectj.TracedAspect;
+import org.zalando.tracer.httpclient.TracerHttpRequestInterceptor;
 import org.zalando.tracer.servlet.TracerFilter;
 
 import javax.servlet.Filter;
@@ -82,6 +83,12 @@ public class TracerAutoConfiguration {
         registration.setDispatcherTypes(REQUEST, ASYNC);
         registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return registration;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(TracerHttpRequestInterceptor.class)
+    public TracerHttpRequestInterceptor tracerHttpRequestInterceptor(final Tracer tracer) {
+        return new TracerHttpRequestInterceptor(tracer);
     }
 
     @ConditionalOnClass(Aspect.class)
