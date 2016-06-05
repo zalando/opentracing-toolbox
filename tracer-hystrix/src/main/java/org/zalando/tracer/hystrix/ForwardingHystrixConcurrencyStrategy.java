@@ -36,22 +36,22 @@ abstract class ForwardingHystrixConcurrencyStrategy extends HystrixConcurrencySt
     protected abstract HystrixConcurrencyStrategy delegate();
 
     @Override
-    public BlockingQueue<Runnable> getBlockingQueue(int maxQueueSize) {
+    public BlockingQueue<Runnable> getBlockingQueue(final int maxQueueSize) {
         return delegate().getBlockingQueue(maxQueueSize);
     }
 
     @Override
-    public <T> HystrixRequestVariable<T> getRequestVariable(HystrixRequestVariableLifecycle<T> rv) {
+    public <T> HystrixRequestVariable<T> getRequestVariable(final HystrixRequestVariableLifecycle<T> rv) {
         return delegate().getRequestVariable(rv);
     }
 
     @Override
-    public ThreadPoolExecutor getThreadPool(HystrixThreadPoolKey threadPoolKey, HystrixProperty<Integer> corePoolSize, HystrixProperty<Integer> maximumPoolSize, HystrixProperty<Integer> keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
+    public ThreadPoolExecutor getThreadPool(final HystrixThreadPoolKey threadPoolKey, final HystrixProperty<Integer> corePoolSize, final HystrixProperty<Integer> maximumPoolSize, final HystrixProperty<Integer> keepAliveTime, final TimeUnit unit, final BlockingQueue<Runnable> workQueue) {
         return delegate().getThreadPool(threadPoolKey, corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
     }
 
     @Override
-    public <T> Callable<T> wrapCallable(Callable<T> callable) {
+    public <T> Callable<T> wrapCallable(final Callable<T> callable) {
         return delegate().wrapCallable(callable);
     }
 

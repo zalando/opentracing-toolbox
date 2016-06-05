@@ -72,7 +72,7 @@ public final class JettyRule extends TestWatcher {
     }
 
     @Override
-    protected void starting(Description description) {
+    protected void starting(final Description description) {
         try {
             server.start();
         } catch (final Exception e) {
@@ -81,7 +81,7 @@ public final class JettyRule extends TestWatcher {
     }
 
     @Override
-    protected void finished(Description description) {
+    protected void finished(final Description description) {
         try {
             server.stop();
         } catch (final Exception e) {
