@@ -39,7 +39,7 @@ class DefaultGeneratorResolver implements GeneratorResolver {
             "uuid", new UUIDGenerator());
 
     @Override
-    public Generator resolve(String name) {
+    public Generator resolve(final String name) {
         return Optional.ofNullable(generators.get(name.toLowerCase(Locale.ROOT)))
                 .orElseThrow(UnsupportedOperationException::new);
     }

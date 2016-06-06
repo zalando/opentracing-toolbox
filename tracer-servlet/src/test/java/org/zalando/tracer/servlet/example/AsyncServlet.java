@@ -37,7 +37,7 @@ public final class AsyncServlet extends HttpServlet {
 
     private final Trace trace;
 
-    public AsyncServlet(Trace trace) {
+    public AsyncServlet(final Trace trace) {
         this.trace = trace;
     }
     

@@ -47,7 +47,7 @@ public final class TracerProperties {
             return category;
         }
 
-        public void setCategory(String category) {
+        public void setCategory(final String category) {
             this.category = category;
         }
     }

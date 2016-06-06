@@ -32,7 +32,7 @@ public final class TraceServlet extends HttpServlet {
 
     private final Trace trace;
 
-    public TraceServlet(Trace trace) {
+    public TraceServlet(final Trace trace) {
         this.trace = trace;
     }
 

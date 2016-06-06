@@ -1,10 +1,10 @@
-package org.zalando.tracer;
+package org.zalando.tracer.concurrent;
 
 /*
  * ⁣​
- * Tracer
+ * Tracer: Core
  * ⁣⁣
- * Copyright (C) 2015 Zalando SE
+ * Copyright (C) 2015 - 2016 Zalando SE
  * ⁣⁣
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,22 +20,20 @@ package org.zalando.tracer;
  * ​⁣
  */
 
-import com.google.gag.annotation.remark.Hack;
-import com.google.gag.annotation.remark.OhNoYouDidnt;
-import org.junit.Test;
-import org.zalando.tracer.concurrent.TracingExecutors;
+import com.google.common.collect.ForwardingObject;
 
-import static org.hamcrest.Matchers.hasToString;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import java.util.concurrent.Executor;
 
-@Hack
-@OhNoYouDidnt
-public final class EnforceCoverageTest {
+abstract class DecoratingExecutor extends ForwardingObject implements Executor {
 
-    @Test
-    public void shouldCoverTracerBuilderToString() {
-        assertThat(Tracer.builder(), hasToString(notNullValue()));
+    @Override
+    protected abstract Executor delegate();
+
+    protected abstract Runnable decorate(final Runnable command);
+
+    @Override
+    public void execute(final Runnable command) {
+        delegate().execute(decorate(command));
     }
 
 }
