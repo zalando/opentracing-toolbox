@@ -58,7 +58,7 @@ public final class PreservingExecutorTest {
             tracer.stop();
         }
 
-        assertThat(future.get(100, TimeUnit.MILLISECONDS), is(expected));
+        assertThat(future.get(250, TimeUnit.MILLISECONDS), is(expected));
     }
 
 }

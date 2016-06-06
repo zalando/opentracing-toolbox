@@ -57,7 +57,7 @@ public final class ManagingScheduledExecutorServiceTest {
             tracer.stop();
         }
 
-        assertThat(future.get(100, TimeUnit.MILLISECONDS), is(not(expected)));
+        assertThat(future.get(250, TimeUnit.MILLISECONDS), is(not(expected)));
     }
 
     @Test
@@ -74,7 +74,7 @@ public final class ManagingScheduledExecutorServiceTest {
             tracer.stop();
         }
 
-        assertThat(future.get(100, TimeUnit.MILLISECONDS), is(not(expected)));
+        assertThat(future.get(250, TimeUnit.MILLISECONDS), is(not(expected)));
     }
 
     @Test
@@ -91,7 +91,7 @@ public final class ManagingScheduledExecutorServiceTest {
             tracer.stop();
         }
 
-        assertThat(future.get(100, TimeUnit.MILLISECONDS), is(not(expected)));
+        assertThat(future.get(250, TimeUnit.MILLISECONDS), is(not(expected)));
     }
 
     @Test
@@ -108,7 +108,7 @@ public final class ManagingScheduledExecutorServiceTest {
             tracer.stop();
         }
 
-        assertThat(future.get(100, TimeUnit.MILLISECONDS), is(not(expected)));
+        assertThat(future.get(250, TimeUnit.MILLISECONDS), is(not(expected)));
     }
 
 }
