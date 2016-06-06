@@ -59,7 +59,7 @@ public final class ManagingExecutorServiceTest {
             tracer.stop();
         }
 
-        assertThat(future.get(250, TimeUnit.MILLISECONDS), is(not(expected)));
+        assertThat(future.get(1000, TimeUnit.MILLISECONDS), is(not(expected)));
     }
 
     @Test
@@ -77,7 +77,7 @@ public final class ManagingExecutorServiceTest {
             tracer.stop();
         }
 
-        assertThat(future.get(250, TimeUnit.MILLISECONDS), is(not(expected)));
+        assertThat(future.get(1000, TimeUnit.MILLISECONDS), is(not(expected)));
     }
 
     @Test
@@ -94,7 +94,7 @@ public final class ManagingExecutorServiceTest {
             tracer.stop();
         }
 
-        assertThat(future.get(250, TimeUnit.MILLISECONDS), is(not(expected)));
+        assertThat(future.get(1000, TimeUnit.MILLISECONDS), is(not(expected)));
     }
 
     @Test
@@ -111,7 +111,7 @@ public final class ManagingExecutorServiceTest {
             tracer.stop();
         }
 
-        assertThat(future.get(0).get(250, TimeUnit.MILLISECONDS), is(not(expected)));
+        assertThat(future.get(0).get(1000, TimeUnit.MILLISECONDS), is(not(expected)));
     }
 
     @Test
@@ -123,12 +123,12 @@ public final class ManagingExecutorServiceTest {
         final String expected = trace.getValue();
         try {
             final Callable<String> task = trace::getValue;
-            future = unit.invokeAll(singletonList(task), 250, TimeUnit.MILLISECONDS);
+            future = unit.invokeAll(singletonList(task), 1000, TimeUnit.MILLISECONDS);
         } finally {
             tracer.stop();
         }
 
-        assertThat(future.get(0).get(250, TimeUnit.MILLISECONDS), is(not(expected)));
+        assertThat(future.get(0).get(1000, TimeUnit.MILLISECONDS), is(not(expected)));
     }
 
     @Test
@@ -157,7 +157,7 @@ public final class ManagingExecutorServiceTest {
         final String expected = trace.getValue();
         try {
             final Callable<String> task = trace::getValue;
-            actual = unit.invokeAny(singletonList(task), 250, TimeUnit.MILLISECONDS);
+            actual = unit.invokeAny(singletonList(task), 1000, TimeUnit.MILLISECONDS);
         } finally {
             tracer.stop();
         }
@@ -172,7 +172,7 @@ public final class ManagingExecutorServiceTest {
 
         unit.shutdown();
         unit.shutdownNow();
-        unit.awaitTermination(250, TimeUnit.MILLISECONDS);
+        unit.awaitTermination(1000, TimeUnit.MILLISECONDS);
 
         assertThat(unit.isTerminated(), is(true));
         assertThat(unit.isShutdown(), is(true));

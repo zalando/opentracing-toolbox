@@ -59,7 +59,7 @@ public final class ManagingExecutorTest {
             tracer.stop();
         }
 
-        assertThat(future.get(250, TimeUnit.MILLISECONDS), is(not(expected)));
+        assertThat(future.get(1000, TimeUnit.MILLISECONDS), is(not(expected)));
     }
 
 }
