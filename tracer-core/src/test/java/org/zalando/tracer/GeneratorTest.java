@@ -19,10 +19,11 @@ package org.zalando.tracer;
  * limitations under the License.
  * ​⁣
  */
-
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.matchesPattern;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 public class GeneratorTest {
@@ -41,4 +42,14 @@ public class GeneratorTest {
         assertThat(value.length(), is(22));
     }
 
+    @Test
+    public void testDocker() throws Exception {
+        final DockerGenerator g = new DockerGenerator();
+        for (int i = 0; i < 2 * DockerGenerator.maxCombinations(); i++) {
+            final String value = g.generate();
+
+            assertThat(value, matchesPattern("[a-z]+_[a-z]+"));
+            assertThat(value, is(not("boring_wozniak")));
+        }
+    }
 }
