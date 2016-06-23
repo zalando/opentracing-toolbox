@@ -21,7 +21,7 @@ package org.zalando.tracer.spring;
  */
 
 import org.junit.Test;
-import org.zalando.tracer.DockerGenerator;
+import org.zalando.tracer.PhraseGenerator;
 import org.zalando.tracer.FlowIDGenerator;
 import org.zalando.tracer.UUIDGenerator;
 
@@ -44,8 +44,8 @@ public final class UnknownGeneratorTest {
     }
 
     @Test
-    public void shouldSupportDocker() {
-        assertThat(unit.resolve("docker"), is(instanceOf(DockerGenerator.class)));
+    public void shouldSupportPhrase() {
+        assertThat(unit.resolve("phrase"), is(instanceOf(PhraseGenerator.class)));
     }
 
     @Test
@@ -59,8 +59,8 @@ public final class UnknownGeneratorTest {
     }
 
     @Test
-    public void shouldSupportDockerCaseInsensitive() {
-        assertThat(unit.resolve("Docker"), is(instanceOf(DockerGenerator.class)));
+    public void shouldSupportPhraseCaseInsensitive() {
+        assertThat(unit.resolve("Phrase"), is(instanceOf(PhraseGenerator.class)));
     }
 
     @Test(expected = UnsupportedOperationException.class)

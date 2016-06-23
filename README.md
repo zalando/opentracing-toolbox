@@ -93,6 +93,12 @@ Tracer tracer = Tracer.builder()
 
 For legacy reasons we use a different generator internally, the `FlowIDGenerator`. It basically renders a UUID as a base64-encoded byte array, e.g. `REcCvlqMSReeo7adheiYFA`.
 
+There is also `PhraseGenerator` provided which generates over 10^9 different phrases like:
+
+    tender_goodall_likes_evil_panini
+    nostalgic_boyd_helps_agitated_noyce
+    pensive_allen_tells_fervent_einstein
+
 ### Listeners
 
 For some use cases, e.g. integration with other frameworks and libraries, it might be useful to register a listener that gets notified every time a trace is either started or stopped.
@@ -187,7 +193,7 @@ Tracer comes with a convenient auto configuration for Spring Boot users that set
 | `tracer.logging.category`   | Changes the category of the [`LoggingTraceListener`](#logging)                                | `org.zalando.tracer.Tracer` |
 | `tracer.mdc.enabled`        | Enables the [`MdcTraceListener`](#logging)                                                    | `true`                      |
 | `tracer.scheduling.enabled` | Enables support for Task Scheduling, i.e. `@Scheduled`                                        | `true`                      |
-| `tracer.traces`             | Configures actual traces, mapping from name to generator type (`uuid`, `flow-id` or `docker`) |                             |
+| `tracer.traces`             | Configures actual traces, mapping from name to generator type (`uuid`, `flow-id` or `phrase`) |                             |
 
 ```yaml
 tracer:

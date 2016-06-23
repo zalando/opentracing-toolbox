@@ -23,7 +23,7 @@ package org.zalando.tracer.spring;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
-import org.zalando.tracer.DockerGenerator;
+import org.zalando.tracer.PhraseGenerator;
 import org.zalando.tracer.FlowIDGenerator;
 import org.zalando.tracer.Generator;
 import org.zalando.tracer.UUIDGenerator;
@@ -38,7 +38,7 @@ class DefaultGeneratorResolver implements GeneratorResolver {
     private final ImmutableMap<String, Generator> generators = ImmutableMap.of(
             "flow-id", new FlowIDGenerator(),
             "uuid", new UUIDGenerator(),
-            "docker", new DockerGenerator());
+            "phrase", new PhraseGenerator());
 
     @Override
     public Generator resolve(final String name) {

@@ -47,25 +47,25 @@ public class GeneratorTest {
     }
 
     @Test
-    public void testDocker() throws Exception {
-        final String value = new DockerGenerator().generate();
+    public void testPhrase() throws Exception {
+        final String value = new PhraseGenerator().generate();
 
         assertThat(value, matchesPattern("[a-z]+_[a-z]+_[a-z]+_[a-z]+_[a-z]+"));
 
-        assertTrue(DockerGenerator.isJacocoHappy());
+        assertTrue(PhraseGenerator.isJacocoHappy());
     }
 
     @Test
-    public void testDockerWozniakIsNotBoring() throws Exception {
+    public void testPhraseWozniakIsNotBoring() throws Exception {
         final Iterator<Integer> indexes = Arrays.asList(9, 143, 0, 0, 0, 0, 0, 0, 0, 0).iterator();
 
-        final String value = DockerGenerator.generate(i -> indexes.next());
+        final String value = PhraseGenerator.generate(i -> indexes.next());
 
         assertThat(value, is(not(containsString("boring_wozniak"))));
     }
 
     @Test
-    public void testDockerOver_1_000_000_000() throws Exception {
-        assertTrue(DockerGenerator.maxCombinations() > 1_000_000_000);
+    public void testPhraseOver_1_000_000_000() throws Exception {
+        assertTrue(PhraseGenerator.maxCombinations() > 1_000_000_000);
     }
 }

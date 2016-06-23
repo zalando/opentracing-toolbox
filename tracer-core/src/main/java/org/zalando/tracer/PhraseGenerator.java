@@ -25,7 +25,12 @@ import java.util.function.IntUnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public final class DockerGenerator implements Generator {
+/**
+ * This generator is inspired by Docker container name generator
+ *
+ * @see https://github.com/docker/docker/blob/master/pkg/namesgenerator/names-generator.go
+ */
+public final class PhraseGenerator implements Generator {
 
     private static final String ADJECTIVES[] = {
         "admiring",
@@ -428,7 +433,7 @@ public final class DockerGenerator implements Generator {
     /**
      * @return a random name from the list of adjectives, surnames and verbs
      * formatted as "adjective_surname_verb_adjective_surname".
-     * For example 'reverent_liskov_hates_romantic_gates'.
+     * For example 'amazing_knuth_knows_romantic_liskov'.
      */
     @Override
     public String generate() {
