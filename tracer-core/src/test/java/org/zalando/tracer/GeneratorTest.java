@@ -26,6 +26,7 @@ import org.junit.Test;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -49,23 +50,22 @@ public class GeneratorTest {
     public void testDocker() throws Exception {
         final String value = new DockerGenerator().generate();
 
-        assertThat(value, matchesPattern("[a-z]+_[a-z]+"));
-        assertThat(value, is(not("boring_wozniak")));
+        assertThat(value, matchesPattern("[a-z]+_[a-z]+_[a-z]+_[a-z]+_[a-z]+"));
 
         assertTrue(DockerGenerator.isJacocoHappy());
     }
 
     @Test
     public void testDockerWozniakIsNotBoring() throws Exception {
-        final Iterator<Integer> indexes = Arrays.asList(9, 143, 0, 0).iterator();
+        final Iterator<Integer> indexes = Arrays.asList(9, 143, 0, 0, 0, 0, 0, 0, 0, 0).iterator();
 
         final String value = DockerGenerator.generate(i -> indexes.next());
 
-        assertThat(value, is(not("boring_wozniak")));
+        assertThat(value, is(not(containsString("boring_wozniak"))));
     }
 
     @Test
-    public void testDockerOver9000() throws Exception {
-        assertTrue(DockerGenerator.maxCombinations() > 9000);
+    public void testDockerOver_1_000_000_000() throws Exception {
+        assertTrue(DockerGenerator.maxCombinations() > 1_000_000_000);
     }
 }

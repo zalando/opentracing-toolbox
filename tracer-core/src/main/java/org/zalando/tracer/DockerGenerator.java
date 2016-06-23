@@ -398,7 +398,25 @@ public final class DockerGenerator implements Generator {
         "yonath"
     };
 
-    private static final String[][] PARTS = {ADJECTIVES, SURNAMES};
+    // Carefully crafted list of neutral short verbs
+    private static final String[] VERBS = {
+        "asks",
+        "pays",
+        "sees",
+        "waits",
+        "beats",
+        "calls",
+        "feeds",
+        "hates",
+        "helps",
+        "knows",
+        "likes",
+        "meets",
+        "saves",
+        "tells"
+    };
+
+    private static final String[][] PARTS = {ADJECTIVES, SURNAMES, VERBS, ADJECTIVES, SURNAMES};
 
     /*
      * The random number generator used by this class to create random numbers.
@@ -410,8 +428,9 @@ public final class DockerGenerator implements Generator {
     }
 
     /**
-     * @return a random name from the list of adjectives and surnames
-     * formatted as "adjective_surname". For example 'focused_turing'.
+     * @return a random name from the list of adjectives, surnames and verbs
+     * formatted as "adjective_surname_verb_adjective_surname".
+     * For example 'reverent_liskov_hates_romantic_gates'.
      */
     @Override
     public String generate() {
@@ -426,7 +445,7 @@ public final class DockerGenerator implements Generator {
                 .collect(Collectors.joining("_"));
 
             // Steve Wozniak is not boring
-            if (!name.equals("boring_wozniak")) {
+            if (!name.contains("boring_wozniak")) {
                 return name;
             }
         } while (true);
