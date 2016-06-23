@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 /**
  * This generator is inspired by Docker container name generator
  *
- * @see https://github.com/docker/docker/blob/master/pkg/namesgenerator/names-generator.go
+ * @see <a href="https://github.com/docker/docker/blob/master/pkg/namesgenerator/names-generator.go">names-generator.go</a>
  */
 public final class PhraseGenerator implements Generator {
 
@@ -426,7 +426,6 @@ public final class PhraseGenerator implements Generator {
      * In a holder class to defer initialization until needed.
      */
     private static class Holder {
-
         static final SecureRandom RANDOM = new SecureRandom();
     }
 
