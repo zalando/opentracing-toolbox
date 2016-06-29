@@ -99,6 +99,8 @@ There is also `PhraseGenerator` provided which generates over 10^9 different phr
     nostalgic_boyd_helps_agitated_noyce
     pensive_allen_tells_fervent_einstein
 
+The generated phrase is 22 to 61 characters long.
+
 ### Listeners
 
 For some use cases, e.g. integration with other frameworks and libraries, it might be useful to register a listener that gets notified every time a trace is either started or stopped.

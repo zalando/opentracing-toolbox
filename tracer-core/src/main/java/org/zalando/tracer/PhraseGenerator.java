@@ -461,6 +461,20 @@ public final class PhraseGenerator implements Generator {
     }
 
     @VisibleForTesting
+    static int minLength() {
+        return Stream.of(PARTS)
+            .mapToInt(dict -> Stream.of(dict).mapToInt(String::length).min().getAsInt())
+            .sum() + (PARTS.length - 1);
+    }
+
+    @VisibleForTesting
+    static int maxLength() {
+        return Stream.of(PARTS)
+            .mapToInt(dict -> Stream.of(dict).mapToInt(String::length).max().getAsInt())
+            .sum() + (PARTS.length - 1);
+    }
+
+    @VisibleForTesting
     static boolean isJacocoHappy() {
         final Holder h = new Holder();
         return true;

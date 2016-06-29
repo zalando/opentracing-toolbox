@@ -68,4 +68,14 @@ public class GeneratorTest {
     public void testPhraseOver_1_000_000_000() throws Exception {
         assertTrue(PhraseGenerator.maxCombinations() > 1_000_000_000);
     }
+
+    @Test
+    public void testPhraseMinLength() throws Exception {
+        assertThat(PhraseGenerator.minLength(), is(22));
+    }
+
+    @Test
+    public void testPhraseMaxLength() throws Exception {
+        assertThat(PhraseGenerator.maxLength(), is(61));
+    }
 }
