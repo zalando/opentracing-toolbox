@@ -83,7 +83,8 @@ entity.setLastModifiedBy(trace.getValue());
 
 ### Generators
 
-When starting a new trace, *Tracer* will create a time-based UUID by default. You can override this on a per-trace level by adding the following to your setup:
+When starting a new trace, *Tracer* will create trace value by means of pre-configured generator.
+You can override this on a per-trace level by adding the following to your setup:
 
 ```java
 Tracer tracer = Tracer.builder()
@@ -91,13 +92,28 @@ Tracer tracer = Tracer.builder()
         .build();
 ```
 
-For legacy reasons we use a different generator internally, the `FlowIDGenerator`. It basically renders a UUID as a base64-encoded byte array, e.g. `REcCvlqMSReeo7adheiYFA`.
+There are several generator implementations included.
 
-There is also `PhraseGenerator` provided which generates over 10^9 different phrases like:
+#### UUIDGenerator
+
+This is the default generator implementation.
+It creates 36 characters long, random-based UUID string as a trace value.
+
+#### FlowIDGenerator
+
+This generator was created for historical reasons.
+It basically renders a UUID as a base64-encoded byte array, e.g. `REcCvlqMSReeo7adheiYFA`.
+The length of generated value is 22 characters.
+
+#### PhraseGenerator
+
+Phrase generator provides over 10^9 different phrases like:
 
     tender_goodall_likes_evil_panini
     nostalgic_boyd_helps_agitated_noyce
     pensive_allen_tells_fervent_einstein
+
+The generated phrase is 22 to 61 character long.
 
 ### Listeners
 
