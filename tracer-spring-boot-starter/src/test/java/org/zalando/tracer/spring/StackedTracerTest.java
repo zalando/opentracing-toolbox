@@ -1,8 +1,8 @@
-package org.zalando.tracer;
+package org.zalando.tracer.spring;
 
 /*
  * ⁣​
- * Tracer
+ * Tracer: Servlet
  * ⁣⁣
  * Copyright (C) 2015 Zalando SE
  * ⁣⁣
@@ -20,27 +20,25 @@ package org.zalando.tracer;
  * ​⁣
  */
 
-import com.google.gag.annotation.remark.Hack;
-import com.google.gag.annotation.remark.OhNoYouDidnt;
 import org.junit.Test;
-import org.zalando.tracer.concurrent.TracingExecutors;
+import org.junit.Test.None;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.zalando.tracer.Tracer;
 
-import static org.hamcrest.Matchers.hasToString;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
+@ActiveProfiles("uuid")
+@TestPropertySource(properties = "tracer.stacked: true")
+public final class StackedTracerTest extends AbstractTest {
 
-@Hack
-@OhNoYouDidnt
-public final class EnforceCoverageTest {
+    @Autowired
+    private Tracer tracer;
 
-    @Test
-    public void shouldUseTracerCreatorConstructor() {
-        new TracerCreator();
-    }
-
-    @Test
-    public void shouldCoverTracerBuilderToString() {
-        assertThat(Tracer.builder(), hasToString(notNullValue()));
+    @Test(expected = None.class)
+    public void shouldBeStacked() {
+        tracer.start();
+        tracer.get("X-Trace-ID");
+        tracer.start();
     }
 
 }
