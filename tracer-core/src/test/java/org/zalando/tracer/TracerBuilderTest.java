@@ -30,7 +30,7 @@ import static org.mockito.Mockito.mock;
 
 public final class TracerBuilderTest {
 
-    private final TracerCreator.Builder unit = Tracer.builder();
+    private final TracerFactory.Builder unit = Tracer.builder();
 
     @After
     public void verifyThatTracerCanBeBuild() {

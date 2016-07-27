@@ -23,7 +23,6 @@ package org.zalando.tracer;
 import com.google.gag.annotation.remark.Hack;
 import com.google.gag.annotation.remark.OhNoYouDidnt;
 import org.junit.Test;
-import org.zalando.tracer.concurrent.TracingExecutors;
 
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.notNullValue;
@@ -34,8 +33,8 @@ import static org.junit.Assert.assertThat;
 public final class EnforceCoverageTest {
 
     @Test
-    public void shouldUseTracerCreatorConstructor() {
-        new TracerCreator();
+    public void shouldUseTracerFactoryConstructor() {
+        new TracerFactory();
     }
 
     @Test

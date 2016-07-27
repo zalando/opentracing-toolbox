@@ -245,8 +245,8 @@ public interface Tracer {
         return builder().traces(asList(names)).build();
     }
 
-    static TracerCreator.Builder builder() {
-        return TracerCreator.builder();
+    static TracerFactory.Builder builder() {
+        return TracerFactory.builder();
     }
 
 }

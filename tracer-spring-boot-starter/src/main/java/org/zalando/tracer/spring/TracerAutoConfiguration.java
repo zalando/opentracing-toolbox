@@ -40,7 +40,7 @@ import org.zalando.tracer.LoggingTraceListener;
 import org.zalando.tracer.MDCTraceListener;
 import org.zalando.tracer.TraceListener;
 import org.zalando.tracer.Tracer;
-import org.zalando.tracer.TracerCreator;
+import org.zalando.tracer.TracerFactory;
 import org.zalando.tracer.aspectj.TracedAspect;
 import org.zalando.tracer.httpclient.TracerHttpRequestInterceptor;
 import org.zalando.tracer.servlet.TracerFilter;
@@ -109,7 +109,7 @@ public class TracerAutoConfiguration {
     @Bean
     public Tracer tracer(
             @SuppressWarnings("SpringJavaAutowiringInspection") final Optional<List<TraceListener>> listeners) {
-        final TracerCreator.Builder builder = Tracer.builder()
+        final TracerFactory.Builder builder = Tracer.builder()
                 .stacked(properties.isStacked())
                 .listeners(listeners.orElse(emptyList()));
 

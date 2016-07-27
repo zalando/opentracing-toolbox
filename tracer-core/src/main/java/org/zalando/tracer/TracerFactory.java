@@ -26,9 +26,9 @@ import lombok.Singular;
 
 import static com.google.common.collect.Maps.toMap;
 
-public final class TracerCreator {
+public final class TracerFactory {
 
-    TracerCreator() {
+    TracerFactory() {
         // package private so we can trick code coverage
     }
 
