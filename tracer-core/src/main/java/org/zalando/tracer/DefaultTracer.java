@@ -20,7 +20,6 @@ package org.zalando.tracer;
  * ​⁣
  */
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import javax.annotation.Nullable;
@@ -36,10 +35,10 @@ final class DefaultTracer implements Tracer {
 
     private final ImmutableMap<String, ThreadLocal<String>> traces;
     private final ImmutableMap<String, Generator> generators;
-    private final ImmutableList<TraceListener> listeners;
+    private final TraceListener listeners;
 
     DefaultTracer(final ImmutableMap<String, Generator> generators,
-            final ImmutableList<TraceListener> listeners) {
+            final TraceListener listeners) {
         this.traces = toMap(generators.keySet(), name -> new ThreadLocal<>());
         this.generators = generators;
         this.listeners = listeners;
@@ -50,15 +49,17 @@ final class DefaultTracer implements Tracer {
         traces.forEach((name, state) -> {
             checkState(state.get() == null, "%s is already started", name);
 
-            @Nullable final String present = provider.apply(name);
-            final String value = Optional.ofNullable(present)
-                    .orElseGet(() -> generators.get(name).generate());
+            final String current = generate(provider, name);
 
-            state.set(value);
+            state.set(current);
 
-            listeners.forEach(listener ->
-                    listener.onStart(name, value));
+            listeners.onStart(name, current);
         });
+    }
+
+    private String generate(final Function<String, String> provider, final String name) {
+        return Optional.ofNullable(provider.apply(name))
+                .orElseGet(() -> generators.get(name).generate());
     }
 
     @Override
@@ -87,10 +88,9 @@ final class DefaultTracer implements Tracer {
     @Override
     public void stop() {
         traces.forEach((name, state) -> {
-            final String value = getAndCheckValue(name, state);
+            final String previous = getAndCheckValue(name, state);
             state.remove();
-            listeners.forEach(listener ->
-                    listener.onStop(name, value));
+            listeners.onStop(name, previous);
         });
     }
 

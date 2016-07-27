@@ -38,7 +38,7 @@ public final class StackedTracerTest extends AbstractTracerTest {
     private final TraceListener listener = mock(TraceListener.class);
 
     private final Tracer tracer = Tracer.builder()
-            .stacked(true)
+            .stacked()
             .traces(asList("X-Trace-ID", "X-Request-ID"))
             .trace("X-Foo-ID", cycle("foo", "bar")::next)
             .listener(listener)
@@ -80,9 +80,11 @@ public final class StackedTracerTest extends AbstractTracerTest {
         tracer.start();
         inOrder.verify(listener).onStart("X-Foo-ID", "foo");
         tracer.start();
+        inOrder.verify(listener).onStop("X-Foo-ID", "foo");
         inOrder.verify(listener).onStart("X-Foo-ID", "bar");
         tracer.stop();
         inOrder.verify(listener).onStop("X-Foo-ID", "bar");
+        inOrder.verify(listener).onStart("X-Foo-ID", "foo");
         tracer.stop();
         inOrder.verify(listener).onStop("X-Foo-ID", "foo");
     }

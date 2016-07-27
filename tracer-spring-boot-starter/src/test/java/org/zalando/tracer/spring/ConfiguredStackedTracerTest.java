@@ -29,7 +29,7 @@ import org.zalando.tracer.Tracer;
 
 @ActiveProfiles("uuid")
 @TestPropertySource(properties = "tracer.stacked: true")
-public final class StackedTracerTest extends AbstractTest {
+public final class ConfiguredStackedTracerTest extends AbstractTest {
 
     @Autowired
     private Tracer tracer;

@@ -27,7 +27,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.zalando.tracer.Tracer;
 
 @ActiveProfiles("uuid")
-public final class DefaultTracerTest extends AbstractTest {
+public final class ConfiguredDefaultTracerTest extends AbstractTest {
 
     @Autowired
     private Tracer tracer;

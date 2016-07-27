@@ -36,7 +36,7 @@ public final class TracerProperties {
         return stacked;
     }
 
-    public void setStacked(boolean stacked) {
+    public void setStacked(final boolean stacked) {
         this.stacked = stacked;
     }
 

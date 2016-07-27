@@ -25,11 +25,26 @@ import com.google.common.collect.ImmutableMap;
 import lombok.Singular;
 
 import static com.google.common.collect.Maps.toMap;
+import static org.zalando.tracer.TraceListeners.compound;
 
 public final class TracerFactory {
 
     TracerFactory() {
         // package private so we can trick code coverage
+    }
+
+    public static class Builder {
+
+        public Builder stacked(final boolean stacked) {
+            this.stacked = stacked;
+            return this;
+        }
+
+        public Builder stacked() {
+            this.stacked = true;
+            return this;
+        }
+
     }
 
     @lombok.Builder(builderClassName = "Builder")
@@ -46,9 +61,9 @@ public final class TracerFactory {
                 .build();
 
         if (stacked) {
-            return new StackedTracer(combined, listeners);
+            return new StackedTracer(combined, compound(listeners));
         } else {
-            return new DefaultTracer(combined, listeners);
+            return new DefaultTracer(combined, compound(listeners));
         }
     }
 

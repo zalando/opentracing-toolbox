@@ -38,6 +38,12 @@ public final class EnforceCoverageTest {
     }
 
     @Test
+    public void shouldUseTraceListenersConstructor() {
+        new TraceListeners();
+    }
+
+
+    @Test
     public void shouldCoverTracerBuilderToString() {
         assertThat(Tracer.builder(), hasToString(notNullValue()));
     }

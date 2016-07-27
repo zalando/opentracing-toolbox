@@ -20,14 +20,12 @@ package org.zalando.tracer;
  * ​⁣
  */
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import javax.annotation.Nullable;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Optional;
-import java.util.Queue;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -39,10 +37,10 @@ final class StackedTracer implements Tracer {
 
     private final ImmutableMap<String, ThreadLocal<Deque<String>>> traces;
     private final ImmutableMap<String, Generator> generators;
-    private final ImmutableList<TraceListener> listeners;
+    private final TraceListener listeners;
 
     StackedTracer(final ImmutableMap<String, Generator> generators,
-            final ImmutableList<TraceListener> listeners) {
+            final TraceListener listeners) {
         this.traces = toMap(generators.keySet(), name -> ThreadLocal.withInitial(LinkedList::new));
         this.generators = generators;
         this.listeners = listeners;
@@ -51,15 +49,20 @@ final class StackedTracer implements Tracer {
     @Override
     public void start(final Function<String, String> provider) {
         traces.forEach((name, state) -> {
-            @Nullable final String present = provider.apply(name);
-            final String value = Optional.ofNullable(present)
-                    .orElseGet(() -> generators.get(name).generate());
+            final Deque<String> queue = state.get();
+            @Nullable final String previous = queue.peekLast();
+            final String current = generate(provider, name);
 
-            state.get().add(value);
+            queue.add(current);
 
-            listeners.forEach(listener ->
-                    listener.onStart(name, value));
+            runIf(listeners::onStop, name, previous);
+            runIf(listeners::onStart, name, current);
         });
+    }
+
+    private String generate(final Function<String, String> provider, final String name) {
+        return Optional.ofNullable(provider.apply(name))
+                .orElseGet(() -> generators.get(name).generate());
     }
 
     @Override
@@ -88,10 +91,19 @@ final class StackedTracer implements Tracer {
     @Override
     public void stop() {
         traces.forEach((name, state) -> {
-            final String value = checkValue(name, state.get().removeLast());
-            listeners.forEach(listener ->
-                    listener.onStop(name, value));
+            final Deque<String> queue = state.get();
+            final String previous = checkValue(name, queue.removeLast());
+            @Nullable final String current = queue.peekLast();
+
+            runIf(listeners::onStop, name, previous);
+            runIf(listeners::onStart, name, current);
         });
+    }
+
+    private void runIf(final BiConsumer<String, String> action, final String name, @Nullable final String current) {
+        if (current != null) {
+            action.accept(name, current);
+        }
     }
 
     private ThreadLocal<Deque<String>> getAndCheckState(final String name) {
@@ -105,7 +117,7 @@ final class StackedTracer implements Tracer {
         return checkValue(name, value);
     }
 
-    private String checkValue(String name, @Nullable String value) {
+    private String checkValue(final String name, @Nullable final String value) {
         checkState(value != null, "%s has not been started", name);
         return value;
     }
