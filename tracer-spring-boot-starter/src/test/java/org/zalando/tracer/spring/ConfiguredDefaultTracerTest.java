@@ -1,8 +1,8 @@
-package org.zalando.tracer;
+package org.zalando.tracer.spring;
 
 /*
  * ⁣​
- * Tracer
+ * Tracer: Servlet
  * ⁣⁣
  * Copyright (C) 2015 Zalando SE
  * ⁣⁣
@@ -21,31 +21,22 @@ package org.zalando.tracer;
  */
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.zalando.tracer.Tracer;
 
-import static java.util.Arrays.asList;
+@ActiveProfiles("uuid")
+public final class ConfiguredDefaultTracerTest extends AbstractTest {
 
-public final class DefaultTracerTest extends AbstractTracerTest {
-
-    private final Tracer tracer = Tracer.builder()
-            .traces(asList("X-Trace-ID", "X-Request-ID"))
-            .trace("X-Foo-ID", () -> "foo")
-            .build();
-
-    @Override
-    protected Tracer unit() {
-        return tracer;
-    }
+    @Autowired
+    private Tracer tracer;
 
     @Test(expected = IllegalStateException.class)
-    public void shouldFailToStartWithoutProvidedValuesIfAlreadyStarted() {
+    public void shouldBeDefault() {
         tracer.start();
+        tracer.get("X-Trace-ID");
         tracer.start();
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void shouldFailToStartWithProvidedValuesIfAlreadyStarted() {
-        tracer.start(trace -> "foo");
-        tracer.start(trace -> "bar");
     }
 
 }

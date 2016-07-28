@@ -20,15 +20,12 @@ package org.zalando.tracer;
  * ​⁣
  */
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import lombok.Singular;
 
 import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import static com.google.common.collect.Maps.toMap;
 import static java.util.Arrays.asList;
 
 /**
@@ -248,19 +245,8 @@ public interface Tracer {
         return builder().traces(asList(names)).build();
     }
 
-    @lombok.Builder(builderClassName = "Builder")
-    static Tracer create(
-            @Singular final ImmutableList<String> traces,
-            @Singular("trace") final ImmutableMap<String, Generator> customs,
-            @Singular final ImmutableList<TraceListener> listeners) {
-
-        final UUIDGenerator defaultGenerator = new UUIDGenerator();
-        final ImmutableMap<String, Generator> combined = ImmutableMap.<String, Generator>builder()
-                .putAll(customs)
-                .putAll(toMap(traces, trace -> defaultGenerator))
-                .build();
-
-        return new DefaultTracer(combined, listeners);
+    static TracerFactory.Builder builder() {
+        return TracerFactory.builder();
     }
 
 }

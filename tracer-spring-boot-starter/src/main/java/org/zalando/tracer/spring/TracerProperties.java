@@ -28,8 +28,17 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "tracer")
 public final class TracerProperties {
 
+    private boolean stacked;
     private final Logging logging = new Logging();
     private final Map<String, String> traces = new LinkedHashMap<>();
+
+    public boolean isStacked() {
+        return stacked;
+    }
+
+    public void setStacked(final boolean stacked) {
+        this.stacked = stacked;
+    }
 
     public Logging getLogging() {
         return logging;

@@ -20,15 +20,17 @@ package org.zalando.tracer;
  * ​⁣
  */
 
+import com.google.common.collect.ImmutableMap;
 import org.junit.After;
 import org.junit.Test;
 
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonMap;
+import static org.mockito.Mockito.mock;
 
 public final class TracerBuilderTest {
 
-    private final Tracer.Builder unit = Tracer.builder();
+    private final TracerFactory.Builder unit = Tracer.builder();
 
     @After
     public void verifyThatTracerCanBeBuild() {
@@ -69,6 +71,27 @@ public final class TracerBuilderTest {
     public void shouldHandleMultipleListeners() {
         unit.listeners(singleton(new LoggingTraceListener()));
         unit.listeners(singleton(new MDCTraceListener()));
+    }
+
+    @Test
+    public void shouldClearTraces() {
+        unit.clearTraces();
+        unit.trace("X-Foo-ID");
+        unit.clearTraces();
+    }
+
+    @Test
+    public void shouldClearCustoms() {
+        unit.clearCustoms();
+        unit.customs(ImmutableMap.of("X-Foo-ID", () -> "foo"));
+        unit.clearCustoms();
+    }
+
+    @Test
+    public void shouldClearListeners() {
+        unit.clearListeners();
+        unit.listener(mock(TraceListener.class));
+        unit.clearListeners();
     }
 
 }

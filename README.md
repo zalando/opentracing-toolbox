@@ -81,6 +81,15 @@ Trace trace = tracer.get("X-Trace-ID"); // this is a live-view that can be a sha
 entity.setLastModifiedBy(trace.getValue());
 ```
 
+By default there can only be one trace active at a time. Sometimes it can be useful to *stack* traces:
+
+```java
+Tracer tracer = Tracer.builder()
+    .stacked(true)
+    .trace("X-Trace-ID")
+    .build();
+```
+
 ### Generators
 
 When starting a new trace, *Tracer* will create trace value by means of pre-configured generator.
@@ -202,6 +211,7 @@ Tracer comes with a convenient auto configuration for Spring Boot users that set
 
 | Configuration               | Description                                                                                   | Default                     |
 |-----------------------------|-----------------------------------------------------------------------------------------------|-----------------------------|
+| `tracer.stacked`            | Enables stacking of traces                                                                    | `false`                     |
 | `tracer.aspect.enabled`     | Enables the [`TracedAspect`](#aspect)                                                         | `true`                      |
 | `tracer.async.enabled`      | Enables for asynchronous tasks, i.e. `@Async`                                                 | `true`                      |
 | `tracer.filter.enabled`     | Enables the [`TracerFilter`](#servlet)                                                        | `true`                      |

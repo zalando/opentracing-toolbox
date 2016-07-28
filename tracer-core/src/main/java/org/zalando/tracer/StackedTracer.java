@@ -23,6 +23,8 @@ package org.zalando.tracer;
 import com.google.common.collect.ImmutableMap;
 
 import javax.annotation.Nullable;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -31,15 +33,15 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static com.google.common.collect.Maps.toMap;
 
-final class DefaultTracer implements Tracer {
+final class StackedTracer implements Tracer {
 
-    private final ImmutableMap<String, ThreadLocal<String>> traces;
+    private final ImmutableMap<String, ThreadLocal<Deque<String>>> traces;
     private final ImmutableMap<String, Generator> generators;
     private final TraceListener listeners;
 
-    DefaultTracer(final ImmutableMap<String, Generator> generators,
+    StackedTracer(final ImmutableMap<String, Generator> generators,
             final TraceListener listeners) {
-        this.traces = toMap(generators.keySet(), name -> new ThreadLocal<>());
+        this.traces = toMap(generators.keySet(), name -> ThreadLocal.withInitial(LinkedList::new));
         this.generators = generators;
         this.listeners = listeners;
     }
@@ -47,13 +49,14 @@ final class DefaultTracer implements Tracer {
     @Override
     public void start(final Function<String, String> provider) {
         traces.forEach((name, state) -> {
-            checkState(state.get() == null, "%s is already started", name);
-
+            final Deque<String> queue = state.get();
+            @Nullable final String previous = queue.peekLast();
             final String current = generate(provider, name);
 
-            state.set(current);
+            queue.add(current);
 
-            listeners.onStart(name, current);
+            runIf(listeners::onStop, name, previous);
+            runIf(listeners::onStart, name, current);
         });
     }
 
@@ -64,7 +67,7 @@ final class DefaultTracer implements Tracer {
 
     @Override
     public Trace get(final String name) {
-        final ThreadLocal<String> state = getAndCheckState(name);
+        final ThreadLocal<Deque<String>> state = getAndCheckState(name);
 
         return new Trace() {
             @Override
@@ -88,20 +91,33 @@ final class DefaultTracer implements Tracer {
     @Override
     public void stop() {
         traces.forEach((name, state) -> {
-            final String previous = getAndCheckValue(name, state);
-            state.remove();
-            listeners.onStop(name, previous);
+            final Deque<String> queue = state.get();
+            final String previous = checkValue(name, queue.removeLast());
+            @Nullable final String current = queue.peekLast();
+
+            runIf(listeners::onStop, name, previous);
+            runIf(listeners::onStart, name, current);
         });
     }
 
-    private ThreadLocal<String> getAndCheckState(final String name) {
-        @Nullable final ThreadLocal<String> state = traces.get(name);
+    private void runIf(final BiConsumer<String, String> action, final String name, @Nullable final String current) {
+        if (current != null) {
+            action.accept(name, current);
+        }
+    }
+
+    private ThreadLocal<Deque<String>> getAndCheckState(final String name) {
+        @Nullable final ThreadLocal<Deque<String>> state = traces.get(name);
         checkArgument(state != null, "No such trace: %s", name);
         return state;
     }
 
-    private String getAndCheckValue(final String name, final ThreadLocal<String> state) {
-        @Nullable final String value = state.get();
+    private String getAndCheckValue(final String name, final ThreadLocal<Deque<String>> state) {
+        @Nullable final String value = state.get().peekLast();
+        return checkValue(name, value);
+    }
+
+    private String checkValue(final String name, @Nullable final String value) {
         checkState(value != null, "%s has not been started", name);
         return value;
     }

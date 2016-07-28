@@ -39,7 +39,7 @@ abstract class DecoratingExecutorService extends DecoratingExecutor implements E
 
     protected abstract <T> Callable<T> decorate(final Callable<T> task);
 
-    private <T> List<Callable<T>> decorate(Collection<? extends Callable<T>> tasks) {
+    private <T> List<Callable<T>> decorate(final Collection<? extends Callable<T>> tasks) {
         return tasks.stream().map(this::decorate).collect(toList());
     }
 
