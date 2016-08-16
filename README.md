@@ -2,8 +2,8 @@
 
 [![Highway at Night](docs/highway.jpg)](https://pixabay.com/en/highway-at-night-long-long-exposure-371009/)
 
-[![Build Status](https://img.shields.io/travis/zalando/tracer.svg)](https://travis-ci.org/zalando/tracer)
-[![Coverage Status](https://img.shields.io/coveralls/zalando/tracer.svg)](https://coveralls.io/r/zalando/tracer)
+[![Build Status](https://img.shields.io/travis/zalando/tracer/master.svg)](https://travis-ci.org/zalando/tracer)
+[![Coverage Status](https://img.shields.io/coveralls/zalando/tracer/master.svg)](https://coveralls.io/r/zalando/tracer)
 [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/org.zalando/tracer/badge.svg)](http://www.javadoc.io/doc/org.zalando/tracer)
 [![Release](https://img.shields.io/github/release/zalando/tracer.svg)](https://github.com/zalando/tracer/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/org.zalando/tracer-parent.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/tracer-parent)
