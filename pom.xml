@@ -45,11 +45,12 @@
     </developers>
 
     <modules>
-        <module>tracer-core</module>
         <module>tracer-aspectj</module>
-        <module>tracer-servlet</module>
+        <module>tracer-core</module>
         <module>tracer-httpclient</module>
         <module>tracer-hystrix</module>
+        <module>tracer-junit</module>
+        <module>tracer-servlet</module>
         <module>tracer-spring-boot-starter</module>
     </modules>
 
