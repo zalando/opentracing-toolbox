@@ -7,7 +7,7 @@
 [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/org.zalando/tracer-core/badge.svg)](http://www.javadoc.io/doc/org.zalando/tracer-core)
 [![Release](https://img.shields.io/github/release/zalando/tracer.svg)](https://github.com/zalando/tracer/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/org.zalando/tracer-parent.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/tracer-parent)
-[![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/zalando/tracer/master/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/zalando/tracer/master/LICENSE)
 
 > **Tracer** noun, /ˈtɹeɪsɚ/: A round of ammunition that contains a flammable substance that produces a visible trail when fired in the dark.
 
