@@ -17,7 +17,7 @@ public final class UUIDGeneratorTest extends AbstractTest {
     private Tracer tracer;
 
     @Test
-    public void shouldConfigureFlowIdTrace() {
+    public void shouldConfigureTraceIdTrace() {
         final Trace trace = tracer.get("X-Trace-ID");
 
         tracer.start();

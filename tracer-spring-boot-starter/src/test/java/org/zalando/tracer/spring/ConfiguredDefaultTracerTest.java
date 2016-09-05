@@ -3,7 +3,6 @@ package org.zalando.tracer.spring;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.zalando.tracer.Tracer;
 
 @ActiveProfiles("uuid")

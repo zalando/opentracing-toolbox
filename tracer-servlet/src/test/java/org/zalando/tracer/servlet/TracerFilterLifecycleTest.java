@@ -7,7 +7,7 @@ import org.zalando.tracer.Tracer;
 
 import static com.jayway.restassured.RestAssured.given;
 import static java.lang.String.format;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
