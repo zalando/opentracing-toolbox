@@ -42,4 +42,16 @@ public final class TracingExecutors {
         return new PreservingScheduledExecutorService(executor, tracer);
     }
 
+    public static Executor tryPreserve(final Executor executor, final Tracer tracer) {
+        return new TryPreservingExecutor(executor, tracer);
+    }
+
+    public static ExecutorService tryPreserve(final ExecutorService executor, final Tracer tracer) {
+        return new TryPreservingExecutorService(executor, tracer);
+    }
+
+    public static ScheduledExecutorService tryPreserve(final ScheduledExecutorService executor, final Tracer tracer) {
+        return new TryPreservingScheduledExecutorService(executor, tracer);
+    }
+
 }

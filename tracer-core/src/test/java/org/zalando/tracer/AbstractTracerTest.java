@@ -48,6 +48,18 @@ public abstract class AbstractTracerTest {
     }
 
     @Test
+    public void shouldBeActiveWhenStarted() {
+        final Tracer tracer = unit();
+        tracer.start();
+        assertThat(tracer.isActive(), is(true));
+    }
+
+    @Test
+    public void shouldNotBeActiveWhenNotStarted() {
+        assertThat(unit().isActive(), is(false));
+    }
+
+    @Test
     public void shouldGetTrace() {
         final Tracer tracer = unit();
 

@@ -66,6 +66,8 @@ public interface Tracer {
      */
     void start(final Function<String, String> provider);
 
+    boolean isActive();
+
     /**
      * Retrieves the {@link Trace trace} with the given name. The returned instance is a thread-safe live-view that
      * allows to observe future changes to that trace's lifecycle.
@@ -118,7 +120,7 @@ public interface Tracer {
     void stop();
 
     /**
-     * Creates a {@link Runnable runnable}, based on the given original, that will manage a complete new lifecycle
+     * Creates a {@link Runnable runnable}, based on the given original, that will manage a completely new lifecycle
      * for every invocation,
      *
      * @param task the original runnable
@@ -141,6 +143,21 @@ public interface Tracer {
      */
     default Runnable preserve(final Runnable task) {
         return delegate(task, snapshot()::get);
+    }
+
+    /**
+     * Creates a {@link Runnable runnable}, based on the given original, that will preserve the current state of
+     * all traces for every invocation, if a trace is currently active. Otherwise it will manage a completely new
+     * lifecycle for every invocation.
+     *
+     * @param task the original runnable
+     * @return a runnable that will add lifecycle management to the given runnable
+     * @see #snapshot()
+     * @see #preserve(Runnable)
+     * @see #manage(Runnable)
+     */
+    default Runnable tryPreserve(final Runnable task) {
+        return isActive() ? preserve(task) : manage(task);
     }
 
     /**
@@ -167,7 +184,7 @@ public interface Tracer {
     }
 
     /**
-     * Creates a {@link Callable callable}, based on the given original, that will manage a complete new lifecycle
+     * Creates a {@link Callable callable}, based on the given original, that will manage a completely new lifecycle
      * for every invocation,
      *
      * @param task the original callable
@@ -191,6 +208,22 @@ public interface Tracer {
     default <V> Callable<V> preserve(final Callable<V> task) {
         return delegate(task, snapshot()::get);
     }
+
+    /**
+     * Creates a {@link Callable callable}, based on the given original, that will preserve the current state of
+     * all traces for every invocation, if a trace is currently active. Otherwise it will manage a completely new
+     * lifecycle for every invocation.
+     *
+     * @param task the original callable
+     * @return a callable that will add lifecycle management to the given callable
+     * @see #snapshot()
+     * @see #preserve(Callable)
+     * @see #manage(Callable)
+     */
+    default <V> Callable<V> tryPreserve(final Callable<V> task) {
+        return isActive() ? preserve(task) : manage(task);
+    }
+
     /**
      * Creates a delegating {@link Callable callable}, based on the given original, that will manage the tracer
      * lifecycle for every invocation. Initial trace values can be seeded with the given provider.

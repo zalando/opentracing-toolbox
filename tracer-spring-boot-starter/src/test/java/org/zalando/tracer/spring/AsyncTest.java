@@ -71,7 +71,13 @@ public class AsyncTest extends AbstractTest {
         } finally {
             tracer.stop();
         }
+    }
 
+    @Test
+    public void shouldPerformAsyncTaskWithoutTracer() throws InterruptedException, ExecutionException, TimeoutException {
+        final String value = service.getTraceId().get(500, MILLISECONDS);
+
+        assertThat(value, is(notNullValue()));
     }
 
 }

@@ -20,6 +20,7 @@ import java.util.concurrent.ExecutorService;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static org.springframework.aop.interceptor.AsyncExecutionAspectSupport.DEFAULT_TASK_EXECUTOR_BEAN_NAME;
 import static org.zalando.tracer.concurrent.TracingExecutors.preserve;
+import static org.zalando.tracer.concurrent.TracingExecutors.tryPreserve;
 
 @Configuration
 @ConditionalOnClass(Async.class)
@@ -38,7 +39,7 @@ public class TracerAsyncAutoConfiguration {
     @ConditionalOnBean(name = DEFAULT_TASK_EXECUTOR_BEAN_NAME)
     public TaskExecutor preservingTaskExecutor(@Qualifier(DEFAULT_TASK_EXECUTOR_BEAN_NAME) final Executor executor,
             final Tracer tracer) {
-        return new ConcurrentTaskExecutor(preserve(executor, tracer));
+        return new ConcurrentTaskExecutor(tryPreserve(executor, tracer));
     }
 
 }
