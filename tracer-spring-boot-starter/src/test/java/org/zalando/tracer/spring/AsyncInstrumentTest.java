@@ -6,9 +6,11 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -24,9 +26,9 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-@ContextConfiguration(classes = AsyncTest.TestConfiguration.class)
+@ContextConfiguration(classes = AsyncInstrumentTest.TestConfiguration.class)
 @ActiveProfiles("uuid")
-public class AsyncTest extends AbstractTest {
+public class AsyncInstrumentTest extends AbstractTest {
 
     @EnableAutoConfiguration
     @EnableAsync
@@ -37,6 +39,11 @@ public class AsyncTest extends AbstractTest {
         @Bean
         public Trace trace(final Tracer tracer) {
             return tracer.get("X-Trace-ID");
+        }
+
+        @Bean
+        public TaskExecutor taskExecutor() {
+            return new ConcurrentTaskExecutor();
         }
 
     }

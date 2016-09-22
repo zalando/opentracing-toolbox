@@ -1,36 +1,44 @@
 package org.zalando.tracer.spring;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
 import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
 import org.zalando.tracer.Tracer;
 
-import java.util.Optional;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+
+import static java.util.concurrent.Executors.newCachedThreadPool;
+import static org.springframework.aop.interceptor.AsyncExecutionAspectSupport.DEFAULT_TASK_EXECUTOR_BEAN_NAME;
+import static org.zalando.tracer.concurrent.TracingExecutors.preserve;
 
 @Configuration
 @ConditionalOnClass(Async.class)
 @ConditionalOnProperty(name = "tracer.async.enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter(TracerAutoConfiguration.class)
-public class TracerAsyncAutoConfiguration extends AsyncConfigurerSupport {
+public class TracerAsyncAutoConfiguration {
 
-    @Autowired
-    private Tracer tracer;
+    @Bean(destroyMethod = "shutdown")
+    @ConditionalOnMissingBean(name = DEFAULT_TASK_EXECUTOR_BEAN_NAME)
+    public ExecutorService taskExecutor() {
+        return newCachedThreadPool();
+    }
 
-    @Autowired(required = false)
-    private AsyncTaskExecutor executor;
-
-    @Override
-    public Executor getAsyncExecutor() {
-        final TaskExecutor delegate = Optional.ofNullable(executor).orElseGet(ConcurrentTaskExecutor::new);
-        return new TracerTaskExecutor(tracer, delegate);
+    @Bean
+    @Primary
+    @ConditionalOnBean(name = DEFAULT_TASK_EXECUTOR_BEAN_NAME)
+    public TaskExecutor preservingTaskExecutor(@Qualifier(DEFAULT_TASK_EXECUTOR_BEAN_NAME) final Executor executor,
+            final Tracer tracer) {
+        return new ConcurrentTaskExecutor(preserve(executor, tracer));
     }
 
 }
