@@ -40,6 +40,13 @@ final class StackedTracer implements Tracer {
         });
     }
 
+    @Override
+    public boolean isActive() {
+        return traces.values().stream()
+                .map(ThreadLocal::get)
+                .anyMatch(queue -> !queue.isEmpty());
+    }
+
     private String generate(final Function<String, String> provider, final String name) {
         return Optional.ofNullable(provider.apply(name))
                 .orElseGet(() -> generators.get(name).generate());

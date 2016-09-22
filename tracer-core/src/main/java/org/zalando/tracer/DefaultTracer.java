@@ -3,6 +3,7 @@ package org.zalando.tracer;
 import com.google.common.collect.ImmutableMap;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -35,6 +36,13 @@ final class DefaultTracer implements Tracer {
 
             listeners.onStart(name, current);
         });
+    }
+
+    @Override
+    public boolean isActive() {
+        return traces.values().stream()
+                .map(ThreadLocal::get)
+                .anyMatch(Objects::nonNull);
     }
 
     private String generate(final Function<String, String> provider, final String name) {
