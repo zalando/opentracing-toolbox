@@ -21,8 +21,12 @@ import java.util.Optional;
 @AutoConfigureAfter({TracerAutoConfiguration.class, SchedulingConfiguration.class})
 public class TracerSchedulingAutoConfiguration implements SchedulingConfigurer {
 
+    private final Tracer tracer;
+
     @Autowired
-    private Tracer tracer;
+    public TracerSchedulingAutoConfiguration(final Tracer tracer) {
+        this.tracer = tracer;
+    }
 
     @Override
     public void configureTasks(final ScheduledTaskRegistrar registrar) {

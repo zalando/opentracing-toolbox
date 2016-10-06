@@ -13,6 +13,11 @@ import static org.junit.Assert.assertThat;
 public final class EnforceCoverageTest {
 
     @Test
+    public void shouldUsePhraseGeneratorHolderConstructor() {
+        new PhraseGenerator.Holder();
+    }
+
+    @Test
     public void shouldUseTracerFactoryConstructor() {
         new TracerFactory();
     }

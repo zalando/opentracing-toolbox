@@ -1,11 +1,10 @@
 package org.zalando.tracer;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.InOrder;
 
-import static com.google.common.collect.Iterators.cycle;
+import java.util.Arrays;
+
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -20,7 +19,7 @@ public final class StackedTracerTest extends AbstractTracerTest {
     private final Tracer tracer = Tracer.builder()
             .stacked()
             .traces(asList("X-Trace-ID", "X-Request-ID"))
-            .trace("X-Foo-ID", cycle("foo", "bar")::next)
+            .trace("X-Foo-ID", Arrays.asList("foo", "bar").iterator()::next)
             .listener(listener)
             .build();
 

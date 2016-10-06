@@ -7,6 +7,13 @@ import org.zalando.tracer.Generator;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 import static com.jayway.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.nullValue;
@@ -27,9 +34,10 @@ public final class TracerFilterTest {
             .build();
 
     private final Trace trace = tracer.get("X-Trace-ID");
+    private final TracerFilter filter = new TracerFilter(tracer);
 
     @Rule
-    public final JettyRule jetty = new JettyRule(new TracerFilter(tracer), trace);
+    public final JettyRule jetty = new JettyRule(filter, trace);
 
     @Before
     public void defaultBehaviour() {
@@ -112,6 +120,16 @@ public final class TracerFilterTest {
                 .get(url("/include"));
 
         verify(generator, times(1)).generate();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldDenyNonHttpRequest() throws ServletException, IOException {
+        filter.doFilter(mock(ServletRequest.class), mock(HttpServletResponse.class), null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldDenyNonHttpResponse() throws ServletException, IOException {
+        filter.doFilter(mock(HttpServletRequest.class), mock(ServletResponse.class), null);
     }
 
 }

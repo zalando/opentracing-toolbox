@@ -1,26 +1,25 @@
 package org.zalando.tracer;
 
-import com.google.common.collect.ImmutableMap;
-
 import javax.annotation.Nullable;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
-import static com.google.common.collect.Maps.toMap;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 
 final class DefaultTracer implements Tracer {
 
-    private final ImmutableMap<String, ThreadLocal<String>> traces;
-    private final ImmutableMap<String, Generator> generators;
+    private final Map<String, ThreadLocal<String>> traces;
+    private final Map<String, Generator> generators;
     private final TraceListener listeners;
 
-    DefaultTracer(final ImmutableMap<String, Generator> generators,
+    DefaultTracer(final Map<String, Generator> generators,
             final TraceListener listeners) {
-        this.traces = toMap(generators.keySet(), name -> new ThreadLocal<>());
+        this.traces = generators.keySet().stream()
+                .collect(toMap(identity(), name -> new ThreadLocal<>()));
         this.generators = generators;
         this.listeners = listeners;
     }
@@ -28,7 +27,9 @@ final class DefaultTracer implements Tracer {
     @Override
     public void start(final Function<String, String> provider) {
         traces.forEach((name, state) -> {
-            checkState(state.get() == null, "%s is already started", name);
+            if (state.get() != null) {
+                throw new IllegalStateException(name + " is already started");
+            }
 
             final String current = generate(provider, name);
 
@@ -84,13 +85,21 @@ final class DefaultTracer implements Tracer {
 
     private ThreadLocal<String> getAndCheckState(final String name) {
         @Nullable final ThreadLocal<String> state = traces.get(name);
-        checkArgument(state != null, "No such trace: %s", name);
+
+        if (state == null) {
+            throw new IllegalArgumentException("No such trace: " + name);
+        }
+
         return state;
     }
 
     private String getAndCheckValue(final String name, final ThreadLocal<String> state) {
         @Nullable final String value = state.get();
-        checkState(value != null, "%s has not been started", name);
+
+        if (value == null) {
+            throw new IllegalStateException(name + " has not been started");
+        }
+
         return value;
     }
 

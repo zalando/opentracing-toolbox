@@ -1,6 +1,5 @@
 package org.zalando.tracer.spring;
 
-import com.google.common.util.concurrent.SettableFuture;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -12,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
@@ -29,7 +29,7 @@ public class SchedulingTest extends AbstractTest {
     @Configuration
     public static class TestConfiguration {
 
-        private final SettableFuture<String> future = SettableFuture.create();
+        private final CompletableFuture<String> future = new CompletableFuture<>();
 
         @Autowired
         private Trace trace;
@@ -46,7 +46,7 @@ public class SchedulingTest extends AbstractTest {
 
         @Scheduled(fixedDelay = 1)
         public void scheduledFixedDelay() {
-            future.set(trace.getValue());
+            future.complete(trace.getValue());
         }
 
     }

@@ -1,27 +1,26 @@
 package org.zalando.tracer;
 
-import com.google.common.collect.ImmutableMap;
-
 import javax.annotation.Nullable;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
-import static com.google.common.collect.Maps.toMap;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 
 final class StackedTracer implements Tracer {
 
-    private final ImmutableMap<String, ThreadLocal<Deque<String>>> traces;
-    private final ImmutableMap<String, Generator> generators;
+    private final Map<String, ThreadLocal<Deque<String>>> traces;
+    private final Map<String, Generator> generators;
     private final TraceListener listeners;
 
-    StackedTracer(final ImmutableMap<String, Generator> generators,
+    StackedTracer(final Map<String, Generator> generators,
             final TraceListener listeners) {
-        this.traces = toMap(generators.keySet(), name -> ThreadLocal.withInitial(LinkedList::new));
+        this.traces = generators.keySet().stream()
+                .collect(toMap(identity(), name -> ThreadLocal.withInitial(LinkedList::new)));
         this.generators = generators;
         this.listeners = listeners;
     }
@@ -95,7 +94,10 @@ final class StackedTracer implements Tracer {
 
     private ThreadLocal<Deque<String>> getAndCheckState(final String name) {
         @Nullable final ThreadLocal<Deque<String>> state = traces.get(name);
-        checkArgument(state != null, "No such trace: %s", name);
+
+        if (state == null) {
+            throw new IllegalArgumentException("No such trace: " + name);
+        }
         return state;
     }
 
@@ -105,7 +107,11 @@ final class StackedTracer implements Tracer {
     }
 
     private String checkValue(final String name, @Nullable final String value) {
-        checkState(value != null, "%s has not been started", name);
+
+        if (value == null) {
+            throw new IllegalStateException(name + " has not been started");
+        }
+
         return value;
     }
 

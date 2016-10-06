@@ -1,18 +1,11 @@
 package org.zalando.tracer.concurrent;
 
-import com.google.common.util.concurrent.SettableFuture;
 import org.junit.Test;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 
 import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.is;
@@ -27,13 +20,13 @@ public final class ManagingExecutorServiceTest {
 
     @Test
     public void shouldManageTraceForSubmitRunnable() throws InterruptedException, ExecutionException, TimeoutException {
-        final SettableFuture<String> future = SettableFuture.create();
+        final CompletableFuture<String> future = new CompletableFuture<>();
         final Trace trace = tracer.get("X-Trace");
 
         tracer.start();
         final String expected = trace.getValue();
         try {
-            final Runnable task = () -> future.set(trace.getValue());
+            final Runnable task = () -> future.complete(trace.getValue());
             unit.submit(task);
         } finally {
             tracer.stop();
@@ -45,13 +38,13 @@ public final class ManagingExecutorServiceTest {
     @Test
     public void shouldManageTraceForSubmitRunnableWithResult()
             throws InterruptedException, ExecutionException, TimeoutException {
-        final SettableFuture<String> future = SettableFuture.create();
+        final CompletableFuture<String> future = new CompletableFuture<>();
         final Trace trace = tracer.get("X-Trace");
 
         tracer.start();
         final String expected = trace.getValue();
         try {
-            final Runnable task = () -> future.set(trace.getValue());
+            final Runnable task = () -> future.complete(trace.getValue());
             unit.submit(task, "foo");
         } finally {
             tracer.stop();

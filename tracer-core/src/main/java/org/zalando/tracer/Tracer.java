@@ -1,7 +1,8 @@
 package org.zalando.tracer;
 
-import com.google.common.collect.ImmutableMap;
-
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -106,10 +107,10 @@ public interface Tracer {
      * @return an immutable snapshot of all traces
      * @throws IllegalStateException if this tracer not started
      */
-    default ImmutableMap<String, String> snapshot() {
-        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-        forEach(builder::put);
-        return builder.build();
+    default Map<String, String> snapshot() {
+        final Map<String, String> map = new LinkedHashMap<>();
+        forEach(map::put);
+        return Collections.unmodifiableMap(map);
     }
 
     /**

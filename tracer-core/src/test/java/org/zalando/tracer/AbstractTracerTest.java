@@ -1,10 +1,10 @@
 package org.zalando.tracer;
 
-import com.google.common.collect.ImmutableMap;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -12,7 +12,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasSize;
@@ -100,7 +99,7 @@ public abstract class AbstractTracerTest {
 
         tracer.start();
 
-        final ImmutableMap<String, String> snapshot = tracer.snapshot();
+        final Map<String, String> snapshot = tracer.snapshot();
 
         assertThat(snapshot.values(), hasSize(3));
         assertThat(snapshot, hasEntry(equalTo("X-Trace-ID"), notNullValue()));

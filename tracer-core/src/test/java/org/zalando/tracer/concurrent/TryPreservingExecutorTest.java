@@ -1,14 +1,10 @@
 package org.zalando.tracer.concurrent;
 
-import com.google.common.util.concurrent.SettableFuture;
 import org.junit.Test;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -23,10 +19,10 @@ public final class TryPreservingExecutorTest extends AbstractPreservingExecutorT
 
     @Test
     public void shouldManageTraceIfNotStarted() throws InterruptedException, ExecutionException, TimeoutException {
-        final SettableFuture<String> future = SettableFuture.create();
+        final CompletableFuture<String> future = new CompletableFuture<>();
         final Trace trace = tracer.get("X-Trace");
 
-        unit(executor, tracer).execute(() -> future.set(trace.getValue()));
+        unit(executor, tracer).execute(() -> future.complete(trace.getValue()));
 
         assertThat(future.get(1000, TimeUnit.MILLISECONDS), is(notNullValue()));
     }

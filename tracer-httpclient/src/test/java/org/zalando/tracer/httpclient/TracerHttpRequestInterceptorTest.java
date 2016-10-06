@@ -11,11 +11,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.zalando.tracer.Tracer;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 
 import static com.github.restdriver.clientdriver.RestClientDriver.giveResponse;
 import static com.github.restdriver.clientdriver.RestClientDriver.onRequestTo;
-import static com.google.common.io.ByteStreams.toByteArray;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -58,7 +58,9 @@ public final class TracerHttpRequestInterceptorTest {
 
         try (CloseableHttpResponse response = client.execute(new HttpGet(driver.getBaseUrl()))) {
             assertThat(response.getStatusLine().getStatusCode(), is(200));
-            assertThat(new String(toByteArray(response.getEntity().getContent()), UTF_8), is("Hello, world!"));
+            final byte[] bytes = new byte[(int) response.getEntity().getContentLength()];
+            new DataInputStream(response.getEntity().getContent()).readFully(bytes);
+            assertThat(new String(bytes, UTF_8), is("Hello, world!"));
         }
 
     }

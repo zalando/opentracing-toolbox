@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.google.common.collect.Maps.transformValues;
 import static java.util.Collections.emptyList;
 import static javax.servlet.DispatcherType.ASYNC;
 import static javax.servlet.DispatcherType.REQUEST;
@@ -44,14 +43,15 @@ public class TracerAutoConfiguration {
 
     public static final String FILTER_NAME = "tracerFilter";
 
-    @Autowired
     // IDEA doesn't support @EnableConfigurationProperties
-    @SuppressWarnings("SpringJavaAutowiringInspection")
-    private TracerProperties properties;
+    private final TracerProperties properties;
+    private final GeneratorResolver resolver;
 
     @Autowired
-    @SuppressWarnings("SpringJavaAutowiringInspection")
-    private GeneratorResolver resolver;
+    public TracerAutoConfiguration(final TracerProperties properties, final GeneratorResolver resolver) {
+        this.properties = properties;
+        this.resolver = resolver;
+    }
 
     @Bean
     @ConditionalOnWebApplication
@@ -88,13 +88,16 @@ public class TracerAutoConfiguration {
 
     @Bean
     public Tracer tracer(
-            @SuppressWarnings("SpringJavaAutowiringInspection") final Optional<List<TraceListener>> listeners) {
+            @SuppressWarnings({"SpringJavaAutowiringInspection", "OptionalUsedAsFieldOrParameterType"})
+            final Optional<List<TraceListener>> listeners) {
         final TracerFactory.Builder builder = Tracer.builder()
                 .stacked(properties.isStacked())
                 .listeners(listeners.orElse(emptyList()));
 
         final Map<String, String> traces = properties.getTraces();
-        transformValues(traces, resolver::resolve).forEach(builder::trace);
+
+        traces.forEach((name, type) ->
+                builder.trace(name, resolver.resolve(type)));
 
         return builder.build();
     }
@@ -106,7 +109,7 @@ public class TracerAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(name = "tracer.logging.enabled", havingValue = "true", matchIfMissing = false)
+    @ConditionalOnProperty(name = "tracer.logging.enabled", havingValue = "true")
     public LoggingTraceListener loggingTraceListener() {
         final String category = properties.getLogging().getCategory();
         return category == null ?

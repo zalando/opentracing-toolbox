@@ -1,17 +1,10 @@
 package org.zalando.tracer.concurrent;
 
-import com.google.common.util.concurrent.SettableFuture;
 import org.junit.Test;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.*;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -25,13 +18,13 @@ public final class ManagingScheduledExecutorServiceTest {
 
     @Test
     public void shouldManageTraceForScheduleRunnable() throws InterruptedException, ExecutionException, TimeoutException {
-        final SettableFuture<String> future = SettableFuture.create();
+        final CompletableFuture<String> future = new CompletableFuture<>();
         final Trace trace = tracer.get("X-Trace");
 
         tracer.start();
         final String expected = trace.getValue();
         try {
-            final Runnable task = () -> future.set(trace.getValue());
+            final Runnable task = () -> future.complete(trace.getValue());
             unit.schedule(task, 0, TimeUnit.NANOSECONDS);
         } finally {
             tracer.stop();
@@ -59,13 +52,13 @@ public final class ManagingScheduledExecutorServiceTest {
 
     @Test
     public void shouldManageTraceForScheduleAtFixedRatee() throws InterruptedException, ExecutionException, TimeoutException {
-        final SettableFuture<String> future = SettableFuture.create();
+        final CompletableFuture<String> future = new CompletableFuture<>();
         final Trace trace = tracer.get("X-Trace");
 
         tracer.start();
         final String expected = trace.getValue();
         try {
-            final Runnable task = () -> future.set(trace.getValue());
+            final Runnable task = () -> future.complete(trace.getValue());
             unit.scheduleAtFixedRate(task, 0, Long.MAX_VALUE, TimeUnit.NANOSECONDS);
         } finally {
             tracer.stop();
@@ -76,13 +69,13 @@ public final class ManagingScheduledExecutorServiceTest {
 
     @Test
     public void shouldManageTraceForScheduleWithDelayRatee() throws InterruptedException, ExecutionException, TimeoutException {
-        final SettableFuture<String> future = SettableFuture.create();
+        final CompletableFuture<String> future = new CompletableFuture<>();
         final Trace trace = tracer.get("X-Trace");
 
         tracer.start();
         final String expected = trace.getValue();
         try {
-            final Runnable task = () -> future.set(trace.getValue());
+            final Runnable task = () -> future.complete(trace.getValue());
             unit.scheduleWithFixedDelay(task, 0, Long.MAX_VALUE, TimeUnit.NANOSECONDS);
         } finally {
             tracer.stop();

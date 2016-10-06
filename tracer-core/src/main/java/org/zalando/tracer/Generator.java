@@ -1,8 +1,5 @@
 package org.zalando.tracer;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-
 import java.util.function.Function;
 
 /**

@@ -1,6 +1,5 @@
 package org.zalando.tracer.concurrent;
 
-import com.google.common.util.concurrent.MoreExecutors;
 import org.zalando.tracer.Tracer;
 
 import java.util.concurrent.Executor;
@@ -10,7 +9,6 @@ import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * @see Executors
- * @see MoreExecutors
  */
 public final class TracingExecutors {
 
