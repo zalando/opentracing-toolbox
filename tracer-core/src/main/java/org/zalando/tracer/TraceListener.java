@@ -2,13 +2,30 @@ package org.zalando.tracer;
 
 import java.util.function.Function;
 
+import org.zalando.tracer.TracerFactory.Builder;
+
 /**
  * A listener that can be attached to a {@link Tracer tracer} upon creation. It will then observe any lifecycle event
  * of that tracer.
  *
+ * <p>
+ * Traditional trace listeners are not aware of {@link Builder#stacked() trace stacking}. A stacked trace will be
+ * observed as defined by the following call sequence:
+ * </p>
+ *
+ * <ol>
+ * <li>{@code onStart("Trace-ID", "A")}</li>
+ * <li>{@code onStop("Trace-ID", "A")}</li>
+ * <li>{@code onStart("Trace-ID", "B")}</li>
+ * <li>{@code onStop("Trace-ID", "B")}</li>
+ * <li>{@code onStart("Trace-ID", "A")}</li>
+ * <li>{@code onStop("Trace-ID", "A")}</li>
+ * </ol>
+ *
  * @see Tracer#start()
  * @see Tracer#start(Function)
  * @see Tracer#stop()
+ * @see StackedTraceListener
  */
 public interface TraceListener {
 

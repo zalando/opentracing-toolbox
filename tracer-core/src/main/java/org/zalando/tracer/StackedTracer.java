@@ -1,28 +1,38 @@
 package org.zalando.tracer;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toMap;
+import static org.zalando.tracer.TraceListeners.compound;
 
 final class StackedTracer implements Tracer {
 
     private final Map<String, ThreadLocal<Deque<String>>> traces;
     private final Map<String, Generator> generators;
     private final TraceListener listeners;
+    private final TraceListener stackedListeners;
 
     StackedTracer(final Map<String, Generator> generators,
-            final TraceListener listeners) {
+            final Collection<TraceListener> listeners) {
         this.traces = generators.keySet().stream()
                 .collect(toMap(identity(), name -> ThreadLocal.withInitial(LinkedList::new)));
         this.generators = generators;
-        this.listeners = listeners;
+
+        final Map<Boolean, List<TraceListener>> partitions = listeners.stream()
+                .collect(partitioningBy(StackedTraceListener.class::isInstance));
+
+        this.listeners = compound(partitions.get(Boolean.FALSE));
+        this.stackedListeners = compound(partitions.get(Boolean.TRUE));
     }
 
     @Override
@@ -36,6 +46,7 @@ final class StackedTracer implements Tracer {
 
             runIf(listeners::onStop, name, previous);
             runIf(listeners::onStart, name, current);
+            runIf(stackedListeners::onStart, name, current);
         });
     }
 
@@ -82,6 +93,7 @@ final class StackedTracer implements Tracer {
             @Nullable final String current = queue.peekLast();
 
             runIf(listeners::onStop, name, previous);
+            runIf(stackedListeners::onStop, name, previous);
             runIf(listeners::onStart, name, current);
         });
     }

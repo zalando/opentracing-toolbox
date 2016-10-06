@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 import static java.util.stream.Collectors.toMap;
-import static org.zalando.tracer.TraceListeners.compound;
 
 public final class TracerFactory {
 
@@ -43,9 +42,9 @@ public final class TracerFactory {
         combined.putAll(traces.stream().collect(toMap(Function.identity(), trace -> defaultGenerator)));
 
         if (stacked) {
-            return new StackedTracer(combined, compound(listeners));
+            return new StackedTracer(combined, listeners);
         } else {
-            return new DefaultTracer(combined, compound(listeners));
+            return new DefaultTracer(combined, listeners);
         }
     }
 

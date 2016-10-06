@@ -16,11 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
-import org.zalando.tracer.LoggingTraceListener;
-import org.zalando.tracer.MDCTraceListener;
-import org.zalando.tracer.TraceListener;
-import org.zalando.tracer.Tracer;
-import org.zalando.tracer.TracerFactory;
+import org.zalando.tracer.*;
 import org.zalando.tracer.aspectj.TracedAspect;
 import org.zalando.tracer.httpclient.TracerHttpRequestInterceptor;
 import org.zalando.tracer.servlet.TracerFilter;
@@ -104,8 +100,10 @@ public class TracerAutoConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = "tracer.mdc.enabled", havingValue = "true", matchIfMissing = true)
-    public MDCTraceListener mdcTraceListener() {
-        return new MDCTraceListener();
+    public TraceListener mdcTraceListener() {
+        return properties.isStacked() ?
+                new StackedMDCTraceListener() :
+                new MDCTraceListener();
     }
 
     @Bean

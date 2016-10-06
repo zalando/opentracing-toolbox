@@ -15,12 +15,14 @@ import static org.mockito.Mockito.mock;
 public final class StackedTracerTest extends AbstractTracerTest {
 
     private final TraceListener listener = mock(TraceListener.class);
+    private final StackedTraceListener stackedListener = mock(StackedTraceListener.class);
 
     private final Tracer tracer = Tracer.builder()
             .stacked()
             .traces(asList("X-Trace-ID", "X-Request-ID"))
             .trace("X-Foo-ID", Arrays.asList("foo", "bar").iterator()::next)
             .listener(listener)
+            .listener(stackedListener)
             .build();
 
     @Override
@@ -66,6 +68,20 @@ public final class StackedTracerTest extends AbstractTracerTest {
         inOrder.verify(listener).onStart("X-Foo-ID", "foo");
         tracer.stop();
         inOrder.verify(listener).onStop("X-Foo-ID", "foo");
+    }
+
+    @Test
+    public void shouldTriggerStackedListenersCorrectlyWhenStacking() {
+        final InOrder inOrder = inOrder(stackedListener);
+
+        tracer.start();
+        inOrder.verify(stackedListener).onStart("X-Foo-ID", "foo");
+        tracer.start();
+        inOrder.verify(stackedListener).onStart("X-Foo-ID", "bar");
+        tracer.stop();
+        inOrder.verify(stackedListener).onStop("X-Foo-ID", "bar");
+        tracer.stop();
+        inOrder.verify(stackedListener).onStop("X-Foo-ID", "foo");
     }
 
 }
