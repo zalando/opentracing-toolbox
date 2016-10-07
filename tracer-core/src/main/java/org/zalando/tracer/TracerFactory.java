@@ -1,10 +1,13 @@
 package org.zalando.tracer;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import lombok.Singular;
 
-import static com.google.common.collect.Maps.toMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
+import static java.util.stream.Collectors.toMap;
 import static org.zalando.tracer.TraceListeners.compound;
 
 public final class TracerFactory {
@@ -30,15 +33,14 @@ public final class TracerFactory {
     @lombok.Builder(builderClassName = "Builder")
     static Tracer create(
             final boolean stacked,
-            @Singular final ImmutableList<String> traces,
-            @Singular("trace") final ImmutableMap<String, Generator> customs,
-            @Singular final ImmutableList<TraceListener> listeners) {
+            @Singular final List<String> traces,
+            @Singular("trace") final Map<String, Generator> customs,
+            @Singular final List<TraceListener> listeners) {
 
         final UUIDGenerator defaultGenerator = new UUIDGenerator();
-        final ImmutableMap<String, Generator> combined = ImmutableMap.<String, Generator>builder()
-                .putAll(customs)
-                .putAll(toMap(traces, trace -> defaultGenerator))
-                .build();
+        final Map<String, Generator> combined = new LinkedHashMap<>();
+        combined.putAll(customs);
+        combined.putAll(traces.stream().collect(toMap(Function.identity(), trace -> defaultGenerator)));
 
         if (stacked) {
             return new StackedTracer(combined, compound(listeners));

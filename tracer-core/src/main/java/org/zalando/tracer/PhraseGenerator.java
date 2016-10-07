@@ -1,6 +1,5 @@
 package org.zalando.tracer;
 
-import com.google.common.annotations.VisibleForTesting;
 import java.security.SecureRandom;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.Collectors;
@@ -406,7 +405,8 @@ public final class PhraseGenerator implements Generator {
      * The random number generator used by this class to create random numbers.
      * In a holder class to defer initialization until needed.
      */
-    private static class Holder {
+    // visible for testing
+    static class Holder {
         static final SecureRandom RANDOM = new SecureRandom();
     }
 
@@ -420,7 +420,7 @@ public final class PhraseGenerator implements Generator {
         return generate(Holder.RANDOM::nextInt);
     }
 
-    @VisibleForTesting
+    // visible for testing
     static String generate(final IntUnaryOperator r) {
         do {
             final String name = Stream.of(PARTS)
@@ -434,30 +434,25 @@ public final class PhraseGenerator implements Generator {
         } while (true);
     }
 
-    @VisibleForTesting
+    // visible for testing
     static long maxCombinations() {
         return Stream.of(PARTS)
             .mapToLong(dict -> dict.length)
             .reduce(1, (a, b) -> a * b);
     }
 
-    @VisibleForTesting
+    // visible for testing
     static int minLength() {
         return Stream.of(PARTS)
-            .mapToInt(dict -> Stream.of(dict).mapToInt(String::length).min().getAsInt())
+            .mapToInt(dict -> Stream.of(dict).mapToInt(String::length).min().orElse(0))
             .sum() + (PARTS.length - 1);
     }
 
-    @VisibleForTesting
+    // visible for testing
     static int maxLength() {
         return Stream.of(PARTS)
-            .mapToInt(dict -> Stream.of(dict).mapToInt(String::length).max().getAsInt())
+            .mapToInt(dict -> Stream.of(dict).mapToInt(String::length).max().orElse(0))
             .sum() + (PARTS.length - 1);
     }
 
-    @VisibleForTesting
-    static boolean isJacocoHappy() {
-        final Holder h = new Holder();
-        return true;
-    }
 }

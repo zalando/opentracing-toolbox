@@ -1,6 +1,5 @@
 package org.zalando.tracer;
 
-import com.google.common.collect.ImmutableMap;
 import org.junit.After;
 import org.junit.Test;
 
@@ -63,7 +62,7 @@ public final class TracerBuilderTest {
     @Test
     public void shouldClearCustoms() {
         unit.clearCustoms();
-        unit.customs(ImmutableMap.of("X-Foo-ID", () -> "foo"));
+        unit.customs(singletonMap("X-Foo-ID", () -> "foo"));
         unit.clearCustoms();
     }
 

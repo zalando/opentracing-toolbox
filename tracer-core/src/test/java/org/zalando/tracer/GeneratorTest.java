@@ -32,8 +32,6 @@ public class GeneratorTest {
         final String value = new PhraseGenerator().generate();
 
         assertThat(value, matchesPattern("[a-z]+_[a-z]+_[a-z]+_[a-z]+_[a-z]+"));
-
-        assertTrue(PhraseGenerator.isJacocoHappy());
     }
 
     @Test
