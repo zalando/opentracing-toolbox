@@ -251,6 +251,12 @@ If you have questions, concerns, bug reports, etc., please file an issue in this
 To contribute, simply make a pull request and add a brief description (1-2 sentences) of your addition or change. For
 more details, check the [contribution guidelines](CONTRIBUTING.md).
 
-## Open Issues
+## Alternatives
 
-* [Zipkin Support](issues/18) (*debatable*)
+Tracer, by design, does not provide sampling, metrics or annotations. Neither does it use the semantics of spans as
+most of the following projects do. If you require any of these, you're highly encouraged to try them.
+
+- [The OpenTracing Project](http://opentracing.io/)
+- [Apache HTrace](http://htrace.incubator.apache.org/)
+- [Spring Cloud Sleuth](http://cloud.spring.io/spring-cloud-sleuth/)
+- [Zipkin](http://zipkin.io/)
