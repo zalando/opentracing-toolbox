@@ -1,8 +1,8 @@
 package org.zalando.tracer;
 
-import java.util.function.Function;
-
 import org.zalando.tracer.TracerFactory.Builder;
+
+import java.util.function.Function;
 
 /**
  * A listener that can be attached to a {@link Tracer tracer} upon creation. It will then observe any lifecycle event

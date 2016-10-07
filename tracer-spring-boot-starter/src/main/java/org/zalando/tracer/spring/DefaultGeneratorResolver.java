@@ -2,12 +2,16 @@ package org.zalando.tracer.spring;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
-import org.zalando.tracer.PhraseGenerator;
 import org.zalando.tracer.FlowIDGenerator;
 import org.zalando.tracer.Generator;
+import org.zalando.tracer.PhraseGenerator;
 import org.zalando.tracer.UUIDGenerator;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 
 @Component
 @ConditionalOnMissingBean(GeneratorResolver.class)

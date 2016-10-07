@@ -19,7 +19,6 @@ import java.util.concurrent.ExecutorService;
 
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static org.springframework.aop.interceptor.AsyncExecutionAspectSupport.DEFAULT_TASK_EXECUTOR_BEAN_NAME;
-import static org.zalando.tracer.concurrent.TracingExecutors.preserve;
 import static org.zalando.tracer.concurrent.TracingExecutors.tryPreserve;
 
 @Configuration
