@@ -4,7 +4,7 @@ import org.zalando.tracer.TracerFactory.Builder;
 
 /**
  * {@link StackedTraceListener} are a special kind of {@link TraceListener}, because they are aware of
- * {@link Builder#stacked() trace stacking}. A stacked trace will, in contract to {@link TraceListener}, be observed
+ * {@link Builder#stacked() trace stacking}. A stacked trace will, in contrast to {@link TraceListener}, be observed
  * as defined by the following call sequence:
  *
  * <ol>
