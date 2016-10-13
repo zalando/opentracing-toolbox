@@ -1,6 +1,7 @@
 package org.zalando.tracer;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -9,6 +10,7 @@ import java.util.function.Function;
 
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
+import static org.zalando.tracer.TraceListeners.compound;
 
 final class DefaultTracer implements Tracer {
 
@@ -17,11 +19,11 @@ final class DefaultTracer implements Tracer {
     private final TraceListener listeners;
 
     DefaultTracer(final Map<String, Generator> generators,
-            final TraceListener listeners) {
+            final Collection<TraceListener> listeners) {
         this.traces = generators.keySet().stream()
                 .collect(toMap(identity(), name -> new ThreadLocal<>()));
         this.generators = generators;
-        this.listeners = listeners;
+        this.listeners = compound(listeners);
     }
 
     @Override

@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 import org.zalando.tracer.LoggingTraceListener;
 import org.zalando.tracer.MDCTraceListener;
+import org.zalando.tracer.StackedMDCTraceListener;
 import org.zalando.tracer.TraceListener;
 import org.zalando.tracer.Tracer;
 import org.zalando.tracer.TracerFactory;
@@ -104,8 +105,10 @@ public class TracerAutoConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = "tracer.mdc.enabled", havingValue = "true", matchIfMissing = true)
-    public MDCTraceListener mdcTraceListener() {
-        return new MDCTraceListener();
+    public TraceListener mdcTraceListener() {
+        return properties.isStacked() ?
+                new StackedMDCTraceListener() :
+                new MDCTraceListener();
     }
 
     @Bean

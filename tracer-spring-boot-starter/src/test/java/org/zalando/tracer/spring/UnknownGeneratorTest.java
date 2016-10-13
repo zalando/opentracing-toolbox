@@ -1,8 +1,8 @@
 package org.zalando.tracer.spring;
 
 import org.junit.Test;
-import org.zalando.tracer.PhraseGenerator;
 import org.zalando.tracer.FlowIDGenerator;
+import org.zalando.tracer.PhraseGenerator;
 import org.zalando.tracer.UUIDGenerator;
 
 import static org.hamcrest.Matchers.instanceOf;

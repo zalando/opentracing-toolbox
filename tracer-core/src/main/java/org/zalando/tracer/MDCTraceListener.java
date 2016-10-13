@@ -1,17 +1,18 @@
 package org.zalando.tracer;
 
-import org.slf4j.MDC;
+import static org.slf4j.MDC.put;
+import static org.slf4j.MDC.remove;
 
 public final class MDCTraceListener implements TraceListener {
 
     @Override
     public void onStart(final String name, final String value) {
-        MDC.put(name, value);
+        put(name, value);
     }
 
     @Override
     public void onStop(final String name, final String value) {
-        MDC.remove(name);
+        remove(name);
     }
 
 }
