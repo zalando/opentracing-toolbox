@@ -1,8 +1,6 @@
 package org.zalando.tracer.spring;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -14,32 +12,29 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
 import org.zalando.tracer.Tracer;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static org.springframework.aop.interceptor.AsyncExecutionAspectSupport.DEFAULT_TASK_EXECUTOR_BEAN_NAME;
-import static org.zalando.tracer.concurrent.TracingExecutors.preserve;
 import static org.zalando.tracer.concurrent.TracingExecutors.tryPreserve;
 
 @Configuration
 @ConditionalOnClass(Async.class)
 @ConditionalOnProperty(name = "tracer.async.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnMissingBean(name = DEFAULT_TASK_EXECUTOR_BEAN_NAME)
 @AutoConfigureAfter(TracerAutoConfiguration.class)
 public class TracerAsyncAutoConfiguration {
 
     @Bean(destroyMethod = "shutdown")
-    @ConditionalOnMissingBean(name = DEFAULT_TASK_EXECUTOR_BEAN_NAME)
-    public ExecutorService taskExecutor() {
+    @ConditionalOnMissingBean(name = "taskExecutorService")
+    public ExecutorService taskExecutorService() {
         return newCachedThreadPool();
     }
 
-    @Bean
     @Primary
-    @ConditionalOnBean(name = DEFAULT_TASK_EXECUTOR_BEAN_NAME)
-    public TaskExecutor preservingTaskExecutor(@Qualifier(DEFAULT_TASK_EXECUTOR_BEAN_NAME) final Executor executor,
-            final Tracer tracer) {
-        return new ConcurrentTaskExecutor(tryPreserve(executor, tracer));
+    @Bean(name = DEFAULT_TASK_EXECUTOR_BEAN_NAME)
+    public TaskExecutor taskExecutor(final ExecutorService taskExecutorService, final Tracer tracer) {
+        return new ConcurrentTaskExecutor(tryPreserve(taskExecutorService, tracer));
     }
 
 }
