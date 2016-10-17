@@ -40,7 +40,7 @@ public class TracerSchedulingAutoConfiguration implements SchedulingConfigurer {
         @Bean(destroyMethod = "shutdown")
         @ConditionalOnMissingBean(name = "taskSchedulerService")
         public ScheduledExecutorService taskSchedulerService() {
-            return newScheduledThreadPool(0);
+            return newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
         }
 
         @Bean(name = DEFAULT_TASK_SCHEDULER_BEAN_NAME)
