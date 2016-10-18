@@ -14,6 +14,8 @@ import org.zalando.tracer.Tracer;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeoutException;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -54,11 +56,19 @@ public class SchedulingTest extends AbstractTest {
     @Autowired
     private Future<String> future;
 
+    @Autowired
+    private ScheduledThreadPoolExecutor taskSchedulerService;
+
     @Test
     public void shouldScheduleWithTracer() throws InterruptedException, ExecutionException, TimeoutException {
         final String value = future.get(100, MILLISECONDS);
 
         assertThat(value, is(notNullValue()));
+    }
+
+    @Test
+    public void shouldConfigureCorePoolSize() {
+        assertThat(taskSchedulerService.getCorePoolSize(), is(16));
     }
 
 }
