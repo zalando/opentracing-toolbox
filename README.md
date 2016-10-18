@@ -21,7 +21,7 @@ This library historically originates from a closed-source implementation called 
 
 -  **Tracing** of HTTP requests and responses
 -  **Customization** by having a pluggable trace format and lifecycle listeners for easy integration
--  **Support** for Servlet containers, Apache’s HTTP client, and (via its elegant API) other frameworks
+-  **Support** for Servlet containers, Apache’s HTTP client, Hystrix, JUnit, AspectJ and (via its elegant API) several other frameworks
 -  Convenient [Spring Boot](http://projects.spring.io/spring-boot/) Auto Configuration
 -  Sensible defaults
 
@@ -31,6 +31,9 @@ This library historically originates from a closed-source implementation called 
 - Any build tool using Maven Central, or direct download
 - Servlet Container (optional)
 - Apache HTTP Client (optional)
+- Hystrix (optional)
+- AspectJ (optional)
+- JUnit (optional)
 - Spring Boot (optional)
 
 ## Installation
@@ -62,6 +65,12 @@ Selectively add the following dependencies to your project:
     <groupId>org.zalando</groupId>
     <artifactId>tracer-aspectj</artifactId>
     <version>${tracer.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.zalando</groupId>
+    <artifactId>tracer-junit</artifactId>
+    <version>${tracer.version}</version>
+    <scope>test</scope>
 </dependency>
 <dependency>
     <groupId>org.zalando</groupId>
@@ -209,9 +218,26 @@ try {
 }
 ```
 
+## JUnit
+
+*Tracer* comes with a special `TestRule` that manages traces for every test run for you:
+
+```java
+@Rule
+public final TracerRule tracing = new TracerRule(tracer);
+```
+
+It also supports JSR-330-compliant dependency injection frameworks: 
+
+```java
+@Inject
+@Rule
+public final TracerRule tracing;
+```
+
 ## Spring Boot Starter
 
-Tracer comes with a convenient auto configuration for Spring Boot users that sets up aspect, servlet filter and MDC support automatically with sensible defaults:
+*Tracer* comes with a convenient auto configuration for Spring Boot users that sets up aspect, servlet filter and MDC support automatically with sensible defaults:
 
 | Configuration               | Description                                                                                   | Default                     |
 |-----------------------------|-----------------------------------------------------------------------------------------------|-----------------------------|
