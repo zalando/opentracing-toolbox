@@ -239,17 +239,18 @@ public final TracerRule tracing;
 
 *Tracer* comes with a convenient auto configuration for Spring Boot users that sets up aspect, servlet filter and MDC support automatically with sensible defaults:
 
-| Configuration               | Description                                                                                   | Default                     |
-|-----------------------------|-----------------------------------------------------------------------------------------------|-----------------------------|
-| `tracer.stacked`            | Enables stacking of traces                                                                    | `false`                     |
-| `tracer.aspect.enabled`     | Enables the [`TracedAspect`](#aspect)                                                         | `true`                      |
-| `tracer.async.enabled`      | Enables for asynchronous tasks, i.e. `@Async`                                                 | `true`                      |
-| `tracer.filter.enabled`     | Enables the [`TracerFilter`](#servlet)                                                        | `true`                      |
-| `tracer.logging.enabled`    | Enables the [`LoggingTraceListener`](#logging)                                                | `false`                     |
-| `tracer.logging.category`   | Changes the category of the [`LoggingTraceListener`](#logging)                                | `org.zalando.tracer.Tracer` |
-| `tracer.mdc.enabled`        | Enables the [`MdcTraceListener`](#logging)                                                    | `true`                      |
-| `tracer.scheduling.enabled` | Enables support for Task Scheduling, i.e. `@Scheduled`                                        | `true`                      |
-| `tracer.traces`             | Configures actual traces, mapping from name to generator type (`uuid`, `flow-id` or `phrase`) |                             |
+| Configuration                 | Description                                                                                   | Default                     |
+|-------------------------------|-----------------------------------------------------------------------------------------------|-----------------------------|
+| `tracer.stacked`              | Enables stacking of traces                                                                    | `false`                     |
+| `tracer.aspect.enabled`       | Enables the [`TracedAspect`](#aspect)                                                         | `true`                      |
+| `tracer.async.enabled`        | Enables for asynchronous tasks, i.e. `@Async`                                                 | `true`                      |
+| `tracer.filter.enabled`       | Enables the [`TracerFilter`](#servlet)                                                        | `true`                      |
+| `tracer.logging.enabled`      | Enables the [`LoggingTraceListener`](#logging)                                                | `false`                     |
+| `tracer.logging.category`     | Changes the category of the [`LoggingTraceListener`](#logging)                                | `org.zalando.tracer.Tracer` |
+| `tracer.mdc.enabled`          | Enables the [`MdcTraceListener`](#logging)                                                    | `true`                      |
+| `tracer.scheduling.enabled`   | Enables support for Task Scheduling, i.e. `@Scheduled`                                        | `true`                      |
+| `tracer.scheduling.pool-size` | Configures the thread pool size, i.e. the number of scheduled tasks                           | # of CPUs                   |
+| `tracer.traces`               | Configures actual traces, mapping from name to generator type (`uuid`, `flow-id` or `phrase`) |                             |
 
 ```yaml
 tracer:

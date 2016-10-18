@@ -2,6 +2,7 @@ package org.zalando.tracer.spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -17,7 +18,10 @@ import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.zalando.tracer.Tracer;
 
+import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import static java.util.concurrent.Executors.newScheduledThreadPool;
 import static org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor.DEFAULT_TASK_SCHEDULER_BEAN_NAME;
@@ -39,8 +43,10 @@ public class TracerSchedulingAutoConfiguration implements SchedulingConfigurer {
 
         @Bean(destroyMethod = "shutdown")
         @ConditionalOnMissingBean(name = "taskSchedulerService")
-        public ScheduledExecutorService taskSchedulerService() {
-            return newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
+        public ScheduledExecutorService taskSchedulerService(
+                @Value("${tracer.scheduling.pool-size:0}") final int poolSize) {
+            final int corePoolSize = poolSize > 0 ? poolSize : Runtime.getRuntime().availableProcessors();
+            return new ScheduledThreadPoolExecutor(corePoolSize);
         }
 
         @Bean(name = DEFAULT_TASK_SCHEDULER_BEAN_NAME)
