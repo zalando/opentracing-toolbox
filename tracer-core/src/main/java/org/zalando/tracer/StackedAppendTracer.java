@@ -88,11 +88,9 @@ final class StackedAppendTracer implements Tracer {
         traces.forEach((name, state) -> {
             final Deque<String> queue = state.get();
             final String previous = checkValue(name, queue.removeLast());
-            @Nullable final String current = queue.peekLast();
 
             runIf(listeners::onStop, name, previous);
             runIf(stackedListeners::onStop, name, previous);
-            runIf(listeners::onStart, name, current);
         });
     }
 

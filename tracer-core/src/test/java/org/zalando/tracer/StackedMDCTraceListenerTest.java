@@ -56,6 +56,10 @@ public final class StackedMDCTraceListenerTest {
         unit.start(tracerId -> "62aecbf6-73e1-11e5-b508-10ddb1ee7672");
 
         assertThat(MDC.get("X-Trace-ID"), is("52aecbf6-73e1-11e5-b508-10ddb1ee7671 62aecbf6-73e1-11e5-b508-10ddb1ee7672"));
+        unit.stop();
+        assertThat(MDC.get("X-Trace-ID"), is("52aecbf6-73e1-11e5-b508-10ddb1ee7671"));
+        unit.stop();
+        assertThat(MDC.get("X-Trace-ID"), is(nullValue()));
     }
 
     @Test

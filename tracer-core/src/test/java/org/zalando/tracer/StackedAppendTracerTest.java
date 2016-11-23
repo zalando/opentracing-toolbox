@@ -65,7 +65,6 @@ public final class StackedAppendTracerTest extends AbstractTracerTest {
         inOrder.verify(listener).onStart("X-Foo-ID", "bar");
         tracer.stop();
         inOrder.verify(listener).onStop("X-Foo-ID", "bar");
-        inOrder.verify(listener).onStart("X-Foo-ID", "foo");
         tracer.stop();
         inOrder.verify(listener).onStop("X-Foo-ID", "foo");
     }
