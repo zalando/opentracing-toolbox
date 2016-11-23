@@ -93,6 +93,7 @@ public class TracerAutoConfiguration {
             final Optional<List<TraceListener>> listeners) {
         final TracerFactory.Builder builder = Tracer.builder()
                 .stacked(properties.isStacked())
+                .append(properties.isAppend())
                 .listeners(listeners.orElse(emptyList()));
 
         final Map<String, String> traces = properties.getTraces();
