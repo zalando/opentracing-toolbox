@@ -5,7 +5,10 @@ import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.slf4j.MDC;
 
+import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
@@ -38,6 +41,36 @@ public final class StackedMDCTraceListenerTest {
         unit.start();
 
         assertThat(MDC.get("X-Trace-ID"), is("52aecbf6-73e1-11e5-b508-10ddb1ee7671 52aecbf6-73e1-11e5-b508-10ddb1ee7671"));
+    }
+
+
+    @Test
+    public void shouldBeSetWithTwoDifferentUuidsAfterStartingStackedAppendTrace() {
+        final Tracer unit = Tracer.builder()
+                .traces(asList("X-Trace-ID"))
+                .listener(new StackedMDCTraceListener())
+                .append()
+                .stacked()
+                .build();
+        unit.start(tracerId -> "52aecbf6-73e1-11e5-b508-10ddb1ee7671");
+        unit.start(tracerId -> "62aecbf6-73e1-11e5-b508-10ddb1ee7672");
+
+        assertThat(MDC.get("X-Trace-ID"), is("52aecbf6-73e1-11e5-b508-10ddb1ee7671 62aecbf6-73e1-11e5-b508-10ddb1ee7672"));
+    }
+
+    @Test
+    public void shouldBeSetWithTwoDifferentRandomUuidsAfterStartingStackedAppendTrace() {
+        final Tracer unit = Tracer.builder()
+                .traces(asList("X-Trace-ID"))
+                .listener(new StackedMDCTraceListener())
+                .append()
+                .stacked()
+                .build();
+        unit.start();
+        String randomUuid = MDC.get("X-Trace-ID");
+        unit.start();
+        assertThat(MDC.get("X-Trace-ID"), containsString(randomUuid));
+        assertThat(MDC.get("X-Trace-ID"), is(not(randomUuid + " " + randomUuid)));
     }
 
     @Test
