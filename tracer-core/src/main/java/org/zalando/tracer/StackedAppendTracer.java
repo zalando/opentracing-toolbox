@@ -94,10 +94,8 @@ final class StackedAppendTracer implements Tracer {
         });
     }
 
-    private void runIf(final BiConsumer<String, String> action, final String name, @Nullable final String current) {
-        if (current != null) {
-            action.accept(name, current);
-        }
+    private void runIf(final BiConsumer<String, String> action, final String name, final String current) {
+        action.accept(name, current);
     }
 
     private ThreadLocal<Deque<String>> getAndCheckState(final String name) {
