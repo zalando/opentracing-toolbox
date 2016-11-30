@@ -271,7 +271,7 @@ The `TracerAutoConfiguration` will automatically pick up any `TraceListener` bou
 
 ## Getting Help with Tracer
 
-If you have questions, concerns, bug reports, etc., please file an issue in this repository's [Issue Tracker](issues).
+If you have questions, concerns, bug reports, etc., please file an issue in this repository's [Issue Tracker](../../issues).
 
 ## Getting Involved/Contributing
 
