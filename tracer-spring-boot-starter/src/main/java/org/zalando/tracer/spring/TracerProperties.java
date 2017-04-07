@@ -8,9 +8,18 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "tracer")
 public final class TracerProperties {
 
+    private boolean append;
     private boolean stacked;
     private final Logging logging = new Logging();
     private final Map<String, String> traces = new LinkedHashMap<>();
+
+    public boolean isAppend() {
+        return append;
+    }
+
+    public void setAppend(final boolean append) {
+        this.append = append;
+    }
 
     public boolean isStacked() {
         return stacked;

@@ -27,11 +27,22 @@ public final class TracerFactory {
             return this;
         }
 
+        public Builder append(final boolean append) {
+            this.append = append;
+            return this;
+        }
+
+        public Builder append() {
+            this.append = true;
+            return this;
+        }
+
     }
 
     @lombok.Builder(builderClassName = "Builder")
     static Tracer create(
             final boolean stacked,
+            final boolean append,
             @Singular final List<String> traces,
             @Singular("trace") final Map<String, Generator> customs,
             @Singular final List<TraceListener> listeners) {
@@ -41,7 +52,9 @@ public final class TracerFactory {
         combined.putAll(customs);
         combined.putAll(traces.stream().collect(toMap(Function.identity(), trace -> defaultGenerator)));
 
-        if (stacked) {
+        if (stacked && append) {
+            return new StackedAppendTracer(combined, listeners);
+        } else if (stacked) {
             return new StackedTracer(combined, listeners);
         } else {
             return new DefaultTracer(combined, listeners);
