@@ -9,7 +9,6 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-// TODO is this thread safe?
 public final class MDCTraceListenerTest {
 
     @Rule
