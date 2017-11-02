@@ -4,7 +4,7 @@
 
 [![Build Status](https://img.shields.io/travis/zalando/tracer/master.svg)](https://travis-ci.org/zalando/tracer)
 [![Coverage Status](https://img.shields.io/coveralls/zalando/tracer/master.svg)](https://coveralls.io/r/zalando/tracer)
-[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/org.zalando/tracer-core/badge.svg)](http://www.javadoc.io/doc/org.zalando/tracer-core)
+[![Javadoc](http://javadoc.io/badge/org.zalando/tracer-core.svg)](http://www.javadoc.io/doc/org.zalando/tracer-core)
 [![Release](https://img.shields.io/github/release/zalando/tracer.svg)](https://github.com/zalando/tracer/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/org.zalando/tracer-parent.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/tracer-parent)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/zalando/tracer/master/LICENSE)
