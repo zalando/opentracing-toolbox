@@ -1,4 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
-org.zalando.tracer.spring.TracerAutoConfiguration,\
-org.zalando.tracer.spring.TracerSchedulingAutoConfiguration,\
-org.zalando.tracer.spring.TracerAsyncAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration = org.zalando.tracer.spring.TracerAutoConfiguration

@@ -3,6 +3,8 @@ package org.zalando.tracer.spring;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -15,7 +17,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.annotation.SchedulingConfiguration;
+import org.springframework.scheduling.annotation.SchedulingConfigurer;
+import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
+import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
+import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.zalando.tracer.LoggingTraceListener;
 import org.zalando.tracer.MDCTraceListener;
 import org.zalando.tracer.StackedMDCTraceListener;
@@ -30,10 +42,18 @@ import javax.servlet.Filter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import static java.util.Collections.emptyList;
+import static java.util.concurrent.Executors.newCachedThreadPool;
 import static javax.servlet.DispatcherType.ASYNC;
 import static javax.servlet.DispatcherType.REQUEST;
+import static org.springframework.aop.interceptor.AsyncExecutionAspectSupport.DEFAULT_TASK_EXECUTOR_BEAN_NAME;
+import static org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor.DEFAULT_TASK_SCHEDULER_BEAN_NAME;
+import static org.zalando.tracer.concurrent.TracingExecutors.manage;
+import static org.zalando.tracer.concurrent.TracingExecutors.tryPreserve;
 
 @Configuration
 @ConditionalOnClass(Tracer.class)
@@ -118,6 +138,69 @@ public class TracerAutoConfiguration {
         return category == null ?
                 new LoggingTraceListener() :
                 new LoggingTraceListener(LoggerFactory.getLogger(category));
+    }
+
+    @Configuration
+    @ConditionalOnClass(Scheduled.class)
+    @ConditionalOnProperty(name = "tracer.scheduling.enabled", havingValue = "true", matchIfMissing = true)
+    @AutoConfigureAfter(SchedulingConfiguration.class)
+    static class SchedulingAutoConfiguration implements SchedulingConfigurer {
+
+        /**
+         * Needed because we require it inside {@link #configureTasks(ScheduledTaskRegistrar)} already.
+         */
+        @Configuration
+        static class TaskSchedulerConfiguration {
+
+            @Bean(destroyMethod = "shutdown")
+            @ConditionalOnMissingBean(name = "taskSchedulerService")
+            public ScheduledExecutorService taskSchedulerService(
+                    @Value("${tracer.scheduling.pool-size:0}") final int poolSize) {
+                final int corePoolSize = poolSize > 0 ? poolSize : Runtime.getRuntime().availableProcessors();
+                return new ScheduledThreadPoolExecutor(corePoolSize);
+            }
+
+            @Bean(name = DEFAULT_TASK_SCHEDULER_BEAN_NAME)
+            @ConditionalOnMissingBean(name = DEFAULT_TASK_SCHEDULER_BEAN_NAME)
+            public TaskScheduler taskScheduler(final ScheduledExecutorService taskSchedulerService, final Tracer tracer) {
+                return new ConcurrentTaskScheduler(manage(taskSchedulerService, tracer));
+            }
+
+        }
+
+        private final TaskScheduler scheduler;
+
+        @Autowired
+        public SchedulingAutoConfiguration(
+                @Qualifier(DEFAULT_TASK_SCHEDULER_BEAN_NAME) final TaskScheduler scheduler) {
+            this.scheduler = scheduler;
+        }
+
+        @Override
+        public void configureTasks(final ScheduledTaskRegistrar registrar) {
+            registrar.setTaskScheduler(scheduler);
+        }
+
+    }
+
+    @Configuration
+    @ConditionalOnClass(Async.class)
+    @ConditionalOnProperty(name = "tracer.async.enabled", havingValue = "true", matchIfMissing = true)
+    static class AsyncAutoConfiguration {
+
+        @Bean(destroyMethod = "shutdown")
+        @ConditionalOnMissingBean(name = "taskExecutorService")
+        public ExecutorService taskExecutorService() {
+            return newCachedThreadPool();
+        }
+
+        @Primary
+        @Bean(name = DEFAULT_TASK_EXECUTOR_BEAN_NAME)
+        @ConditionalOnMissingBean(name = DEFAULT_TASK_EXECUTOR_BEAN_NAME)
+        public TaskExecutor taskExecutor(final ExecutorService taskExecutorService, final Tracer tracer) {
+            return new ConcurrentTaskExecutor(tryPreserve(taskExecutorService, tracer));
+        }
+
     }
 
 }

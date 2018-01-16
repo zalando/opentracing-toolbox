@@ -4,9 +4,6 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
-@ImportAutoConfiguration({
-        TracerAutoConfiguration.class,
-        TracerSchedulingAutoConfiguration.class
-})
+@ImportAutoConfiguration(TracerAutoConfiguration.class)
 public class Application {
 }
