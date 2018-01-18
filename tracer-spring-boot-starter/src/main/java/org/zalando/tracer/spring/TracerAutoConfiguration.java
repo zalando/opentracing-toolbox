@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -58,7 +57,10 @@ import static org.zalando.tracer.concurrent.TracingExecutors.tryPreserve;
 @Configuration
 @ConditionalOnClass(Tracer.class)
 @EnableConfigurationProperties(TracerProperties.class)
-@AutoConfigureAfter(WebMvcAutoConfiguration.class)
+@AutoConfigureAfter(name = {
+        "org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration", // Spring Boot 1.x
+        "org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration" // Spring Boot 2.x
+})
 @Import({DefaultGeneratorResolver.class, TracerAutoConfiguration.AspectConfiguration.class})
 public class TracerAutoConfiguration {
 
