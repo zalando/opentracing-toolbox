@@ -21,7 +21,7 @@ This library historically originates from a closed-source implementation called 
 
 -  **Tracing** of HTTP requests and responses
 -  **Customization** by having a pluggable trace format and lifecycle listeners for easy integration
--  **Support** for Servlet containers, Apache’s HTTP client, Hystrix, JUnit, AspectJ and (via its elegant API) several other frameworks
+-  **Support** for Servlet containers, Apache’s HTTP client, Square's OkHttp, Hystrix, JUnit, AspectJ and (via its elegant API) several other frameworks
 -  Convenient [Spring Boot](http://projects.spring.io/spring-boot/) Auto Configuration
 -  Sensible defaults
 
@@ -31,6 +31,7 @@ This library historically originates from a closed-source implementation called 
 - Any build tool using Maven Central, or direct download
 - Servlet Container (optional)
 - Apache HTTP Client (optional)
+- OkHttp (optional)
 - Hystrix (optional)
 - AspectJ (optional)
 - JUnit (optional)
@@ -54,6 +55,11 @@ Selectively add the following dependencies to your project:
 <dependency>
     <groupId>org.zalando</groupId>
     <artifactId>tracer-httpclient</artifactId>
+    <version>${tracer.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.zalando</groupId>
+    <artifactId>tracer-okhttp</artifactId>
     <version>${tracer.version}</version>
 </dependency>
 <dependency>
@@ -184,6 +190,17 @@ Many client-side HTTP libraries on the JVM use the Apache HTTPClient, which is w
 DefaultHttpClient client = new DefaultHttpClient();
 client.addRequestInterceptor(new TracerHttpRequestInterceptor(tracer));
 ```
+
+### OkHttp
+
+The `tracer-okhttp` module contains an `Interceptor` to use with the `OkHttpClient`:
+
+```java
+OkHttpClient client = new OkHttpClient.Builder()
+        .addNetworkInterceptor(new TracerInterceptor(tracer))
+        .build();
+```
+
 
 ## Hystrix
 

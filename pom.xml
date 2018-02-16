@@ -50,6 +50,7 @@
         <module>tracer-httpclient</module>
         <module>tracer-hystrix</module>
         <module>tracer-junit</module>
+        <module>tracer-okhttp</module>
         <module>tracer-servlet</module>
         <module>tracer-spring-boot-starter</module>
     </modules>
