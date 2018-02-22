@@ -89,7 +89,7 @@ final class StackedTracer implements Tracer {
     public void stop() {
         traces.forEach((name, state) -> {
             final Deque<String> queue = state.get();
-            final String previous = checkValue(name, queue.pollLast());
+            @Nullable final String previous = checkValue(name, queue.pollLast());
             @Nullable final String current = queue.peekLast();
 
             runIf(listeners::onStop, name, previous);
