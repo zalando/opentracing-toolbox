@@ -61,6 +61,11 @@ public class TracedAspectTest {
         assertThat(service.withAspect(), is("f09f5896-73fd-11e5-bc6f-10ddb1ee7671"));
     }
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void shouldFail() {
+        service.failWithAspect();
+    }
+
     @Test
     public void shouldStopTracer() {
         service.withAspect();

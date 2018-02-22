@@ -6,6 +6,7 @@ import org.junit.rules.ExpectedException;
 
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,6 +20,7 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public abstract class AbstractTracerTest {
 
@@ -93,6 +95,13 @@ public abstract class AbstractTracerTest {
         tracer.get("X-Trace-ID").getValue();
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void shouldFailToStopIfNotActive() {
+        final Tracer tracer = unit();
+
+        tracer.stop();
+    }
+
     @Test
     public void shouldIterateAllTraces() {
         final Tracer tracer = unit();
@@ -137,6 +146,34 @@ public abstract class AbstractTracerTest {
     }
 
     @Test
+    public void shouldManageFailingRunnable() throws InterruptedException {
+        final Tracer tracer = unit();
+
+        final CountDownLatch latch = new CountDownLatch(1);
+        final ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        try {
+            final Runnable thrower = () -> {
+                latch.countDown();
+                throw new UnsupportedOperationException();
+            };
+
+            executor.execute(tracer.manage(thrower));
+            latch.await();
+
+            try {
+                tracer.stop();
+                fail("Expected exception");
+            } catch (final IllegalStateException e) {
+                // expected
+            }
+
+        } finally {
+            executor.shutdownNow();
+        }
+    }
+
+    @Test
     public void shouldPreserveRunnable() throws ExecutionException, InterruptedException {
         final Tracer tracer = unit();
 
@@ -173,6 +210,41 @@ public abstract class AbstractTracerTest {
             final String result = future.get();
 
             assertThat(result, is("foo"));
+        } finally {
+            executor.shutdownNow();
+        }
+    }
+
+    @Test
+    public void shouldManageFailingCallable() throws InterruptedException {
+        final Tracer tracer = unit();
+
+        final CountDownLatch latch = new CountDownLatch(1);
+        final ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        try {
+            final Callable<String> callable = tracer.manage(() -> {
+                latch.countDown();
+                throw new UnsupportedOperationException();
+            });
+
+            final Future<String> future = executor.submit(callable);
+
+            try {
+                future.get();
+                fail("Expected exception");
+            } catch (final ExecutionException e) {
+                assertThat(e.getCause(), is(instanceOf(UnsupportedOperationException.class)));
+            }
+
+            latch.await();
+
+            try {
+                tracer.stop();
+                fail("Expected exception");
+            } catch (final IllegalStateException e) {
+                // expected
+            }
         } finally {
             executor.shutdownNow();
         }

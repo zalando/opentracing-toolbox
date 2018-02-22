@@ -10,10 +10,6 @@
         <version>0.14.0-SNAPSHOT</version>
     </parent>
 
-    <prerequisites>
-        <maven>3.0.4</maven>
-    </prerequisites>
-
     <artifactId>tracer-spring-boot-starter</artifactId>
 
     <name>Tracer: Spring Boot Starter</name>

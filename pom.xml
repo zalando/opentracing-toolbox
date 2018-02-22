@@ -3,10 +3,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <prerequisites>
-        <maven>3.0.4</maven>
-    </prerequisites>
-
     <groupId>org.zalando</groupId>
     <artifactId>tracer-parent</artifactId>
     <version>0.14.0-SNAPSHOT</version>
@@ -50,6 +46,7 @@
         <module>tracer-httpclient</module>
         <module>tracer-hystrix</module>
         <module>tracer-junit</module>
+        <module>tracer-okhttp</module>
         <module>tracer-servlet</module>
         <module>tracer-spring-boot-starter</module>
     </modules>
@@ -312,6 +309,26 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <executions>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>3.0.4</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>com.ning.maven.plugins</groupId>
                 <artifactId>maven-duplicate-finder-plugin</artifactId>

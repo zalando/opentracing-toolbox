@@ -15,6 +15,11 @@ public class TracedService {
         return trace.getValue();
     }
 
+    @Traced
+    public String failWithAspect() {
+        throw new UnsupportedOperationException();
+    }
+
     public String withoutAspect() {
         return trace.getValue();
     }
