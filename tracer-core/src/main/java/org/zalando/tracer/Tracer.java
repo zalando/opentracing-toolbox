@@ -188,6 +188,7 @@ public interface Tracer {
      * Creates a {@link Callable callable}, based on the given original, that will manage a completely new lifecycle
      * for every invocation,
      *
+     * @param <V>  generic task return value
      * @param task the original callable
      * @return a callable that will add lifecycle management to the given callable
      * @see #delegate(Callable, Function)
@@ -200,6 +201,7 @@ public interface Tracer {
      * Creates a {@link Callable callable}, based on the given original, that will preserve the current state of
      * all traces for every invocation.
      *
+     * @param <V>  generic task return value
      * @param task the original callable
      * @return a callable that will add lifecycle management to the given callable
      * @throws IllegalStateException if this tracer is not started
@@ -215,6 +217,7 @@ public interface Tracer {
      * all traces for every invocation, if a trace is currently active. Otherwise it will manage a completely new
      * lifecycle for every invocation.
      *
+     * @param <V>  generic task return value
      * @param task the original callable
      * @return a callable that will add lifecycle management to the given callable
      * @see #snapshot()
@@ -229,6 +232,7 @@ public interface Tracer {
      * Creates a delegating {@link Callable callable}, based on the given original, that will manage the tracer
      * lifecycle for every invocation. Initial trace values can be seeded with the given provider.
      *
+     * @param <V>      generic task return value
      * @param task     the original callable
      * @param provider a provider for trace identifiers, will be called with individual trace names
      * @return a callable that will add lifecycle management to the given callable
