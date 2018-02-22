@@ -5,7 +5,7 @@
 
     <groupId>org.zalando</groupId>
     <artifactId>tracer-parent</artifactId>
-    <version>0.14.0</version>
+    <version>-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Tracer</name>
