@@ -112,7 +112,7 @@ final class ManagingExecutorServiceTest {
     }
 
     @Test
-    void shouldManageTraceForInvokeAny() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldManageTraceForInvokeAny() throws InterruptedException, ExecutionException {
         final Trace trace = tracer.get("X-Trace");
 
         tracer.start();

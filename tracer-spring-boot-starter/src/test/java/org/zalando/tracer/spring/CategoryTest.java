@@ -9,8 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zalando.tracer.LoggingTraceListener;
 
-import java.io.IOException;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hobsoft.hamcrest.compose.ComposeMatchers.hasFeature;
@@ -27,7 +25,7 @@ final class CategoryTest {
     private LoggingTraceListener loggingTraceListener;
 
     @Test
-    void shouldUseConfiguredCategory() throws IOException {
+    void shouldUseConfiguredCategory() {
         final Logger logger = loggingTraceListener.getLogger();
         assertThat(logger, hasFeature("name", Logger::getName, is("http.trace-log")));
     }

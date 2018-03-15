@@ -5,14 +5,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zalando.tracer.Tracer;
+
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class, properties = "tracer.stacked = true")
 @ImportAutoConfiguration(TracerAutoConfiguration.class)
 @ActiveProfiles("uuid")
+@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 final class ConfiguredStackedTracerTest {
 
     @Autowired

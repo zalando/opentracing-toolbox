@@ -22,7 +22,7 @@ public final class AsyncServlet extends HttpServlet {
     }
     
     @Override
-    protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(final HttpServletRequest request, final HttpServletResponse response) {
         final AsyncContext context = request.startAsync(request, response);
         context.setTimeout(100);
 

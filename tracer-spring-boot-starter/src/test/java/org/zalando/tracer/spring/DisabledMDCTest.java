@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.nullValue;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class, properties = "tracer.mdc.enabled = false")
 @ImportAutoConfiguration(TracerAutoConfiguration.class)
-final class DisabledMdcTest {
+final class DisabledMDCTest {
 
     @Autowired(required = false)
     private MDCTraceListener mdcTraceListener;

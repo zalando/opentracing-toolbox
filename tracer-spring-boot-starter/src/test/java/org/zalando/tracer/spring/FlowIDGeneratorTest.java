@@ -12,7 +12,6 @@ import org.zalando.tracer.Tracer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hobsoft.hamcrest.compose.ComposeMatchers.hasFeature;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class)
@@ -30,8 +29,7 @@ final class FlowIDGeneratorTest {
         tracer.start();
 
         try {
-            assertThat(trace, hasFeature("value", Trace::getValue,
-                    hasFeature("length", String::length, is(22))));
+            assertThat(trace.getValue().length(), is(22));
         } finally {
             tracer.stop();
         }

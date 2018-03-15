@@ -8,17 +8,20 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(properties = "tracer.aspect.enabled = false")
 @ImportAutoConfiguration(TracerAutoConfiguration.class)
 @ActiveProfiles("uuid")
+@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 class DisabledAspectTest {
 
     @SpringBootConfiguration

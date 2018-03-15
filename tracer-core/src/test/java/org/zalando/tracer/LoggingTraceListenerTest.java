@@ -23,7 +23,7 @@ final class LoggingTraceListenerTest {
             .build();
 
     @Test
-    void shouldLogOnStart() throws Exception {
+    void shouldLogOnStart() {
         tracer.start();
 
         verify(logger).trace(argThat(containsString("Started")),
@@ -32,7 +32,7 @@ final class LoggingTraceListenerTest {
     }
 
     @Test
-    void shouldLogOnStop() throws Exception {
+    void shouldLogOnStop() {
         tracer.start();
         tracer.stop();
 

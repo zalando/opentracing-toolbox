@@ -112,7 +112,7 @@ abstract class AbstractPreservingExecutorServiceTest {
     }
 
     @Test
-    void shouldPreserveTraceForInvokeAny() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldPreserveTraceForInvokeAny() throws InterruptedException, ExecutionException {
         final Trace trace = tracer.get("X-Trace");
 
         tracer.start();
