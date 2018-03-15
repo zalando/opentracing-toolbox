@@ -1,6 +1,6 @@
 package org.zalando.tracer.concurrent;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
@@ -12,9 +12,9 @@ import java.util.concurrent.TimeoutException;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-public final class TryPreservingScheduledExecutorServiceTest extends AbstractPreservingScheduledExecutorServiceTest {
+final class TryPreservingScheduledExecutorServiceTest extends AbstractPreservingScheduledExecutorServiceTest {
 
     @Override
     protected ScheduledExecutorService unit(final ScheduledExecutorService executor, final Tracer tracer) {
@@ -22,7 +22,7 @@ public final class TryPreservingScheduledExecutorServiceTest extends AbstractPre
     }
 
     @Test
-    public void shouldManageTraceForScheduleRunnableIfNotStarted() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldManageTraceForScheduleRunnableIfNotStarted() throws InterruptedException, ExecutionException, TimeoutException {
         final CompletableFuture<String> future = new CompletableFuture<>();
         final Trace trace = tracer.get("X-Trace");
 

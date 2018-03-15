@@ -1,22 +1,30 @@
 package org.zalando.tracer.spring;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
 
-@ContextConfiguration(classes = AspectTest.TestConfiguration.class)
+
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@ImportAutoConfiguration(TracerAutoConfiguration.class)
 @ActiveProfiles("uuid")
-public class AspectTest extends AbstractTest {
+class AspectTest {
 
+    @SpringBootConfiguration
     @Import(TracedService.class)
     public static class TestConfiguration {
 
@@ -31,7 +39,7 @@ public class AspectTest extends AbstractTest {
     private TracedService service;
 
     @Test
-    public void shouldTrace() {
+    void shouldTrace() {
         final String trace = service.withAspect();
         assertThat(trace, is(notNullValue()));
     }

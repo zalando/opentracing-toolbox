@@ -5,22 +5,22 @@ import org.springframework.stereotype.Service;
 import org.zalando.tracer.Trace;
 
 @Service
-public class TracedService {
+class TracedService {
 
     @Autowired
     private Trace trace;
 
     @Traced
-    public String withAspect() {
+    String withAspect() {
         return trace.getValue();
     }
 
     @Traced
-    public String failWithAspect() {
+    String failWithAspect() {
         throw new UnsupportedOperationException();
     }
 
-    public String withoutAspect() {
+    String withoutAspect() {
         return trace.getValue();
     }
 

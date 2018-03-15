@@ -1,6 +1,6 @@
 package org.zalando.tracer.concurrent;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
@@ -13,21 +13,21 @@ import java.util.concurrent.TimeoutException;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-public final class ManagingExecutorTest {
+final class ManagingExecutorTest {
 
     private final Executor executor = Executors.newSingleThreadExecutor();
     private final Tracer tracer = Tracer.create("X-Trace");
     private final Executor unit = TracingExecutors.manage(executor, tracer);
 
     @Test
-    public void shouldNotRequireActiveTrace() {
+    void shouldNotRequireActiveTrace() {
         unit.execute(() -> tracer.get("X-Trace").getValue());
     }
 
     @Test
-    public void shouldManageTrace() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldManageTrace() throws InterruptedException, ExecutionException, TimeoutException {
         final CompletableFuture<String> future = new CompletableFuture<>();
         final Trace trace = tracer.get("X-Trace");
 

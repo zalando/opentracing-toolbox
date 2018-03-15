@@ -2,14 +2,14 @@ package org.zalando.tracer.concurrent;
 
 import com.google.gag.annotation.remark.Hack;
 import com.google.gag.annotation.remark.OhNoYouDidnt;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 @Hack
 @OhNoYouDidnt
-public final class EnforceCoverageTest {
+final class EnforceCoverageTest {
 
     @Test
-    public void shouldUseTracingExecutorsContrstructor() {
+    void shouldUseTracingExecutorsContrstructor() {
         new TracingExecutors();
     }
 

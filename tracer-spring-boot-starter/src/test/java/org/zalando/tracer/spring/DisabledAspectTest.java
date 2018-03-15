@@ -1,20 +1,27 @@
 package org.zalando.tracer.spring;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
-@ContextConfiguration(classes = DisabledAspectTest.TestConfiguration.class)
-@TestPropertySource(properties = "tracer.aspect.enabled = false")
-@ActiveProfiles("uuid")
-public class DisabledAspectTest extends AbstractTest {
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(properties = "tracer.aspect.enabled = false")
+@ImportAutoConfiguration(TracerAutoConfiguration.class)
+@ActiveProfiles("uuid")
+class DisabledAspectTest {
+
+    @SpringBootConfiguration
     @Import(TracedService.class)
     public static class TestConfiguration {
 
@@ -28,9 +35,9 @@ public class DisabledAspectTest extends AbstractTest {
     @Autowired
     private TracedService service;
 
-    @Test(expected = IllegalStateException.class)
-    public void shouldNotTrace() {
-        service.withAspect();
+    @Test
+    void shouldNotTrace() {
+        assertThrows(IllegalStateException.class, service::withAspect);
     }
 
 }

@@ -1,26 +1,25 @@
 package org.zalando.tracer.okhttp;
 
-import com.github.restdriver.clientdriver.ClientDriverRule;
+import com.github.restdriver.clientdriver.ClientDriver;
+import com.github.restdriver.clientdriver.ClientDriverFactory;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.zalando.tracer.Tracer;
 
 import java.io.IOException;
 
 import static com.github.restdriver.clientdriver.RestClientDriver.giveResponse;
 import static com.github.restdriver.clientdriver.RestClientDriver.onRequestTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
-public final class TracerInterceptorTest {
+final class TracerInterceptorTest {
 
-    @Rule
-    public final ClientDriverRule driver = new ClientDriverRule();
+    private final ClientDriver server = new ClientDriverFactory().createClientDriver();
 
     private final Tracer tracer = Tracer.builder()
             .trace("X-Trace-ID", () -> "16c38974-7530-11e5-bb35-10ddb1ee7671")
@@ -31,25 +30,30 @@ public final class TracerInterceptorTest {
             .addNetworkInterceptor(new TracerInterceptor(tracer))
             .build();
 
-    @Before
-    public void startTracer() {
+    @BeforeEach
+    void startTracer() {
         tracer.start();
     }
 
-    @After
-    public void stopTracer() {
+    @AfterEach
+    void stopTracer() {
         tracer.stop();
     }
 
+    @AfterEach
+    void shutdownServer() {
+        server.shutdownQuietly();
+    }
+
     @Test
-    public void shouldAddHeader() throws IOException {
-        driver.addExpectation(onRequestTo("/")
+    void shouldAddHeader() throws IOException {
+        server.addExpectation(onRequestTo("/")
                         .withHeader("X-Trace-ID", "16c38974-7530-11e5-bb35-10ddb1ee7671")
                         .withHeader("X-Request-ID", "2e7a3324-7530-11e5-ad30-10ddb1ee7671"),
                 giveResponse("Hello, world!", "text/plain"));
 
         final Response response = client.newCall(new Request.Builder()
-                .url(driver.getBaseUrl())
+                .url(server.getBaseUrl())
                 .build()).execute();
 
         assertThat(response.code(), is(200));

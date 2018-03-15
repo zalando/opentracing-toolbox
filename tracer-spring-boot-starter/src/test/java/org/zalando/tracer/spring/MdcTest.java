@@ -1,20 +1,27 @@
 package org.zalando.tracer.spring;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zalando.tracer.MDCTraceListener;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
 
-public final class MdcTest extends AbstractTest {
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = Application.class)
+@ImportAutoConfiguration(TracerAutoConfiguration.class)
+final class MdcTest {
 
     @Autowired
     private MDCTraceListener mdcTraceListener;
 
     @Test
-    public void shouldEnableMdcTraceListenerByDefault() {
+    void shouldEnableMdcTraceListenerByDefault() {
         assertThat(mdcTraceListener, is(notNullValue()));
     }
 

@@ -1,6 +1,6 @@
 package org.zalando.tracer.concurrent;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
@@ -14,9 +14,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-public abstract class AbstractPreservingScheduledExecutorServiceTest {
+abstract class AbstractPreservingScheduledExecutorServiceTest {
 
     protected final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     protected final Tracer tracer = Tracer.create("X-Trace");
@@ -24,7 +24,7 @@ public abstract class AbstractPreservingScheduledExecutorServiceTest {
     protected abstract ScheduledExecutorService unit(ScheduledExecutorService executor, Tracer tracer);
 
     @Test
-    public void shouldPreserveTraceForScheduleRunnable() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldPreserveTraceForScheduleRunnable() throws InterruptedException, ExecutionException, TimeoutException {
         final CompletableFuture<String> future = new CompletableFuture<>();
         final Trace trace = tracer.get("X-Trace");
 
@@ -41,7 +41,7 @@ public abstract class AbstractPreservingScheduledExecutorServiceTest {
     }
 
     @Test
-    public void shouldPreserveTraceForScheduleCallable() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldPreserveTraceForScheduleCallable() throws InterruptedException, ExecutionException, TimeoutException {
         final Future<String> future;
         final Trace trace = tracer.get("X-Trace");
 
@@ -58,7 +58,7 @@ public abstract class AbstractPreservingScheduledExecutorServiceTest {
     }
 
     @Test
-    public void shouldPreserveTraceForScheduleAtFixedRatee() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldPreserveTraceForScheduleAtFixedRatee() throws InterruptedException, ExecutionException, TimeoutException {
         final CompletableFuture<String> future = new CompletableFuture<>();
         final Trace trace = tracer.get("X-Trace");
 
@@ -75,7 +75,7 @@ public abstract class AbstractPreservingScheduledExecutorServiceTest {
     }
 
     @Test
-    public void shouldPreserveTraceForScheduleWithDelayRatee() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldPreserveTraceForScheduleWithDelayRatee() throws InterruptedException, ExecutionException, TimeoutException {
         final CompletableFuture<String> future = new CompletableFuture<>();
         final Trace trace = tracer.get("X-Trace");
 

@@ -1,8 +1,6 @@
 package org.zalando.tracer;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -13,24 +11,22 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
-public abstract class AbstractTracerTest {
-
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
+abstract class AbstractTracerTest {
 
     protected abstract Tracer unit();
 
     @Test
-    public void shouldStartWithoutProvidedValues() {
+    void shouldStartWithoutProvidedValues() {
         final Tracer tracer = Tracer.create("X-Trace-ID");
         final Trace trace = tracer.get("X-Trace-ID");
 
@@ -40,7 +36,7 @@ public abstract class AbstractTracerTest {
     }
 
     @Test
-    public void shouldStartWithProvidedValues() {
+    void shouldStartWithProvidedValues() {
         final Tracer tracer = unit();
 
         tracer.start(trace -> "foo");
@@ -49,19 +45,19 @@ public abstract class AbstractTracerTest {
     }
 
     @Test
-    public void shouldBeActiveWhenStarted() {
+    void shouldBeActiveWhenStarted() {
         final Tracer tracer = unit();
         tracer.start();
         assertThat(tracer.isActive(), is(true));
     }
 
     @Test
-    public void shouldNotBeActiveWhenNotStarted() {
+    void shouldNotBeActiveWhenNotStarted() {
         assertThat(unit().isActive(), is(false));
     }
 
     @Test
-    public void shouldGetTrace() {
+    void shouldGetTrace() {
         final Tracer tracer = unit();
 
         final Trace trace = tracer.get("X-Trace-ID");
@@ -70,7 +66,7 @@ public abstract class AbstractTracerTest {
     }
 
     @Test
-    public void shouldGetCurrentTrace() {
+    void shouldGetCurrentTrace() {
         final Tracer tracer = unit();
 
         tracer.start();
@@ -81,29 +77,25 @@ public abstract class AbstractTracerTest {
         assertThat(trace.getValue(), is(notNullValue()));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldFailToGetTraceIfUnknown() {
+    @Test
+    void shouldFailToGetTraceIfUnknown() {
         final Tracer tracer = unit();
-
-        tracer.get("X-Foo");
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void shouldFailToGetCurrentTraceIfNotActive() {
-        final Tracer tracer = unit();
-
-        tracer.get("X-Trace-ID").getValue();
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void shouldFailToStopIfNotActive() {
-        final Tracer tracer = unit();
-
-        tracer.stop();
+        assertThrows(IllegalArgumentException.class, () -> tracer.get("X-Foo"));
     }
 
     @Test
-    public void shouldIterateAllTraces() {
+    void shouldFailToGetCurrentTraceIfNotActive() {
+        final Trace trace = unit().get("X-Trace-ID");
+        assertThrows(IllegalStateException.class, trace::getValue);
+    }
+
+    @Test
+    void shouldFailToStopIfNotActive() {
+        assertThrows(IllegalStateException.class, unit()::stop);
+    }
+
+    @Test
+    void shouldIterateAllTraces() {
         final Tracer tracer = unit();
 
         tracer.start();
@@ -116,16 +108,15 @@ public abstract class AbstractTracerTest {
         assertThat(snapshot, hasEntry(equalTo("X-Foo-ID"), equalTo("foo")));
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void shouldFailToIterateAllTracesIfNotActive() {
+    @Test
+    void shouldFailToIterateAllTracesIfNotActive() {
         final Tracer tracer = unit();
-
-        tracer.forEach((trace, value) -> {
-        });
+        assertThrows(IllegalStateException.class, () -> tracer.forEach((trace, value) -> {
+        }));
     }
 
     @Test
-    public void shouldManageRunnable() throws ExecutionException, InterruptedException {
+    void shouldManageRunnable() throws ExecutionException, InterruptedException {
         final Tracer tracer = unit();
 
         final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -146,7 +137,7 @@ public abstract class AbstractTracerTest {
     }
 
     @Test
-    public void shouldManageFailingRunnable() throws InterruptedException {
+    void shouldManageFailingRunnable() throws InterruptedException {
         final Tracer tracer = unit();
 
         final CountDownLatch latch = new CountDownLatch(1);
@@ -174,7 +165,7 @@ public abstract class AbstractTracerTest {
     }
 
     @Test
-    public void shouldPreserveRunnable() throws ExecutionException, InterruptedException {
+    void shouldPreserveRunnable() throws ExecutionException, InterruptedException {
         final Tracer tracer = unit();
 
         final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -197,7 +188,7 @@ public abstract class AbstractTracerTest {
     }
 
     @Test
-    public void shouldManageCallable() throws ExecutionException, InterruptedException {
+    void shouldManageCallable() throws ExecutionException, InterruptedException {
         final Tracer tracer = unit();
 
         final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -216,7 +207,7 @@ public abstract class AbstractTracerTest {
     }
 
     @Test
-    public void shouldManageFailingCallable() throws InterruptedException {
+    void shouldManageFailingCallable() throws InterruptedException {
         final Tracer tracer = unit();
 
         final CountDownLatch latch = new CountDownLatch(1);
@@ -251,7 +242,7 @@ public abstract class AbstractTracerTest {
     }
 
     @Test
-    public void shouldPreserveCallable() throws ExecutionException, InterruptedException {
+    void shouldPreserveCallable() throws ExecutionException, InterruptedException {
         final Tracer tracer = unit();
 
         final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -272,7 +263,7 @@ public abstract class AbstractTracerTest {
     }
 
     @Test
-    public void shouldFailToDelegateIfNotDelegatingState() throws ExecutionException, InterruptedException {
+    void shouldFailToDelegateIfNotDelegatingState() {
         final Tracer tracer = unit();
 
         final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -280,13 +271,10 @@ public abstract class AbstractTracerTest {
         try {
             tracer.start();
             final Trace trace = tracer.get("X-Foo-ID");
-
-            exception.expect(ExecutionException.class);
-            exception.expectCause(instanceOf(IllegalStateException.class));
-
             final Future<String> future = executor.submit(trace::getValue);
-            future.get();
 
+            final ExecutionException exception = assertThrows(ExecutionException.class, future::get);
+            assertThat(exception.getCause(), instanceOf(IllegalStateException.class));
         } finally {
             executor.shutdownNow();
         }

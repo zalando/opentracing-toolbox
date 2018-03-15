@@ -1,23 +1,22 @@
 package org.zalando.tracer.unit;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.zalando.tracer.Tracer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
-public final class TracerRuleHappyCaseTest {
+final class TracerExtensionHappyCaseTest {
 
     private final Tracer tracer = Tracer.create("X-Trace-ID");
 
-    @Rule
-    public final TestRule tracing = new TracerRule(tracer);
+    @RegisterExtension
+    final TracerExtension extension = new TracerExtension(tracer);
 
     @Test
-    public void shouldManageTrace() {
+    void shouldManageTrace() {
         assertThat(tracer.get("X-Trace-ID").getValue(), is(notNullValue()));
     }
 

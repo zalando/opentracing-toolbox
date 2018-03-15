@@ -1,18 +1,15 @@
 package org.zalando.tracer;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestRule;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.MDC;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
 
-public final class MDCTraceListenerTest {
-
-    @Rule
-    public final TestRule mdc = new MDCRule();
+@ExtendWith(MDCExtension.class)
+final class MDCTraceListenerTest {
 
     private final Tracer unit = Tracer.builder()
             .trace("X-Trace-ID", () -> "52aecbf6-73e1-11e5-b508-10ddb1ee7671")
@@ -20,19 +17,19 @@ public final class MDCTraceListenerTest {
             .build();
 
     @Test
-    public void shouldNotBeSetUntilStarted() {
+    void shouldNotBeSetUntilStarted() {
         assertThat(MDC.get("X-Trace-ID"), is(nullValue()));
     }
 
     @Test
-    public void shouldBeSetAfterStart() {
+    void shouldBeSetAfterStart() {
         unit.start();
 
         assertThat(MDC.get("X-Trace-ID"), is("52aecbf6-73e1-11e5-b508-10ddb1ee7671"));
     }
 
     @Test
-    public void shouldNotBeSetAfterStop() {
+    void shouldNotBeSetAfterStop() {
         unit.start();
         unit.stop();
 

@@ -1,17 +1,20 @@
 package org.zalando.tracer.spring;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
@@ -20,17 +23,19 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
 
-@ContextConfiguration(classes = AsyncTest.TestConfiguration.class)
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@ImportAutoConfiguration(TracerAutoConfiguration.class)
 @ActiveProfiles("uuid")
-public class AsyncTest extends AbstractTest {
+class AsyncTest {
 
+    @SpringBootConfiguration
     @EnableAutoConfiguration
     @EnableAsync
-    @Configuration
     @Import(TaskService.class)
     public static class TestConfiguration {
 
@@ -61,7 +66,7 @@ public class AsyncTest extends AbstractTest {
     private TaskService service;
 
     @Test
-    public void shouldPerformAsyncTaskWithTracer() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldPerformAsyncTaskWithTracer() throws InterruptedException, ExecutionException, TimeoutException {
         tracer.start();
 
         try {
@@ -74,7 +79,7 @@ public class AsyncTest extends AbstractTest {
     }
 
     @Test
-    public void shouldPerformAsyncTaskWithoutTracer() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldPerformAsyncTaskWithoutTracer() throws InterruptedException, ExecutionException, TimeoutException {
         final String value = service.getTraceId().get(500, MILLISECONDS);
 
         assertThat(value, is(notNullValue()));

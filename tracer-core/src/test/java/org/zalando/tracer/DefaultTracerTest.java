@@ -1,10 +1,11 @@
 package org.zalando.tracer;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static java.util.Arrays.asList;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class DefaultTracerTest extends AbstractTracerTest {
+final class DefaultTracerTest extends AbstractTracerTest {
 
     private final Tracer tracer = Tracer.builder()
             .traces(asList("X-Trace-ID", "X-Request-ID"))
@@ -16,16 +17,20 @@ public final class DefaultTracerTest extends AbstractTracerTest {
         return tracer;
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void shouldFailToStartWithoutProvidedValuesIfAlreadyStarted() {
-        tracer.start();
-        tracer.start();
+    @Test
+    void shouldFailToStartWithoutProvidedValuesIfAlreadyStarted() {
+        assertThrows(IllegalStateException.class, () -> {
+            tracer.start();
+            tracer.start();
+        });
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void shouldFailToStartWithProvidedValuesIfAlreadyStarted() {
-        tracer.start(trace -> "foo");
-        tracer.start(trace -> "bar");
+    @Test
+    void shouldFailToStartWithProvidedValuesIfAlreadyStarted() {
+        assertThrows(IllegalStateException.class, () -> {
+            tracer.start(trace -> "foo");
+            tracer.start(trace -> "bar");
+        });
     }
 
 }

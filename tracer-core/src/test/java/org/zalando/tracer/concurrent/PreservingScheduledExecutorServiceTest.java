@@ -4,7 +4,7 @@ import org.zalando.tracer.Tracer;
 
 import java.util.concurrent.ScheduledExecutorService;
 
-public final class PreservingScheduledExecutorServiceTest extends AbstractPreservingScheduledExecutorServiceTest {
+final class PreservingScheduledExecutorServiceTest extends AbstractPreservingScheduledExecutorServiceTest {
 
     @Override
     protected ScheduledExecutorService unit(final ScheduledExecutorService executor, final Tracer tracer) {

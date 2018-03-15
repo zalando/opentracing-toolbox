@@ -1,23 +1,30 @@
 package org.zalando.tracer.spring;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hobsoft.hamcrest.compose.ComposeMatchers.hasFeature;
-import static org.junit.Assert.assertThat;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = Application.class)
+@ImportAutoConfiguration(TracerAutoConfiguration.class)
 @ActiveProfiles("uuid")
-public final class UUIDGeneratorTest extends AbstractTest {
+final class UUIDGeneratorTest {
 
     @Autowired
     private Tracer tracer;
 
     @Test
-    public void shouldConfigureTraceIdTrace() {
+    void shouldConfigureTraceIdTrace() {
         final Trace trace = tracer.get("X-Trace-ID");
 
         tracer.start();

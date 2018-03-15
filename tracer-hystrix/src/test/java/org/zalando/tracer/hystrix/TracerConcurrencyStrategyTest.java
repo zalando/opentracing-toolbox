@@ -1,33 +1,30 @@
 package org.zalando.tracer.hystrix;
 
-import com.hystrix.junit.HystrixRequestContextRule;
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.strategy.HystrixPlugins;
 import com.netflix.hystrix.strategy.concurrency.HystrixConcurrencyStrategy;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
 import java.util.concurrent.Callable;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
-public final class TracerConcurrencyStrategyTest {
-
-    @Rule
-    public HystrixRequestContextRule hystrix = new HystrixRequestContextRule();
+@ExtendWith(HystrixExtension.class)
+final class TracerConcurrencyStrategyTest {
 
     private final Tracer tracer = Tracer.builder()
             .trace("X-Trace", () -> "76f6046c-1b56-11e6-8c85-8fc9ee29f631")
             .build();
     private final Trace trace = tracer.get("X-Trace");
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         final HystrixPlugins plugins = HystrixPlugins.getInstance();
         final HystrixConcurrencyStrategy delegate = new HystrixConcurrencyStrategy() {
             @Override
@@ -43,7 +40,7 @@ public final class TracerConcurrencyStrategyTest {
     }
 
     @Test
-    public void shouldGetTrace() {
+    void shouldGetTrace() {
         tracer.start();
 
         try {
@@ -56,7 +53,7 @@ public final class TracerConcurrencyStrategyTest {
 
     private final class GetTrace extends HystrixCommand<String> {
 
-        public GetTrace() {
+        GetTrace() {
             super(HystrixCommandGroupKey.Factory.asKey("ExampleGroup"));
         }
 

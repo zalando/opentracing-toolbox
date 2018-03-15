@@ -1,28 +1,27 @@
 package org.zalando.tracer.servlet;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.zalando.tracer.Generator;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
-import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 import static com.jayway.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public final class TracerFilterTest {
+final class TracerFilterTest {
 
     private final String generatedValue = "c33a55a8-89e8-11e5-9ce2-dbc276b3cf7d";
     private final String presentValue = "c72f1216-89e8-11e5-af44-f3f1713f954e";
@@ -36,11 +35,11 @@ public final class TracerFilterTest {
     private final Trace trace = tracer.get("X-Trace-ID");
     private final TracerFilter filter = new TracerFilter(tracer);
 
-    @Rule
-    public final JettyRule jetty = new JettyRule(filter, trace);
+    @RegisterExtension
+    final JettyExtension jetty = new JettyExtension(filter, trace);
 
-    @Before
-    public void defaultBehaviour() {
+    @BeforeEach
+    void defaultBehaviour() {
         when(generator.generate()).thenReturn(generatedValue);
     }
 
@@ -49,7 +48,7 @@ public final class TracerFilterTest {
     }
 
     @Test
-    public void shouldAddPresentValueAsResponseHeader() throws Exception {
+    void shouldAddPresentValueAsResponseHeader() {
         given().
                 when()
                 .header("X-Trace-ID", presentValue)
@@ -59,7 +58,7 @@ public final class TracerFilterTest {
     }
 
     @Test
-    public void shouldAddGeneratedValueAsResponseHeader() {
+    void shouldAddGeneratedValueAsResponseHeader() {
         given().
                 when()
                 .get(url("/traced"))
@@ -68,7 +67,7 @@ public final class TracerFilterTest {
     }
 
     @Test
-    public void shouldNotAddPresentValueAsResponseHeadersWhenTraceIsNotActive() throws Exception {
+    void shouldNotAddPresentValueAsResponseHeadersWhenTraceIsNotActive() {
         given().
                 when()
                 .header("X-Trace-ID", presentValue)
@@ -78,7 +77,7 @@ public final class TracerFilterTest {
     }
 
     @Test
-    public void shouldNotAddGeneratedValueAsResponseHeadersWhenTraceIsNotActive() throws Exception {
+    void shouldNotAddGeneratedValueAsResponseHeadersWhenTraceIsNotActive() {
         given().
                 when()
                 .get(url("/untraced"))
@@ -87,7 +86,7 @@ public final class TracerFilterTest {
     }
 
     @Test
-    public void shouldManageTraceForAsyncDispatch() throws Exception {
+    void shouldManageTraceForAsyncDispatch() {
         given().
                 when()
                 .get(url("/async"));
@@ -96,7 +95,7 @@ public final class TracerFilterTest {
     }
 
     @Test
-    public void shouldNotManageTraceForAsyncDispatch() throws Exception {
+    void shouldNotManageTraceForAsyncDispatch() {
         given().
                 when()
                 .get(url("/async"));
@@ -105,7 +104,7 @@ public final class TracerFilterTest {
     }
 
     @Test
-    public void shouldNotManageTraceForForwardDispatch() throws Exception {
+    void shouldNotManageTraceForForwardDispatch() {
         given().
                 when()
                 .get(url("/forward"));
@@ -114,7 +113,7 @@ public final class TracerFilterTest {
     }
 
     @Test
-    public void shouldNotManageTraceForIncludeDispatch() throws Exception {
+    void shouldNotManageTraceForIncludeDispatch() {
         given().
                 when()
                 .get(url("/include"));
@@ -122,14 +121,16 @@ public final class TracerFilterTest {
         verify(generator, times(1)).generate();
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldDenyNonHttpRequest() throws ServletException, IOException {
-        filter.doFilter(mock(ServletRequest.class), mock(HttpServletResponse.class), null);
+    @Test
+    void shouldDenyNonHttpRequest() {
+        assertThrows(IllegalArgumentException.class, () ->
+                filter.doFilter(mock(ServletRequest.class), mock(HttpServletResponse.class), null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldDenyNonHttpResponse() throws ServletException, IOException {
-        filter.doFilter(mock(HttpServletRequest.class), mock(ServletResponse.class), null);
+    @Test
+    void shouldDenyNonHttpResponse() {
+        assertThrows(IllegalArgumentException.class, () ->
+                filter.doFilter(mock(HttpServletRequest.class), mock(ServletResponse.class), null));
     }
 
 }

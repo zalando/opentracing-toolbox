@@ -6,8 +6,9 @@ import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.servlet.example.AsyncServlet;
 import org.zalando.tracer.servlet.example.FailingServlet;
@@ -19,13 +20,11 @@ import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import java.util.EnumSet;
 
-public final class JettyRule extends TestWatcher {
+final class JettyExtension implements BeforeEachCallback, AfterEachCallback {
 
-    private final Server server;
+    private final Server server = new Server(0);
 
-    public JettyRule(final Filter filter, final Trace trace) {
-        this.server = new Server(0);
-
+    JettyExtension(final Filter filter, final Trace trace) {
         final ServletContextHandler handler = new ServletContextHandler();
         handler.setContextPath("/");
         handler.addServlet(new ServletHolder(new AsyncServlet(trace)), "/async");
@@ -52,21 +51,13 @@ public final class JettyRule extends TestWatcher {
     }
 
     @Override
-    protected void starting(final Description description) {
-        try {
-            server.start();
-        } catch (final Exception e) {
-            throw new IllegalStateException(e);
-        }
+    public void beforeEach(final ExtensionContext context) throws Exception {
+        server.start();
     }
 
     @Override
-    protected void finished(final Description description) {
-        try {
-            server.stop();
-        } catch (final Exception e) {
-            throw new IllegalStateException(e);
-        }
+    public void afterEach(final ExtensionContext context) throws Exception {
+        server.stop();
     }
 
 }

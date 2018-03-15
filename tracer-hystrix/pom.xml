@@ -39,12 +39,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.netflix.hystrix</groupId>
-            <artifactId>hystrix-junit</artifactId>
-            <version>${hystrix.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
 </project>
