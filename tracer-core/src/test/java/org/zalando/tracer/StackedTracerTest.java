@@ -1,6 +1,6 @@
 package org.zalando.tracer;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 
 import java.util.Arrays;
@@ -8,11 +8,11 @@ import java.util.Arrays;
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 
-public final class StackedTracerTest extends AbstractTracerTest {
+final class StackedTracerTest extends AbstractTracerTest {
 
     private final TraceListener listener = mock(TraceListener.class);
     private final StackedTraceListener stackedListener = mock(StackedTraceListener.class);
@@ -31,19 +31,19 @@ public final class StackedTracerTest extends AbstractTracerTest {
     }
 
     @Test
-    public void shouldNotFailToStartWithoutProvidedValuesIfAlreadyStarted() {
+    void shouldNotFailToStartWithoutProvidedValuesIfAlreadyStarted() {
         tracer.start();
         tracer.start();
     }
 
     @Test
-    public void shouldNotFailToStartWithProvidedValuesIfAlreadyStarted() {
+    void shouldNotFailToStartWithProvidedValuesIfAlreadyStarted() {
         tracer.start(trace -> "foo");
         tracer.start(trace -> "bar");
     }
 
     @Test
-    public void shouldKeepPreviousTraceWhenStacking() {
+    void shouldKeepPreviousTraceWhenStacking() {
         final Trace trace = tracer.get("X-Trace-ID");
 
         tracer.start();
@@ -55,7 +55,7 @@ public final class StackedTracerTest extends AbstractTracerTest {
     }
 
     @Test
-    public void shouldTriggerListenersCorrectlyWhenStacking() {
+    void shouldTriggerListenersCorrectlyWhenStacking() {
         final InOrder inOrder = inOrder(listener);
 
         tracer.start();
@@ -71,7 +71,7 @@ public final class StackedTracerTest extends AbstractTracerTest {
     }
 
     @Test
-    public void shouldTriggerStackedListenersCorrectlyWhenStacking() {
+    void shouldTriggerStackedListenersCorrectlyWhenStacking() {
         final InOrder inOrder = inOrder(stackedListener);
 
         tracer.start();

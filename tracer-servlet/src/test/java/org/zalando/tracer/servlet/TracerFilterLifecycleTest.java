@@ -1,7 +1,7 @@
 package org.zalando.tracer.servlet;
 
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
@@ -13,19 +13,19 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-public final class TracerFilterLifecycleTest {
+final class TracerFilterLifecycleTest {
 
     private final Tracer tracer = mock(Tracer.class);
 
-    @Rule
-    public final JettyRule jetty = new JettyRule(new TracerFilter(tracer), mock(Trace.class));
+    @RegisterExtension
+    final JettyExtension jetty = new JettyExtension(new TracerFilter(tracer), mock(Trace.class));
 
     private String url(final String path) {
         return format("http://localhost:%d%s", jetty.getPort(), path);
     }
 
     @Test
-    public void shouldStartAndStopTracer() throws Exception {
+    void shouldStartAndStopTracer() {
         given().
                 when()
                 .get(url("/traced"));
@@ -35,7 +35,7 @@ public final class TracerFilterLifecycleTest {
     }
 
     @Test
-    public void shouldStartAndStopTracerOnFailure() throws Exception {
+    void shouldStartAndStopTracerOnFailure() {
         given().
                 when()
                 .get(url("/failure"));
@@ -45,7 +45,7 @@ public final class TracerFilterLifecycleTest {
     }
 
     @Test
-    public void shouldIgnoreTracerWhenTraceIsNotActive() throws Exception {
+    void shouldIgnoreTracerWhenTraceIsNotActive() {
         given().
                 when()
                 .get(url("/untraced"));

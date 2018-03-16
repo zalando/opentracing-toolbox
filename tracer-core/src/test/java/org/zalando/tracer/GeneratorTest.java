@@ -1,42 +1,42 @@
 package org.zalando.tracer;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Iterator;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.matchesPattern;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class GeneratorTest {
+class GeneratorTest {
 
     @Test
-    public void testUuid() {
+    void testUuid() {
         final String value = new UUIDGenerator().generate();
 
         assertThat(value.length(), is(36));
     }
 
     @Test
-    public void testFlowId() throws Exception {
+    void testFlowId() {
         final String value = new FlowIDGenerator().generate();
 
         assertThat(value.length(), is(22));
     }
 
     @Test
-    public void testPhrase() throws Exception {
+    void testPhrase() {
         final String value = new PhraseGenerator().generate();
 
         assertThat(value, matchesPattern("[a-z]+_[a-z]+_[a-z]+_[a-z]+_[a-z]+"));
     }
 
     @Test
-    public void testPhraseWozniakIsNotBoring() throws Exception {
+    void testPhraseWozniakIsNotBoring() {
         final Iterator<Integer> indexes = Arrays.asList(9, 143, 0, 0, 0, 0, 0, 0, 0, 0).iterator();
 
         final String value = PhraseGenerator.generate(i -> indexes.next());
@@ -45,17 +45,17 @@ public class GeneratorTest {
     }
 
     @Test
-    public void testPhraseOver_1_000_000_000() throws Exception {
+    void testPhraseOver_1_000_000_000() {
         assertTrue(PhraseGenerator.maxCombinations() > 1_000_000_000);
     }
 
     @Test
-    public void testPhraseMinLength() throws Exception {
+    void testPhraseMinLength() {
         assertThat(PhraseGenerator.minLength(), is(22));
     }
 
     @Test
-    public void testPhraseMaxLength() throws Exception {
+    void testPhraseMaxLength() {
         assertThat(PhraseGenerator.maxLength(), is(61));
     }
 }

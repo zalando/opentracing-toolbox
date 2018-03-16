@@ -4,7 +4,7 @@ import org.zalando.tracer.Tracer;
 
 import java.util.concurrent.ExecutorService;
 
-public final class PreservingExecutorServiceTest extends AbstractPreservingExecutorServiceTest {
+final class PreservingExecutorServiceTest extends AbstractPreservingExecutorServiceTest {
 
     private final ExecutorService unit = TracingExecutors.preserve(executor, tracer);
 

@@ -1,15 +1,19 @@
 package org.zalando.tracer.unit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
-public final class TracerRuleBadCaseTest {
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+final class TracerRuleBadCaseTest {
 
     private final Tracer tracer = Tracer.create("X-Trace-ID");
 
-    @Test(expected = IllegalStateException.class)
-    public void shouldManageTrace() {
-        tracer.get("X-Trace-ID").getValue();
+    @Test
+    void shouldManageTrace() {
+        final Trace trace = tracer.get("X-Trace-ID");
+        assertThrows(IllegalStateException.class, trace::getValue);
     }
 
 }

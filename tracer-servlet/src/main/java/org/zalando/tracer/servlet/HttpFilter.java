@@ -13,7 +13,7 @@ import java.io.IOException;
 interface HttpFilter extends Filter {
 
     @Override
-    default void init(final FilterConfig filterConfig) throws ServletException {
+    default void init(final FilterConfig filterConfig) {
         
     }
 

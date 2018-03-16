@@ -1,6 +1,6 @@
 package org.zalando.tracer.concurrent;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
@@ -17,16 +17,16 @@ import java.util.concurrent.TimeoutException;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-public final class ManagingExecutorServiceTest {
+final class ManagingExecutorServiceTest {
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Tracer tracer = Tracer.create("X-Trace");
     private final ExecutorService unit = TracingExecutors.manage(executor, tracer);
 
     @Test
-    public void shouldManageTraceForSubmitRunnable() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldManageTraceForSubmitRunnable() throws InterruptedException, ExecutionException, TimeoutException {
         final CompletableFuture<String> future = new CompletableFuture<>();
         final Trace trace = tracer.get("X-Trace");
 
@@ -43,7 +43,7 @@ public final class ManagingExecutorServiceTest {
     }
 
     @Test
-    public void shouldManageTraceForSubmitRunnableWithResult()
+    void shouldManageTraceForSubmitRunnableWithResult()
             throws InterruptedException, ExecutionException, TimeoutException {
         final CompletableFuture<String> future = new CompletableFuture<>();
         final Trace trace = tracer.get("X-Trace");
@@ -61,7 +61,7 @@ public final class ManagingExecutorServiceTest {
     }
 
     @Test
-    public void shouldManageTraceForSubmitCallable() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldManageTraceForSubmitCallable() throws InterruptedException, ExecutionException, TimeoutException {
         final Future<String> future;
         final Trace trace = tracer.get("X-Trace");
 
@@ -78,7 +78,7 @@ public final class ManagingExecutorServiceTest {
     }
 
     @Test
-    public void shouldManageTraceForInvokeAll() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldManageTraceForInvokeAll() throws InterruptedException, ExecutionException, TimeoutException {
         final List<Future<String>> future;
         final Trace trace = tracer.get("X-Trace");
 
@@ -95,7 +95,7 @@ public final class ManagingExecutorServiceTest {
     }
 
     @Test
-    public void shouldManageTraceForInvokeAllWithTimeout() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldManageTraceForInvokeAllWithTimeout() throws InterruptedException, ExecutionException, TimeoutException {
         final List<Future<String>> future;
         final Trace trace = tracer.get("X-Trace");
 
@@ -112,7 +112,7 @@ public final class ManagingExecutorServiceTest {
     }
 
     @Test
-    public void shouldManageTraceForInvokeAny() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldManageTraceForInvokeAny() throws InterruptedException, ExecutionException {
         final Trace trace = tracer.get("X-Trace");
 
         tracer.start();
@@ -129,7 +129,7 @@ public final class ManagingExecutorServiceTest {
     }
 
     @Test
-    public void shouldManageTraceForInvokeAnyWithTimeout() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldManageTraceForInvokeAnyWithTimeout() throws InterruptedException, ExecutionException, TimeoutException {
         final Trace trace = tracer.get("X-Trace");
 
         tracer.start();
@@ -146,7 +146,7 @@ public final class ManagingExecutorServiceTest {
     }
 
     @Test
-    public void shouldShutdown() throws InterruptedException {
+    void shouldShutdown() throws InterruptedException {
         assertThat(unit.isTerminated(), is(false));
         assertThat(unit.isShutdown(), is(false));
 

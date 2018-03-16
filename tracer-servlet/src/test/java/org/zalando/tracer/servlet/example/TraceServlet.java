@@ -17,7 +17,7 @@ public final class TraceServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
         response.getWriter().println(trace.getValue());
     }
 

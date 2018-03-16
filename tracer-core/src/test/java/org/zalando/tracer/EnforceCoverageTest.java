@@ -2,34 +2,34 @@ package org.zalando.tracer;
 
 import com.google.gag.annotation.remark.Hack;
 import com.google.gag.annotation.remark.OhNoYouDidnt;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @Hack
 @OhNoYouDidnt
-public final class EnforceCoverageTest {
+final class EnforceCoverageTest {
 
     @Test
-    public void shouldUsePhraseGeneratorHolderConstructor() {
+    void shouldUsePhraseGeneratorHolderConstructor() {
         new PhraseGenerator.Holder();
     }
 
     @Test
-    public void shouldUseTracerFactoryConstructor() {
+    void shouldUseTracerFactoryConstructor() {
         new TracerFactory();
     }
 
     @Test
-    public void shouldUseTraceListenersConstructor() {
+    void shouldUseTraceListenersConstructor() {
         new TraceListeners();
     }
 
 
     @Test
-    public void shouldCoverTracerBuilderToString() {
+    void shouldCoverTracerBuilderToString() {
         assertThat(Tracer.builder(), hasToString(notNullValue()));
     }
 

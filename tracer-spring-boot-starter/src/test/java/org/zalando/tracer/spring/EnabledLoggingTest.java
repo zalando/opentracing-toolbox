@@ -1,22 +1,27 @@
 package org.zalando.tracer.spring;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zalando.tracer.LoggingTraceListener;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
 
-@TestPropertySource(properties = "tracer.logging.enabled = true")
-public final class EnabledLoggingTest extends AbstractTest {
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = Application.class, properties = "tracer.logging.enabled = true")
+@ImportAutoConfiguration(TracerAutoConfiguration.class)
+final class EnabledLoggingTest {
 
     @Autowired
     private LoggingTraceListener loggingTraceListener;
 
     @Test
-    public void shouldDisableLoggingTraceListenerByDefault() {
+    void shouldDisableLoggingTraceListenerByDefault() {
         assertThat(loggingTraceListener, is(notNullValue()));
     }
 

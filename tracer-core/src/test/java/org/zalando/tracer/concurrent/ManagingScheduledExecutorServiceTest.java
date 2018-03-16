@@ -1,6 +1,6 @@
 package org.zalando.tracer.concurrent;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
@@ -15,16 +15,16 @@ import java.util.concurrent.TimeoutException;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-public final class ManagingScheduledExecutorServiceTest {
+final class ManagingScheduledExecutorServiceTest {
 
     private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
     private final Tracer tracer = Tracer.create("X-Trace");
     private final ScheduledExecutorService unit = TracingExecutors.manage(executor, tracer);
 
     @Test
-    public void shouldManageTraceForScheduleRunnable() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldManageTraceForScheduleRunnable() throws InterruptedException, ExecutionException, TimeoutException {
         final CompletableFuture<String> future = new CompletableFuture<>();
         final Trace trace = tracer.get("X-Trace");
 
@@ -41,7 +41,7 @@ public final class ManagingScheduledExecutorServiceTest {
     }
 
     @Test
-    public void shouldManageTraceForScheduleCallable() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldManageTraceForScheduleCallable() throws InterruptedException, ExecutionException, TimeoutException {
         final Future<String> future;
         final Trace trace = tracer.get("X-Trace");
 
@@ -58,7 +58,7 @@ public final class ManagingScheduledExecutorServiceTest {
     }
 
     @Test
-    public void shouldManageTraceForScheduleAtFixedRatee() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldManageTraceForScheduleAtFixedRatee() throws InterruptedException, ExecutionException, TimeoutException {
         final CompletableFuture<String> future = new CompletableFuture<>();
         final Trace trace = tracer.get("X-Trace");
 
@@ -75,7 +75,7 @@ public final class ManagingScheduledExecutorServiceTest {
     }
 
     @Test
-    public void shouldManageTraceForScheduleWithDelayRatee() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldManageTraceForScheduleWithDelayRatee() throws InterruptedException, ExecutionException, TimeoutException {
         final CompletableFuture<String> future = new CompletableFuture<>();
         final Trace trace = tracer.get("X-Trace");
 

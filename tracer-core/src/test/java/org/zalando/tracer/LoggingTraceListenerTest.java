@@ -1,19 +1,19 @@
 package org.zalando.tracer;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.hobsoft.hamcrest.compose.ComposeMatchers.hasFeature;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 
-public final class LoggingTraceListenerTest {
+final class LoggingTraceListenerTest {
 
     private final Logger logger = mock(Logger.class);
     private final LoggingTraceListener listener = new LoggingTraceListener(logger);
@@ -23,7 +23,7 @@ public final class LoggingTraceListenerTest {
             .build();
 
     @Test
-    public void shouldLogOnStart() throws Exception {
+    void shouldLogOnStart() {
         tracer.start();
 
         verify(logger).trace(argThat(containsString("Started")),
@@ -32,7 +32,7 @@ public final class LoggingTraceListenerTest {
     }
 
     @Test
-    public void shouldLogOnStop() throws Exception {
+    void shouldLogOnStop() {
         tracer.start();
         tracer.stop();
 
@@ -43,7 +43,7 @@ public final class LoggingTraceListenerTest {
     }
 
     @Test
-    public void shouldProvideAccessToLoggerForTestingPurposes() {
+    void shouldProvideAccessToLoggerForTestingPurposes() {
         assertThat(listener, hasFeature("logger", LoggingTraceListener::getLogger, is(sameInstance(logger))));
     }
 

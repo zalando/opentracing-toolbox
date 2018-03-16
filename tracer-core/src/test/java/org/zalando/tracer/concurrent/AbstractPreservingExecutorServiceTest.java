@@ -1,6 +1,6 @@
 package org.zalando.tracer.concurrent;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
@@ -16,9 +16,9 @@ import java.util.concurrent.TimeoutException;
 
 import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-public abstract class AbstractPreservingExecutorServiceTest {
+abstract class AbstractPreservingExecutorServiceTest {
 
     protected final ExecutorService executor = Executors.newSingleThreadExecutor();
     protected final Tracer tracer = Tracer.create("X-Trace");
@@ -26,7 +26,7 @@ public abstract class AbstractPreservingExecutorServiceTest {
     protected abstract ExecutorService unit(ExecutorService executor, Tracer tracer);
 
     @Test
-    public void shouldPreserveTraceForSubmitRunnable() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldPreserveTraceForSubmitRunnable() throws InterruptedException, ExecutionException, TimeoutException {
         final CompletableFuture<String> future = new CompletableFuture<>();
         final Trace trace = tracer.get("X-Trace");
 
@@ -43,7 +43,7 @@ public abstract class AbstractPreservingExecutorServiceTest {
     }
 
     @Test
-    public void shouldPreserveTraceForSubmitRunnableWithResult()
+    void shouldPreserveTraceForSubmitRunnableWithResult()
             throws InterruptedException, ExecutionException, TimeoutException {
         final CompletableFuture<String> future = new CompletableFuture<>();
         final Trace trace = tracer.get("X-Trace");
@@ -61,7 +61,7 @@ public abstract class AbstractPreservingExecutorServiceTest {
     }
 
     @Test
-    public void shouldPreserveTraceForSubmitCallable() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldPreserveTraceForSubmitCallable() throws InterruptedException, ExecutionException, TimeoutException {
         final Future<String> future;
         final Trace trace = tracer.get("X-Trace");
 
@@ -78,7 +78,7 @@ public abstract class AbstractPreservingExecutorServiceTest {
     }
 
     @Test
-    public void shouldPreserveTraceForInvokeAll() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldPreserveTraceForInvokeAll() throws InterruptedException, ExecutionException, TimeoutException {
         final List<Future<String>> future;
         final Trace trace = tracer.get("X-Trace");
 
@@ -95,7 +95,7 @@ public abstract class AbstractPreservingExecutorServiceTest {
     }
 
     @Test
-    public void shouldPreserveTraceForInvokeAllWithTimeout() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldPreserveTraceForInvokeAllWithTimeout() throws InterruptedException, ExecutionException, TimeoutException {
         final List<Future<String>> future;
         final Trace trace = tracer.get("X-Trace");
 
@@ -112,7 +112,7 @@ public abstract class AbstractPreservingExecutorServiceTest {
     }
 
     @Test
-    public void shouldPreserveTraceForInvokeAny() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldPreserveTraceForInvokeAny() throws InterruptedException, ExecutionException {
         final Trace trace = tracer.get("X-Trace");
 
         tracer.start();
@@ -129,7 +129,7 @@ public abstract class AbstractPreservingExecutorServiceTest {
     }
 
     @Test
-    public void shouldPreserveTraceForInvokeAnyWithTimeout() throws InterruptedException, ExecutionException, TimeoutException {
+    void shouldPreserveTraceForInvokeAnyWithTimeout() throws InterruptedException, ExecutionException, TimeoutException {
         final Trace trace = tracer.get("X-Trace");
 
         tracer.start();
@@ -146,7 +146,7 @@ public abstract class AbstractPreservingExecutorServiceTest {
     }
 
     @Test
-    public void shouldShutdown() throws InterruptedException {
+    void shouldShutdown() throws InterruptedException {
         assertThat(unit(executor, tracer).isTerminated(), is(false));
         assertThat(unit(executor, tracer).isShutdown(), is(false));
 

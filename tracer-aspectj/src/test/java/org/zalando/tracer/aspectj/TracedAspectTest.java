@@ -1,25 +1,24 @@
 package org.zalando.tracer.aspectj;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zalando.tracer.Trace;
 import org.zalando.tracer.Tracer;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TracedAspectTest.TestConfiguration.class)
-public class TracedAspectTest {
+class TracedAspectTest {
 
     @Configuration
     @Import(TracedService.class)
@@ -47,9 +46,6 @@ public class TracedAspectTest {
 
     }
 
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
-
     @Autowired
     private TracedService service;
 
@@ -57,27 +53,25 @@ public class TracedAspectTest {
     private Trace trace;
 
     @Test
-    public void shouldStartTracer() {
+    void shouldStartTracer() {
         assertThat(service.withAspect(), is("f09f5896-73fd-11e5-bc6f-10ddb1ee7671"));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void shouldFail() {
-        service.failWithAspect();
+    @Test
+    void shouldFail() {
+        assertThrows(UnsupportedOperationException.class, service::failWithAspect);
     }
 
     @Test
-    public void shouldStopTracer() {
+    void shouldStopTracer() {
         service.withAspect();
 
-        exception.expect(IllegalStateException.class);
-        trace.getValue();
+        assertThrows(IllegalStateException.class, trace::getValue);
     }
 
     @Test
-    public void shouldNotStartTracer() {
-        exception.expect(IllegalStateException.class);
-        service.withoutAspect();
+    void shouldNotStartTracer() {
+        assertThrows(IllegalStateException.class, service::withoutAspect);
     }
 
 }

@@ -1,21 +1,29 @@
 package org.zalando.tracer.spring;
 
-import org.junit.Test;
-import org.junit.Test.None;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zalando.tracer.Tracer;
 
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD;
+
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = Application.class, properties = "tracer.stacked = true")
+@ImportAutoConfiguration(TracerAutoConfiguration.class)
 @ActiveProfiles("uuid")
-@TestPropertySource(properties = "tracer.stacked: true")
-public final class ConfiguredStackedTracerTest extends AbstractTest {
+@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
+final class ConfiguredStackedTracerTest {
 
     @Autowired
     private Tracer tracer;
 
-    @Test(expected = None.class)
-    public void shouldBeStacked() {
+    @Test
+    void shouldBeStacked() {
         tracer.start();
         tracer.get("X-Trace-ID");
         tracer.start();
