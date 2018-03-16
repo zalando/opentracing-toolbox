@@ -16,7 +16,6 @@ public final class TracerExtension implements BeforeEachCallback, AfterEachCallb
         this.tracer = tracer;
     }
 
-
     @Override
     public void beforeEach(final ExtensionContext context) {
         tracer.start();
