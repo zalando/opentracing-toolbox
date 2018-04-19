@@ -3,10 +3,14 @@ package org.zalando.tracer.okhttp;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.apiguardian.api.API;
 import org.zalando.tracer.Tracer;
 
 import java.io.IOException;
 
+import static org.apiguardian.api.API.Status.STABLE;
+
+@API(status = STABLE)
 public final class TracerInterceptor implements Interceptor {
 
     private final Tracer tracer;

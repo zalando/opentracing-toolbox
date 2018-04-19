@@ -1,9 +1,14 @@
 package org.zalando.tracer;
 
+import org.apiguardian.api.API;
+
 import java.nio.ByteBuffer;
 import java.util.Base64;
 import java.util.UUID;
 
+import static org.apiguardian.api.API.Status.STABLE;
+
+@API(status = STABLE)
 public final class FlowIDGenerator implements Generator {
 
     private final Base64.Encoder encoder = Base64.getUrlEncoder();

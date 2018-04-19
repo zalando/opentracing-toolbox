@@ -1,10 +1,14 @@
 package org.zalando.tracer.spring;
 
+import org.apiguardian.api.API;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static org.apiguardian.api.API.Status.INTERNAL;
+
+@API(status = INTERNAL)
 @ConfigurationProperties(prefix = "tracer")
 public final class TracerProperties {
 

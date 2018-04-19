@@ -1,8 +1,11 @@
 package org.zalando.tracer;
 
+import org.apiguardian.api.API;
 import org.zalando.tracer.TracerFactory.Builder;
 
 import java.util.function.Function;
+
+import static org.apiguardian.api.API.Status.STABLE;
 
 /**
  * A listener that can be attached to a {@link Tracer tracer} upon creation. It will then observe any lifecycle event
@@ -27,6 +30,7 @@ import java.util.function.Function;
  * @see Tracer#stop()
  * @see StackedTraceListener
  */
+@API(status = STABLE)
 public interface TraceListener {
 
     /**

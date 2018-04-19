@@ -1,8 +1,12 @@
 package org.zalando.tracer;
 
+import org.apiguardian.api.API;
+
+import static org.apiguardian.api.API.Status.STABLE;
 import static org.slf4j.MDC.put;
 import static org.slf4j.MDC.remove;
 
+@API(status = STABLE)
 public final class MDCTraceListener implements TraceListener {
 
     @Override

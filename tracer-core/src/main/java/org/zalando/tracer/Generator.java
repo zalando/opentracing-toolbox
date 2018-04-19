@@ -1,6 +1,10 @@
 package org.zalando.tracer;
 
+import org.apiguardian.api.API;
+
 import java.util.function.Function;
+
+import static org.apiguardian.api.API.Status.STABLE;
 
 /**
  * A generator is used to create a new trace identifier when a new lifecycle begins and no existing identifier exist.
@@ -11,6 +15,7 @@ import java.util.function.Function;
  * @see Tracer#start()
  * @see Tracer#start(Function)
  */
+@API(status = STABLE)
 @FunctionalInterface
 public interface Generator {
 

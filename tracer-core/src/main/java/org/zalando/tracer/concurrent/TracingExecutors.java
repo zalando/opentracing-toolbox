@@ -1,5 +1,6 @@
 package org.zalando.tracer.concurrent;
 
+import org.apiguardian.api.API;
 import org.zalando.tracer.Tracer;
 
 import java.util.concurrent.Executor;
@@ -7,9 +8,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import static org.apiguardian.api.API.Status.STABLE;
+
 /**
  * @see Executors
  */
+@API(status = STABLE)
 public final class TracingExecutors {
 
     TracingExecutors() {
