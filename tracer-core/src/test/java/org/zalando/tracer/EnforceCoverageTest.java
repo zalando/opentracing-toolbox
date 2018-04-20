@@ -4,18 +4,13 @@ import com.google.gag.annotation.remark.Hack;
 import com.google.gag.annotation.remark.OhNoYouDidnt;
 import org.junit.jupiter.api.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 @Hack
 @OhNoYouDidnt
 final class EnforceCoverageTest {
-
-    @Test
-    void shouldUsePhraseGeneratorHolderConstructor() {
-        new PhraseGenerator.Holder();
-    }
 
     @Test
     void shouldUseTracerFactoryConstructor() {

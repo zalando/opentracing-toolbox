@@ -36,6 +36,13 @@ class GeneratorTest {
     }
 
     @Test
+    void testRandom() {
+        final String value = new RandomGenerator().generate();
+
+        assertThat(value.length(), is(32));
+    }
+
+    @Test
     void testPhraseWozniakIsNotBoring() {
         final Iterator<Integer> indexes = Arrays.asList(9, 143, 0, 0, 0, 0, 0, 0, 0, 0).iterator();
 
