@@ -1,4 +1,4 @@
-spring.main.banner_mode: OFF
+spring.main.banner_mode: 'OFF'
 
 tracer:
   scheduling.pool-size: 16
