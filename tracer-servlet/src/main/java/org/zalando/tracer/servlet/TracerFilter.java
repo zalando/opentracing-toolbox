@@ -1,5 +1,6 @@
 package org.zalando.tracer.servlet;
 
+import org.apiguardian.api.API;
 import org.zalando.tracer.Tracer;
 
 import javax.servlet.DispatcherType;
@@ -12,6 +13,9 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
+import static org.apiguardian.api.API.Status.STABLE;
+
+@API(status = STABLE)
 public final class TracerFilter implements HttpFilter {
 
     private final Tracer tracer;

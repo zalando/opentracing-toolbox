@@ -1,10 +1,14 @@
 package org.zalando.tracer.hystrix;
 
 import com.netflix.hystrix.strategy.concurrency.HystrixConcurrencyStrategy;
+import org.apiguardian.api.API;
 import org.zalando.tracer.Tracer;
 
 import java.util.concurrent.Callable;
 
+import static org.apiguardian.api.API.Status.STABLE;
+
+@API(status = STABLE)
 public final class TracerConcurrencyStrategy extends ForwardingHystrixConcurrencyStrategy {
 
     private final Tracer tracer;

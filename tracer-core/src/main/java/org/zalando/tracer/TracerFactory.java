@@ -1,6 +1,7 @@
 package org.zalando.tracer;
 
 import lombok.Singular;
+import org.apiguardian.api.API;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -8,7 +9,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 import static java.util.stream.Collectors.toMap;
+import static org.apiguardian.api.API.Status.STABLE;
 
+@API(status = STABLE)
 public final class TracerFactory {
 
     TracerFactory() {

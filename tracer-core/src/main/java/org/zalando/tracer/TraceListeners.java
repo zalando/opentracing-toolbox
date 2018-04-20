@@ -8,7 +8,7 @@ final class TraceListeners {
         // package private so we can trick code coverage
     }
 
-    public static TraceListener compound(final Collection<TraceListener> listeners) {
+    static TraceListener compound(final Collection<TraceListener> listeners) {
         return new TraceListener() {
             @Override
             public void onStart(final String name, final String value) {

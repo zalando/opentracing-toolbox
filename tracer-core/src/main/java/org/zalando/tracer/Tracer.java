@@ -1,5 +1,7 @@
 package org.zalando.tracer;
 
+import org.apiguardian.api.API;
+
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -8,6 +10,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import static java.util.Arrays.asList;
+import static org.apiguardian.api.API.Status.STABLE;
 
 /**
  * A tracer is a lifecycle manager of one or more {@link Trace traces}. Traces are identified by name, e.g.
@@ -20,6 +23,7 @@ import static java.util.Arrays.asList;
  * @see Generator
  * @see TraceListener
  */
+@API(status = STABLE)
 public interface Tracer {
 
     /**

@@ -1,8 +1,13 @@
 package org.zalando.tracer;
 
+import org.apiguardian.api.API;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.apiguardian.api.API.Status.INTERNAL;
+import static org.apiguardian.api.API.Status.STABLE;
+
+@API(status = STABLE)
 public final class LoggingTraceListener implements TraceListener {
 
     private final Logger logger;
@@ -15,7 +20,7 @@ public final class LoggingTraceListener implements TraceListener {
         this.logger = logger;
     }
 
-    // visible for testing
+    @API(status = INTERNAL)
     public Logger getLogger() {
         return logger;
     }

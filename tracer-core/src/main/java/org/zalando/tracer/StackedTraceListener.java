@@ -1,6 +1,9 @@
 package org.zalando.tracer;
 
+import org.apiguardian.api.API;
 import org.zalando.tracer.TracerFactory.Builder;
+
+import static org.apiguardian.api.API.Status.STABLE;
 
 /**
  * {@link StackedTraceListener} are a special kind of {@link TraceListener}, because they are aware of
@@ -18,6 +21,7 @@ import org.zalando.tracer.TracerFactory.Builder;
  * @see TraceListener
  * @see Builder#stacked()
  */
+@API(status = STABLE)
 public interface StackedTraceListener extends TraceListener {
 
 }

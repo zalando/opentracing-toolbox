@@ -1,15 +1,20 @@
 package org.zalando.tracer;
 
+import org.apiguardian.api.API;
+
 import java.security.SecureRandom;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static org.apiguardian.api.API.Status.STABLE;
 
 /**
  * This generator is inspired by Docker container name generator
  *
  * @see <a href="https://github.com/docker/docker/blob/master/pkg/namesgenerator/names-generator.go">names-generator.go</a>
  */
+@API(status = STABLE)
 public final class PhraseGenerator implements Generator {
 
     private static final String ADJECTIVES[] = {
@@ -420,7 +425,6 @@ public final class PhraseGenerator implements Generator {
         return generate(Holder.RANDOM::nextInt);
     }
 
-    // visible for testing
     static String generate(final IntUnaryOperator r) {
         do {
             final String name = Stream.of(PARTS)
@@ -434,21 +438,18 @@ public final class PhraseGenerator implements Generator {
         } while (true);
     }
 
-    // visible for testing
     static long maxCombinations() {
         return Stream.of(PARTS)
             .mapToLong(dict -> dict.length)
             .reduce(1, (a, b) -> a * b);
     }
 
-    // visible for testing
     static int minLength() {
         return Stream.of(PARTS)
             .mapToInt(dict -> Stream.of(dict).mapToInt(String::length).min().orElse(0))
             .sum() + (PARTS.length - 1);
     }
 
-    // visible for testing
     static int maxLength() {
         return Stream.of(PARTS)
             .mapToInt(dict -> Stream.of(dict).mapToInt(String::length).max().orElse(0))

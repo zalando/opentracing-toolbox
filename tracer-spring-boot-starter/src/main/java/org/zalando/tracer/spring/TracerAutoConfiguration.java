@@ -1,5 +1,6 @@
 package org.zalando.tracer.spring;
 
+import org.apiguardian.api.API;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +50,14 @@ import static java.util.Collections.emptyList;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 import static javax.servlet.DispatcherType.ASYNC;
 import static javax.servlet.DispatcherType.REQUEST;
+import static org.apiguardian.api.API.Status.INTERNAL;
+import static org.apiguardian.api.API.Status.STABLE;
 import static org.springframework.aop.interceptor.AsyncExecutionAspectSupport.DEFAULT_TASK_EXECUTOR_BEAN_NAME;
 import static org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor.DEFAULT_TASK_SCHEDULER_BEAN_NAME;
 import static org.zalando.tracer.concurrent.TracingExecutors.manage;
 import static org.zalando.tracer.concurrent.TracingExecutors.tryPreserve;
 
+@API(status = STABLE)
 @Configuration
 @ConditionalOnClass(Tracer.class)
 @EnableConfigurationProperties(TracerProperties.class)
@@ -70,12 +74,14 @@ public class TracerAutoConfiguration {
     private final TracerProperties properties;
     private final GeneratorResolver resolver;
 
+    @API(status = INTERNAL)
     @Autowired
     public TracerAutoConfiguration(final TracerProperties properties, final GeneratorResolver resolver) {
         this.properties = properties;
         this.resolver = resolver;
     }
 
+    @API(status = INTERNAL)
     @Bean
     @ConditionalOnWebApplication
     @ConditionalOnProperty(name = "tracer.filter.enabled", havingValue = "true", matchIfMissing = true)
@@ -89,12 +95,14 @@ public class TracerAutoConfiguration {
         return registration;
     }
 
+    @API(status = INTERNAL)
     @Bean
     @ConditionalOnMissingBean(TracerHttpRequestInterceptor.class)
     public TracerHttpRequestInterceptor tracerHttpRequestInterceptor(final Tracer tracer) {
         return new TracerHttpRequestInterceptor(tracer);
     }
 
+    @API(status = INTERNAL)
     @ConditionalOnClass(Aspect.class)
     @ConditionalOnProperty(name = "tracer.aspect.enabled", havingValue = "true", matchIfMissing = true)
     @EnableAspectJAutoProxy
@@ -109,6 +117,7 @@ public class TracerAutoConfiguration {
 
     }
 
+    @API(status = INTERNAL)
     @Bean
     public Tracer tracer(
             @SuppressWarnings({"SpringJavaAutowiringInspection", "OptionalUsedAsFieldOrParameterType"})
@@ -125,6 +134,7 @@ public class TracerAutoConfiguration {
         return builder.build();
     }
 
+    @API(status = INTERNAL)
     @Bean
     @ConditionalOnProperty(name = "tracer.mdc.enabled", havingValue = "true", matchIfMissing = true)
     public TraceListener mdcTraceListener() {
@@ -133,6 +143,7 @@ public class TracerAutoConfiguration {
                 new MDCTraceListener();
     }
 
+    @API(status = INTERNAL)
     @Bean
     @ConditionalOnProperty(name = "tracer.logging.enabled", havingValue = "true")
     public LoggingTraceListener loggingTraceListener() {
