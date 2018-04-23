@@ -2,10 +2,12 @@ package org.zalando.tracer;
 
 import org.apiguardian.api.API;
 
-import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.OptionalInt;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Function;
 import java.util.function.IntUnaryOperator;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 import static org.apiguardian.api.API.Status.STABLE;
 
@@ -17,7 +19,7 @@ import static org.apiguardian.api.API.Status.STABLE;
 @API(status = STABLE)
 public final class PhraseGenerator implements Generator {
 
-    private static final String ADJECTIVES[] = {
+    private static final String QUALIFIERS[] = {
         "admiring",
         "adoring",
         "agitated",
@@ -89,7 +91,7 @@ public final class PhraseGenerator implements Generator {
 
     // Docker, starting from 0.7.x, generates names from notable scientists and hackers.
     // Please, for any amazing man that you add to the list, consider adding an equally amazing woman to it, and vice versa.
-    private static final String SURNAMES[] = {
+    private static final String NAMES[] = {
         // Muhammad ibn Jābir al-Ḥarrānī al-Battānī was a founding father of astronomy. https://en.wikipedia.org/wiki/Mu%E1%B8%A5ammad_ibn_J%C4%81bir_al-%E1%B8%A4arr%C4%81n%C4%AB_al-Batt%C4%81n%C4%AB
         "albattani",
         // Frances E. Allen, became the first female IBM Fellow in 1989. In 2006, she became the first female recipient of the ACM's Turing Award. https://en.wikipedia.org/wiki/Frances_E._Allen
@@ -404,20 +406,8 @@ public final class PhraseGenerator implements Generator {
         "tells"
     };
 
-    private static final String[][] PARTS = {ADJECTIVES, SURNAMES, VERBS, ADJECTIVES, SURNAMES};
 
-    /*
-     * The random number generator used by this class to create random numbers.
-     * In a holder class to defer initialization until needed.
-     */
-    // visible for testing
-    static class Holder {
-
-        static final SecureRandom RANDOM = new SecureRandom();
-
-        private Holder() {
-        }
-    }
+    private final IntUnaryOperator random = bound -> ThreadLocalRandom.current().nextInt(bound);
 
     /**
      * @return a random name from the list of adjectives, surnames and verbs
@@ -426,38 +416,67 @@ public final class PhraseGenerator implements Generator {
      */
     @Override
     public String generate() {
-        return generate(Holder.RANDOM::nextInt);
+        return generate(random);
     }
 
-    static String generate(final IntUnaryOperator r) {
-        do {
-            final String name = Stream.of(PARTS)
-                .map(dict -> dict[r.applyAsInt(dict.length)])
-                .collect(Collectors.joining("_"));
+    // visible for testing
+    String generate(final IntUnaryOperator random) {
+        final String phrase = phrase(random);
 
-            // Steve Wozniak is not boring
-            if (!name.contains("boring_wozniak")) {
-                return name;
-            }
-        } while (true);
+        // Steve Wozniak is not boring
+        if (phrase.contains("boring_wozniak")) {
+            return generate(random);
+        }
+
+        return phrase;
     }
 
-    static long maxCombinations() {
-        return Stream.of(PARTS)
-            .mapToLong(dict -> dict.length)
-            .reduce(1, (a, b) -> a * b);
+    private String phrase(final IntUnaryOperator random) {
+        return qualifiedName(random) + "_" + verb(random) + "_" + qualifiedName(random);
     }
 
-    static int minLength() {
-        return Stream.of(PARTS)
-            .mapToInt(dict -> Stream.of(dict).mapToInt(String::length).min().orElse(0))
-            .sum() + (PARTS.length - 1);
+    private String qualifiedName(final IntUnaryOperator random) {
+        return qualifier(random) + "_" + name(random);
     }
 
-    static int maxLength() {
-        return Stream.of(PARTS)
-            .mapToInt(dict -> Stream.of(dict).mapToInt(String::length).max().orElse(0))
-            .sum() + (PARTS.length - 1);
+    private String qualifier(final IntUnaryOperator random) {
+        return of(QUALIFIERS, random);
+    }
+
+    private String name(final IntUnaryOperator random) {
+        return of(NAMES, random);
+    }
+
+    private String verb(final IntUnaryOperator random) {
+        return of(VERBS, random);
+    }
+
+    private String of(final String[] options, final IntUnaryOperator random) {
+        return options[random.applyAsInt(options.length)];
+    }
+
+    long maxCombinations() {
+        return QUALIFIERS.length * NAMES.length * VERBS.length * QUALIFIERS.length * NAMES.length;
+    }
+
+    int minLength() {
+        return min(QUALIFIERS) * 2 + min(NAMES) * 2 + min(VERBS) + 4;
+    }
+
+    int maxLength() {
+        return max(QUALIFIERS) * 2 + max(NAMES) * 2 + max(VERBS) + 4;
+    }
+
+    private static int min(final String[] array) {
+        return length(array, IntStream::min);
+    }
+
+    private static int max(final String[] array) {
+        return length(array, IntStream::max);
+    }
+
+    private static int length(final String[] array, final Function<IntStream, OptionalInt> f) {
+        return f.apply(Arrays.stream(array).mapToInt(String::length)).orElse(0);
     }
 
 }
