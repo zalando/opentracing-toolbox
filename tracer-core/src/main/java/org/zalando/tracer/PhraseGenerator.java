@@ -420,7 +420,7 @@ public final class PhraseGenerator implements Generator {
     }
 
     // visible for testing
-    static String generate(final IntUnaryOperator random) {
+    String generate(final IntUnaryOperator random) {
         final String phrase = phrase(random);
 
         // Steve Wozniak is not boring
@@ -431,39 +431,39 @@ public final class PhraseGenerator implements Generator {
         return phrase;
     }
 
-    private static String phrase(final IntUnaryOperator random) {
+    private String phrase(final IntUnaryOperator random) {
         return qualifiedName(random) + "_" + verb(random) + "_" + qualifiedName(random);
     }
 
-    private static String qualifiedName(final IntUnaryOperator random) {
+    private String qualifiedName(final IntUnaryOperator random) {
         return qualifier(random) + "_" + name(random);
     }
 
-    private static String qualifier(final IntUnaryOperator random) {
+    private String qualifier(final IntUnaryOperator random) {
         return of(QUALIFIERS, random);
     }
 
-    private static String name(final IntUnaryOperator random) {
+    private String name(final IntUnaryOperator random) {
         return of(NAMES, random);
     }
 
-    private static String verb(final IntUnaryOperator random) {
+    private String verb(final IntUnaryOperator random) {
         return of(VERB, random);
     }
 
-    private static String of(final String[] options, final IntUnaryOperator random) {
+    private String of(final String[] options, final IntUnaryOperator random) {
         return options[random.applyAsInt(options.length)];
     }
 
-    static long maxCombinations() {
+    long maxCombinations() {
         return QUALIFIERS.length * NAMES.length * VERB.length * QUALIFIERS.length * NAMES.length;
     }
 
-    static int minLength() {
+    int minLength() {
         return min(QUALIFIERS) * 2 + min(NAMES) * 2 + min(VERB) + 4;
     }
 
-    static int maxLength() {
+    int maxLength() {
         return max(QUALIFIERS) * 2 + max(NAMES) * 2 + max(VERB) + 4;
     }
 

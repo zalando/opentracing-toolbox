@@ -18,13 +18,13 @@ public final class FlowIDGenerator implements Generator {
     public String generate() {
         final Random random = ThreadLocalRandom.current();
 
-        final ByteBuffer buffer = ByteBuffer.wrap(new byte[16]);
+        final ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES * 2);
         buffer.putLong(random.nextLong());
         buffer.putLong(random.nextLong());
 
         final byte[] bytes = buffer.array();
 
-        return "R" + encoder.encodeToString(bytes).replaceAll("=", "").substring(1);
+        return "R" + encoder.encodeToString(bytes).replace("=", "").substring(1);
     }
 
 }

@@ -6,12 +6,15 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 
+/**
+ * Generates a random 64-bit hexadecimal integer.
+ */
 @API(status = EXPERIMENTAL)
-public final class RandomGenerator implements Generator {
+public final class Random64Generator implements Generator {
 
     @Override
     public String generate() {
-        return hexLong() + hexLong();
+        return hexLong();
     }
 
     private String hexLong() {
