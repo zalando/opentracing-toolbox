@@ -42,6 +42,7 @@
 
     <modules>
         <module>tracer-aspectj</module>
+        <module>tracer-benchmark</module>
         <module>tracer-core</module>
         <module>tracer-httpclient</module>
         <module>tracer-hystrix</module>
