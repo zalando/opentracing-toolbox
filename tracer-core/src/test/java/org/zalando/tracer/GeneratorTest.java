@@ -25,7 +25,7 @@ class GeneratorTest {
     void testFlowId() {
         final String value = new FlowIDGenerator().generate();
 
-        assertThat(value, matchesPattern("R[a-zA-Z0-9]{21}"));
+        assertThat(value, matchesPattern("R[\\w-]{21}"));
     }
 
     @Test
