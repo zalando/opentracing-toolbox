@@ -14,10 +14,6 @@ public final class Random64Generator implements Generator {
 
     @Override
     public String generate() {
-        return hexLong();
-    }
-
-    private String hexLong() {
         final ThreadLocalRandom random = ThreadLocalRandom.current();
         // set most significant bit to produce fixed length string
         return Long.toHexString(random.nextLong() | Long.MIN_VALUE);
