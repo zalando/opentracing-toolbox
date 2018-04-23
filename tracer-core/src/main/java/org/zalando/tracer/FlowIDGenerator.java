@@ -4,7 +4,8 @@ import org.apiguardian.api.API;
 
 import java.nio.ByteBuffer;
 import java.util.Base64;
-import java.util.UUID;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static org.apiguardian.api.API.Status.STABLE;
 
@@ -15,15 +16,15 @@ public final class FlowIDGenerator implements Generator {
 
     @Override
     public String generate() {
-        final UUID uuid = UUID.randomUUID();
+        final Random random = ThreadLocalRandom.current();
 
-        final ByteBuffer buffer = ByteBuffer.wrap(new byte[16]);
-        buffer.putLong(uuid.getMostSignificantBits());
-        buffer.putLong(uuid.getLeastSignificantBits());
+        final ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES * 2);
+        buffer.putLong(random.nextLong());
+        buffer.putLong(random.nextLong());
 
         final byte[] bytes = buffer.array();
 
-        return "R" + encoder.encodeToString(bytes).replaceAll("=", "").substring(1);
+        return "R" + encoder.encodeToString(bytes).replace("=", "").substring(1);
     }
 
 }
