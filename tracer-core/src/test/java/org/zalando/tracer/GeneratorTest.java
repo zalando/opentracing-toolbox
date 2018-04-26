@@ -18,14 +18,14 @@ class GeneratorTest {
     void testUuid() {
         final String value = new UUIDGenerator().generate();
 
-        assertThat(value.length(), is(36));
+        assertThat(value, matchesPattern("[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}"));
     }
 
     @Test
     void testFlowId() {
         final String value = new FlowIDGenerator().generate();
 
-        assertThat(value.length(), is(22));
+        assertThat(value, matchesPattern("R[\\w-]{21}"));
     }
 
     @Test
