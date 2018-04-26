@@ -36,6 +36,20 @@ class GeneratorTest {
     }
 
     @Test
+    void testRandom64() {
+        final String value = new Random64Generator().generate();
+
+        assertThat(value, matchesPattern("[a-f0-9]{16}"));
+    }
+
+    @Test
+    void testRandom128() {
+        final String value = new Random128Generator().generate();
+
+        assertThat(value, matchesPattern("[a-f0-9]{32}"));
+    }
+
+    @Test
     void testPhraseWozniakIsNotBoring() {
         final Iterator<Integer> indexes = Arrays.asList(9, 143, 0, 0, 0, 0, 0, 0, 0, 0).iterator();
 
