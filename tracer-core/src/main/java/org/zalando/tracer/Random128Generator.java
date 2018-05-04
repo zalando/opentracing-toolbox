@@ -18,8 +18,8 @@ public final class Random128Generator implements Generator {
 
         char[] chars = new char[32];
 
-        Random64Generator.long2hex(chars, 0, random.nextLong());
-        Random64Generator.long2hex(chars, 16, random.nextLong());
+        Chars.toLowerHex(random.nextLong(), chars, 0);
+        Chars.toLowerHex(random.nextLong(), chars, 16);
 
         return new String(chars);
     }
