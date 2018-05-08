@@ -4,8 +4,7 @@ import java.util.Collection;
 
 final class TraceListeners {
 
-    TraceListeners() {
-        // package private so we can trick code coverage
+    private TraceListeners() {
     }
 
     static TraceListener compound(final Collection<TraceListener> listeners) {
