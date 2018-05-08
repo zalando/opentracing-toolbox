@@ -16,8 +16,7 @@ import static org.apiguardian.api.API.Status.STABLE;
 @API(status = STABLE)
 public final class TracingExecutors {
 
-    TracingExecutors() {
-        // package private so we can trick code coverage
+    private TracingExecutors() {
     }
 
     public static Executor manage(final Executor executor, final Tracer tracer) {

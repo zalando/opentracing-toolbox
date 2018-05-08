@@ -412,7 +412,11 @@ public final class PhraseGenerator implements Generator {
      */
     // visible for testing
     static class Holder {
+
         static final SecureRandom RANDOM = new SecureRandom();
+
+        private Holder() {
+        }
     }
 
     /**

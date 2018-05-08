@@ -14,8 +14,7 @@ import static org.apiguardian.api.API.Status.STABLE;
 @API(status = STABLE)
 public final class TracerFactory {
 
-    TracerFactory() {
-        // package private so we can trick code coverage
+    private TracerFactory() {
     }
 
     public static class Builder {
