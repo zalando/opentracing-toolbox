@@ -14,13 +14,11 @@ public final class Random128Generator implements Generator {
 
     @Override
     public String generate() {
-        ThreadLocalRandom random = ThreadLocalRandom.current();
+        final ThreadLocalRandom random = ThreadLocalRandom.current();
 
-        char[] chars = new char[32];
-
+        final char[] chars = new char[32];
         Chars.toLowerHex(random.nextLong(), chars, 0);
         Chars.toLowerHex(random.nextLong(), chars, 16);
-
         return new String(chars);
     }
 }

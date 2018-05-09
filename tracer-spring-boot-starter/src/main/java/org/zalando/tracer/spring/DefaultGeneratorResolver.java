@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import org.zalando.tracer.FlowIDGenerator;
 import org.zalando.tracer.Generator;
 import org.zalando.tracer.PhraseGenerator;
+import org.zalando.tracer.Random128Generator;
+import org.zalando.tracer.Random64Generator;
 import org.zalando.tracer.UUIDGenerator;
 
 import java.util.Collections;
@@ -24,6 +26,8 @@ class DefaultGeneratorResolver implements GeneratorResolver {
         map.put("flow-id", new FlowIDGenerator());
         map.put("uuid", new UUIDGenerator());
         map.put("phrase", new PhraseGenerator());
+        map.put("random64", new Random64Generator());
+        map.put("random128", new Random128Generator());
         this.generators = Collections.unmodifiableMap(map);
     }
 

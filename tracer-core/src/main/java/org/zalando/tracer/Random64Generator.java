@@ -14,12 +14,10 @@ public final class Random64Generator implements Generator {
 
     @Override
     public String generate() {
-        ThreadLocalRandom random = ThreadLocalRandom.current();
+        final ThreadLocalRandom random = ThreadLocalRandom.current();
 
-        char[] chars = new char[16];
-
+        final char[] chars = new char[16];
         Chars.toLowerHex(random.nextLong(), chars, 0);
-
         return new String(chars);
     }
 }
