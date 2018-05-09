@@ -122,30 +122,45 @@ Tracer tracer = Tracer.builder()
 
 There are several generator implementations included.
 
-#### UUIDGenerator
+#### UUID
 
-This is the default generator implementation.
-It creates 36 characters long, random-based UUID string as a trace value.
+The uuid generator creates random-based UUID values.
 
-#### FlowIDGenerator
+    5cdc0690-536b-11e8-8b88-6b0631b44b96
+    
+The generated values have a length of 36 characters.
 
-This generator was created for historical reasons.
-It basically renders a UUID as a base64-encoded byte array, e.g. `REcCvlqMSReeo7adheiYFA`.
-The length of generated value is 22 characters.
+#### Flow ID
 
-#### PhraseGenerator
+The flow id generator creates 128-bit random integer values encoded in base64:
 
-Phrase generator provides over 10^9 different phrases like:
+    REcCvlqMSReeo7adheiYFA
+
+The generated values have a length of 22 characters.
+
+#### Phrase
+
+The phrase generator creates over 10^9 different phrases like:
 
     tender_goodall_likes_evil_panini
     nostalgic_boyd_helps_agitated_noyce
     pensive_allen_tells_fervent_einstein
 
-The generated phrase is 22 to 61 character long.
+The generates values have a length between 22 and 61 characters.
+
+#### Random64 and Random128
+
+The random generators create random hexadecimal integers of length 64- and 128-bit, respectively.
+
+    c94af1541b3e4f3a
+    1ff222514858965f0960bdbb78fe550e
+    
+The generated values have a length of 16 or 32 characters.
 
 ### Listeners
 
-For some use cases, e.g. integration with other frameworks and libraries, it might be useful to register a listener that gets notified every time a trace is either started or stopped.
+For some use cases, e.g. integration with other frameworks and libraries, it might be useful to register a listener
+that gets notified every time a trace is either started or stopped.
 
 ```java
 Tracer tracer = Tracer.builder()
@@ -256,18 +271,18 @@ public final TracerRule tracing;
 
 *Tracer* comes with a convenient auto configuration for Spring Boot users that sets up aspect, servlet filter and MDC support automatically with sensible defaults:
 
-| Configuration                 | Description                                                                                   | Default                     |
-|-------------------------------|-----------------------------------------------------------------------------------------------|-----------------------------|
-| `tracer.stacked`              | Enables stacking of traces                                                                    | `false`                     |
-| `tracer.aspect.enabled`       | Enables the [`TracedAspect`](#aspect)                                                         | `true`                      |
-| `tracer.async.enabled`        | Enables for asynchronous tasks, i.e. `@Async`                                                 | `true`                      |
-| `tracer.filter.enabled`       | Enables the [`TracerFilter`](#servlet)                                                        | `true`                      |
-| `tracer.logging.enabled`      | Enables the [`LoggingTraceListener`](#logging)                                                | `false`                     |
-| `tracer.logging.category`     | Changes the category of the [`LoggingTraceListener`](#logging)                                | `org.zalando.tracer.Tracer` |
-| `tracer.mdc.enabled`          | Enables the [`MdcTraceListener`](#logging)                                                    | `true`                      |
-| `tracer.scheduling.enabled`   | Enables support for Task Scheduling, i.e. `@Scheduled`                                        | `true`                      |
-| `tracer.scheduling.pool-size` | Configures the thread pool size, i.e. the number of scheduled tasks                           | # of CPUs                   |
-| `tracer.traces`               | Configures actual traces, mapping from name to generator type (`uuid`, `flow-id` or `phrase`) |                             |
+| Configuration                 | Description                                                                                                          | Default                     |
+|-------------------------------|----------------------------------------------------------------------------------------------------------------------|-----------------------------|
+| `tracer.stacked`              | Enables stacking of traces                                                                                           | `false`                     |
+| `tracer.aspect.enabled`       | Enables the [`TracedAspect`](#aspect)                                                                                | `true`                      |
+| `tracer.async.enabled`        | Enables for asynchronous tasks, i.e. `@Async`                                                                        | `true`                      |
+| `tracer.filter.enabled`       | Enables the [`TracerFilter`](#servlet)                                                                               | `true`                      |
+| `tracer.logging.enabled`      | Enables the [`LoggingTraceListener`](#logging)                                                                       | `false`                     |
+| `tracer.logging.category`     | Changes the category of the [`LoggingTraceListener`](#logging)                                                       | `org.zalando.tracer.Tracer` |
+| `tracer.mdc.enabled`          | Enables the [`MdcTraceListener`](#logging)                                                                           | `true`                      |
+| `tracer.scheduling.enabled`   | Enables support for Task Scheduling, i.e. `@Scheduled`                                                               | `true`                      |
+| `tracer.scheduling.pool-size` | Configures the thread pool size, i.e. the number of scheduled tasks                                                  | # of CPUs                   |
+| `tracer.traces`               | Configures actual traces, mapping from name to generator type (`uuid`, `flow-id`, `phrase`, `random64`, `random128`) |                             |
 
 ```yaml
 tracer:

@@ -1,16 +1,18 @@
 package org.zalando.tracer;
 
-class Chars {
-
-    private Chars() {
-    }
+final class Chars {
 
     private static final char[] DIGITS = {
             '0', '1', '2', '3', '4', '5', '6', '7',
             '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',
     };
 
-    static void toLowerHex(long value, char[] chars, int offset) {
+    private Chars() {
+
+    }
+
+    @SuppressWarnings("PointlessArithmeticExpression")
+    static void toLowerHex(final long value, final char[] chars, final int offset) {
         chars[offset + 0] = DIGITS[(int) (value >> 4 * 0) & 0x0f];
         chars[offset + 1] = DIGITS[(int) (value >> 4 * 1) & 0x0f];
         chars[offset + 2] = DIGITS[(int) (value >> 4 * 2) & 0x0f];
@@ -28,4 +30,5 @@ class Chars {
         chars[offset + 14] = DIGITS[(int) (value >> 4 * 14) & 0x0f];
         chars[offset + 15] = DIGITS[(int) (value >> 4 * 15) & 0x0f];
     }
+
 }
