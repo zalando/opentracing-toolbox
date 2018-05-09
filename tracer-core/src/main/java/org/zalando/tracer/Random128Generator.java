@@ -2,6 +2,8 @@ package org.zalando.tracer;
 
 import org.apiguardian.api.API;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 
 /**
@@ -10,11 +12,15 @@ import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 @API(status = EXPERIMENTAL)
 public final class Random128Generator implements Generator {
 
-    private final Random64Generator random64 = new Random64Generator();
-
     @Override
     public String generate() {
-        return random64.generate() + random64.generate();
-    }
+        ThreadLocalRandom random = ThreadLocalRandom.current();
 
+        char[] chars = new char[32];
+
+        Chars.toLowerHex(random.nextLong(), chars, 0);
+        Chars.toLowerHex(random.nextLong(), chars, 16);
+
+        return new String(chars);
+    }
 }
