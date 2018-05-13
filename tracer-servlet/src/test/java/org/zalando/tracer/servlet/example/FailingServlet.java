@@ -8,7 +8,7 @@ public final class FailingServlet extends HttpServlet {
 
     @Override
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) {
-        throw new RuntimeException("Expected exception");
+        throw new IllegalStateException("Expected exception");
     }
 
 }

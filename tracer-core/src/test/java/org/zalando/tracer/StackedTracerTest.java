@@ -3,8 +3,6 @@ package org.zalando.tracer;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 
-import java.util.Arrays;
-
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
