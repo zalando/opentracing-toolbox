@@ -6,9 +6,9 @@ import org.mockito.InOrder;
 import java.util.Arrays;
 
 import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 
@@ -20,7 +20,7 @@ final class StackedTracerTest extends AbstractTracerTest {
     private final Tracer tracer = Tracer.builder()
             .stacked()
             .traces(asList("X-Trace-ID", "X-Request-ID"))
-            .trace("X-Foo-ID", Arrays.asList("foo", "bar").iterator()::next)
+            .trace("X-Foo-ID", asList("foo", "bar").iterator()::next)
             .listener(listener)
             .listener(stackedListener)
             .build();

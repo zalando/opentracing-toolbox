@@ -23,7 +23,7 @@ class PhraseGeneratorTest {
     }
 
     @Test
-    void testPhraseOver_1_000_000_000() {
+    void shouldGenerateMoreThan1BillionCombinations() {
         assertTrue(PhraseGenerator.maxCombinations() > 1_000_000_000);
     }
 

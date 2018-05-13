@@ -3,11 +3,11 @@ package org.zalando.tracer;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.hobsoft.hamcrest.compose.ComposeMatchers.hasFeature;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
