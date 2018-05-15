@@ -22,7 +22,7 @@
     </scm>
 
     <properties>
-        <hystrix.version>1.5.5</hystrix.version>
+        <hystrix.version>1.5.12</hystrix.version>
     </properties>
 
     <dependencies>
