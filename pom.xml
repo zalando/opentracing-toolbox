@@ -431,7 +431,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <!-- https://junit.org/junit5/docs/current/user-guide/#running-tests-build-maven -->
                     <version>2.21.0</version>
                     <configuration>
                         <parallel>classesAndMethods</parallel>
