@@ -62,7 +62,7 @@
         <spring.version>4.3.16.RELEASE</spring.version>
         <spring-boot.version>1.5.12.RELEASE</spring-boot.version>
 
-        <junit-platform.version>1.1.0</junit-platform.version>
+        <junit-platform.version>1.2.0</junit-platform.version>
         <junit-jupiter.version>5.2.0</junit-jupiter.version>
     </properties>
 
