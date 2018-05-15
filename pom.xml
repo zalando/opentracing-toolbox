@@ -176,7 +176,7 @@
             <dependency>
                 <groupId>cz.jirutka.maven</groupId>
                 <artifactId>jetty-bom</artifactId>
-                <version>9.3.5.v20151012</version>
+                <version>9.3.15.v20161220</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
