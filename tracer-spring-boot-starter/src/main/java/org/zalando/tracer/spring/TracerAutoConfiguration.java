@@ -88,6 +88,7 @@ public class TracerAutoConfiguration {
     @ConditionalOnMissingBean(name = FILTER_NAME)
     public FilterRegistrationBean tracerFilter(final Tracer tracer) {
         final Filter filter = new TracerFilter(tracer);
+        @SuppressWarnings("unchecked") // as of Spring Boot 2.x
         final FilterRegistrationBean registration = new FilterRegistrationBean(filter);
         registration.setName(FILTER_NAME);
         registration.setDispatcherTypes(REQUEST, ASYNC);

@@ -47,6 +47,12 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-jcl</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -58,11 +64,35 @@
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.github.sbrannen</groupId>
-            <artifactId>spring-test-junit5</artifactId>
-        </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>spring4-junit5</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.github.sbrannen</groupId>
+                    <artifactId>spring-test-junit5</artifactId>
+                </dependency>
+                <!-- for some reason, this is needed to make spring-test-junit5 work -->
+                <dependency>
+                    <groupId>org.junit.platform</groupId>
+                    <artifactId>junit-platform-commons</artifactId>
+                    <version>${junit-platform.version}</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+            <repositories>
+                <repository>
+                    <id>jitpack.io</id>
+                    <url>https://jitpack.io</url>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
@@ -75,12 +105,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
 
 </project>
