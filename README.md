@@ -36,7 +36,8 @@ This library historically originates from a closed-source implementation called 
 - Hystrix (optional)
 - AspectJ (optional)
 - JUnit (optional)
-- Spring Boot (optional)
+- Spring 4.x **or 5.x** (optional)
+- Spring Boot 1.x **or 2.x** (optional)
 
 ## Installation
 
