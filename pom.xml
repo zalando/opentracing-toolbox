@@ -43,6 +43,7 @@
     <modules>
         <module>tracer-aspectj</module>
         <module>tracer-benchmark</module>
+        <module>tracer-bom</module>
         <module>tracer-core</module>
         <module>tracer-httpclient</module>
         <module>tracer-hystrix</module>
@@ -82,6 +83,22 @@
             <dependency>
                 <groupId>org.zalando</groupId>
                 <artifactId>tracer-httpclient</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.zalando</groupId>
+                <artifactId>tracer-hystrix</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.zalando</groupId>
+                <artifactId>tracer-junit</artifactId>
+                <version>${project.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.zalando</groupId>
+                <artifactId>tracer-okhttp</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
