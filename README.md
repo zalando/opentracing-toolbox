@@ -41,7 +41,7 @@ This library historically originates from a closed-source implementation called 
 
 ## Installation
 
-Selectively add the following dependencies to your project:
+Add the following dependency to your project:
 
 ```xml
 <dependency>
@@ -49,41 +49,60 @@ Selectively add the following dependencies to your project:
     <artifactId>tracer-core</artifactId>
     <version>${tracer.version}</version>
 </dependency>
+```
+
+Additional modules/artifacts of Tracer always share the same version number.
+
+Alternatively, you can import our *bill of materials*...
+
+```xml
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>org.zalando</groupId>
+      <artifactId>tracer-bom</artifactId>
+      <version>${tracer.version}</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
+```
+
+... which allows you to omit versions and scopes:
+
+```xml
+<dependency>
+    <groupId>org.zalando</groupId>
+    <artifactId>tracer-core</artifactId>
+</dependency>
 <dependency>
     <groupId>org.zalando</groupId>
     <artifactId>tracer-servlet</artifactId>
-    <version>${tracer.version}</version>
 </dependency>
 <dependency>
     <groupId>org.zalando</groupId>
     <artifactId>tracer-httpclient</artifactId>
-    <version>${tracer.version}</version>
 </dependency>
 <dependency>
     <groupId>org.zalando</groupId>
     <artifactId>tracer-okhttp</artifactId>
-    <version>${tracer.version}</version>
 </dependency>
 <dependency>
     <groupId>org.zalando</groupId>
     <artifactId>tracer-hystrix</artifactId>
-    <version>${tracer.version}</version>
 </dependency>
 <dependency>
     <groupId>org.zalando</groupId>
     <artifactId>tracer-aspectj</artifactId>
-    <version>${tracer.version}</version>
 </dependency>
 <dependency>
     <groupId>org.zalando</groupId>
     <artifactId>tracer-junit</artifactId>
-    <version>${tracer.version}</version>
-    <scope>test</scope>
 </dependency>
 <dependency>
     <groupId>org.zalando</groupId>
     <artifactId>tracer-spring-boot-starter</artifactId>
-    <version>${tracer.version}</version>
 </dependency>
 ```
 
