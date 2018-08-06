@@ -1,29 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>org.zalando</groupId>
         <artifactId>tracer-parent</artifactId>
         <version>0.18.0-SNAPSHOT</version>
     </parent>
-
     <artifactId>tracer-servlet</artifactId>
-
     <name>Tracer: Servlet</name>
     <description>Servlet 3 filter for tracing requests through a distributed system.</description>
-
     <scm>
         <url>https://github.com/zalando/tracer</url>
         <connection>scm:git:git@github.com:zalando/tracer.git</connection>
         <developerConnection>scm:git:git@github.com:zalando/tracer.git</developerConnection>
     </scm>
-
     <properties>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.zalando</groupId>
@@ -56,5 +48,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 </project>

@@ -1,28 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>org.zalando</groupId>
     <artifactId>tracer-parent</artifactId>
     <version>0.18.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-
     <name>Tracer</name>
     <url>https://github.com/zalando/tracer</url>
-
-    <scm>
-        <url>https://github.com/zalando/tracer</url>
-        <connection>scm:git:git@github.com:zalando/tracer.git</connection>
-        <developerConnection>scm:git:git@github.com:zalando/tracer.git</developerConnection>
-    </scm>
-
+    <inceptionYear>2015</inceptionYear>
     <organization>
         <name>Zalando SE</name>
     </organization>
-
-    <inceptionYear>2015</inceptionYear>
-
     <licenses>
         <license>
             <name>MIT License</name>
@@ -30,7 +18,6 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
     <developers>
         <developer>
             <name>Willi Schönborn</name>
@@ -39,7 +26,6 @@
             <organizationUrl>https://tech.zalando.com/</organizationUrl>
         </developer>
     </developers>
-
     <modules>
         <module>tracer-aspectj</module>
         <module>tracer-benchmark</module>
@@ -52,21 +38,32 @@
         <module>tracer-servlet</module>
         <module>tracer-spring-boot-starter</module>
     </modules>
-
+    <scm>
+        <url>https://github.com/zalando/tracer</url>
+        <connection>scm:git:git@github.com:zalando/tracer.git</connection>
+        <developerConnection>scm:git:git@github.com:zalando/tracer.git</developerConnection>
+    </scm>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-
         <slf4j.version>1.7.25</slf4j.version>
         <spring.version>5.0.8.RELEASE</spring.version>
         <spring-boot.version>2.0.4.RELEASE</spring-boot.version>
-
         <junit-platform.version>1.2.0</junit-platform.version>
         <junit-jupiter.version>5.2.0</junit-jupiter.version>
     </properties>
-
     <dependencyManagement>
         <dependencies>
             <!-- tracer -->
@@ -111,7 +108,6 @@
                 <artifactId>tracer-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
             <!--common -->
             <dependency>
                 <groupId>org.apiguardian</groupId>
@@ -135,7 +131,6 @@
                 <version>1.18.2</version>
                 <scope>provided</scope>
             </dependency>
-
             <!-- javax -->
             <dependency>
                 <groupId>javax.servlet</groupId>
@@ -143,7 +138,6 @@
                 <version>4.0.1</version>
                 <scope>provided</scope>
             </dependency>
-
             <!-- logging -->
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -168,7 +162,6 @@
                 <version>${slf4j.version}</version>
                 <scope>test</scope>
             </dependency>
-
             <!-- spring -->
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -177,7 +170,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
             <!-- jetty -->
             <!-- overrides version 9.2.x from spring-boot -->
             <dependency>
@@ -187,7 +179,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
             <!-- spring-boot -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -196,7 +187,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
             <!-- testing: common -->
             <dependency>
                 <groupId>org.junit.platform</groupId>
@@ -252,7 +242,6 @@
                 <version>1.0.0.M6</version>
                 <scope>test</scope>
             </dependency>
-
             <!-- testing: rest -->
             <dependency>
                 <groupId>com.jayway.restassured</groupId>
@@ -288,7 +277,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     <dependencies>
         <!-- common -->
         <dependency>
@@ -307,13 +295,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-
         <!-- logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-
         <!-- testing: common -->
         <dependency>
             <groupId>org.junit.platform</groupId>
@@ -340,26 +326,7 @@
             <artifactId>mockito-core</artifactId>
         </dependency>
     </dependencies>
-
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.basepom.maven</groupId>
-                <artifactId>duplicate-finder-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -511,19 +478,25 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.basepom.maven</groupId>
+                <artifactId>duplicate-finder-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
     <profiles>
         <profile>
             <id>spring4</id>
@@ -591,5 +564,4 @@
             </build>
         </profile>
     </profiles>
-
 </project>

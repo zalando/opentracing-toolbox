@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>org.zalando</groupId>
         <artifactId>tracer-parent</artifactId>
         <version>0.18.0-SNAPSHOT</version>
     </parent>
-
     <artifactId>tracer-spring-boot-starter</artifactId>
-
     <name>Tracer: Spring Boot Starter</name>
     <description>Spring Boot Auto Configuration for Tracer and most of its libraries/adapters..</description>
-
     <scm>
         <url>https://github.com/zalando/tracer</url>
         <connection>scm:git:git@github.com:zalando/tracer.git</connection>
         <developerConnection>scm:git:git@github.com:zalando/tracer.git</developerConnection>
     </scm>
-
     <dependencies>
         <dependency>
             <groupId>org.zalando</groupId>
@@ -122,7 +115,17 @@
             </exclusions>
         </dependency>
     </dependencies>
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <parallel>none</parallel>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <profiles>
         <profile>
             <id>spring4</id>
@@ -147,17 +150,4 @@
             </repositories>
         </profile>
     </profiles>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <parallel>none</parallel>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>
