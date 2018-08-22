@@ -23,8 +23,8 @@ import static org.apiguardian.api.API.Status.STABLE;
 
 @API(status = STABLE)
 @Configuration
-@ConditionalOnClass(Tracer.class)
-@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+@ConditionalOnClass({Tracer.class, Filter.class, FilterRegistrationBean.class})
+@ConditionalOnWebApplication
 @AutoConfigureAfter(name = {
         "org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration", // Spring Boot 1.x
         "org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration" // Spring Boot 2.x
@@ -36,7 +36,6 @@ public class TracerWebMvcAutoConfiguration {
 
     @API(status = INTERNAL)
     @Bean
-    @ConditionalOnWebApplication
     @ConditionalOnProperty(name = "tracer.filter.enabled", havingValue = "true", matchIfMissing = true)
     @ConditionalOnMissingBean(name = FILTER_NAME)
     public FilterRegistrationBean tracerFilter(final Tracer tracer) {
