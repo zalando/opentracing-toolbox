@@ -10,15 +10,12 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.Ordered;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Async;
@@ -36,9 +33,7 @@ import org.zalando.tracer.Tracer;
 import org.zalando.tracer.TracerFactory;
 import org.zalando.tracer.aspectj.TracedAspect;
 import org.zalando.tracer.httpclient.TracerHttpRequestInterceptor;
-import org.zalando.tracer.servlet.TracerFilter;
 
-import javax.servlet.Filter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -48,8 +43,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import static java.util.Collections.emptyList;
 import static java.util.concurrent.Executors.newCachedThreadPool;
-import static javax.servlet.DispatcherType.ASYNC;
-import static javax.servlet.DispatcherType.REQUEST;
 import static org.apiguardian.api.API.Status.INTERNAL;
 import static org.apiguardian.api.API.Status.STABLE;
 import static org.springframework.aop.interceptor.AsyncExecutionAspectSupport.DEFAULT_TASK_EXECUTOR_BEAN_NAME;
@@ -61,14 +54,8 @@ import static org.zalando.tracer.concurrent.TracingExecutors.tryPreserve;
 @Configuration
 @ConditionalOnClass(Tracer.class)
 @EnableConfigurationProperties(TracerProperties.class)
-@AutoConfigureAfter(name = {
-        "org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration", // Spring Boot 1.x
-        "org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration" // Spring Boot 2.x
-})
 @Import({DefaultGeneratorResolver.class, TracerAutoConfiguration.AspectConfiguration.class})
 public class TracerAutoConfiguration {
-
-    public static final String FILTER_NAME = "tracerFilter";
 
     // IDEA doesn't support @EnableConfigurationProperties
     private final TracerProperties properties;
@@ -79,21 +66,6 @@ public class TracerAutoConfiguration {
     public TracerAutoConfiguration(final TracerProperties properties, final GeneratorResolver resolver) {
         this.properties = properties;
         this.resolver = resolver;
-    }
-
-    @API(status = INTERNAL)
-    @Bean
-    @ConditionalOnWebApplication
-    @ConditionalOnProperty(name = "tracer.filter.enabled", havingValue = "true", matchIfMissing = true)
-    @ConditionalOnMissingBean(name = FILTER_NAME)
-    public FilterRegistrationBean tracerFilter(final Tracer tracer) {
-        final Filter filter = new TracerFilter(tracer);
-        @SuppressWarnings("unchecked") // as of Spring Boot 2.x
-        final FilterRegistrationBean registration = new FilterRegistrationBean(filter);
-        registration.setName(FILTER_NAME);
-        registration.setDispatcherTypes(REQUEST, ASYNC);
-        registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        return registration;
     }
 
     @API(status = INTERNAL)
