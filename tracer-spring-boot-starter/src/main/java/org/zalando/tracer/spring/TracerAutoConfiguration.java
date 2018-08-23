@@ -61,14 +61,8 @@ import static org.zalando.tracer.concurrent.TracingExecutors.tryPreserve;
 @Configuration
 @ConditionalOnClass(Tracer.class)
 @EnableConfigurationProperties(TracerProperties.class)
-@AutoConfigureAfter(name = {
-        "org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration", // Spring Boot 1.x
-        "org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration" // Spring Boot 2.x
-})
 @Import({DefaultGeneratorResolver.class, TracerAutoConfiguration.AspectConfiguration.class})
 public class TracerAutoConfiguration {
-
-    public static final String FILTER_NAME = "tracerFilter";
 
     // IDEA doesn't support @EnableConfigurationProperties
     private final TracerProperties properties;
@@ -79,21 +73,6 @@ public class TracerAutoConfiguration {
     public TracerAutoConfiguration(final TracerProperties properties, final GeneratorResolver resolver) {
         this.properties = properties;
         this.resolver = resolver;
-    }
-
-    @API(status = INTERNAL)
-    @Bean
-    @ConditionalOnWebApplication
-    @ConditionalOnProperty(name = "tracer.filter.enabled", havingValue = "true", matchIfMissing = true)
-    @ConditionalOnMissingBean(name = FILTER_NAME)
-    public FilterRegistrationBean tracerFilter(final Tracer tracer) {
-        final Filter filter = new TracerFilter(tracer);
-        @SuppressWarnings("unchecked") // as of Spring Boot 2.x
-        final FilterRegistrationBean registration = new FilterRegistrationBean(filter);
-        registration.setName(FILTER_NAME);
-        registration.setDispatcherTypes(REQUEST, ASYNC);
-        registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        return registration;
     }
 
     @API(status = INTERNAL)
@@ -213,6 +192,33 @@ public class TracerAutoConfiguration {
         @ConditionalOnMissingBean(name = DEFAULT_TASK_EXECUTOR_BEAN_NAME)
         public TaskExecutor taskExecutor(final ExecutorService taskExecutorService, final Tracer tracer) {
             return new ConcurrentTaskExecutor(tryPreserve(taskExecutorService, tracer));
+        }
+
+    }
+
+    @Configuration
+    @ConditionalOnClass({Filter.class, FilterRegistrationBean.class})
+    @ConditionalOnWebApplication
+    @ConditionalOnProperty(name = "tracer.filter.enabled", havingValue = "true", matchIfMissing = true)
+    @AutoConfigureAfter(name = {
+            "org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration", // Spring Boot 1.x
+            "org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration" // Spring Boot 2.x
+    })
+    static class TracerWebMvcAutoConfiguration {
+
+        public static final String FILTER_NAME = "tracerFilter";
+
+        @API(status = INTERNAL)
+        @Bean
+        @ConditionalOnMissingBean(name = FILTER_NAME)
+        public FilterRegistrationBean tracerFilter(final Tracer tracer) {
+            final Filter filter = new TracerFilter(tracer);
+            @SuppressWarnings("unchecked") // as of Spring Boot 2.x
+            final FilterRegistrationBean registration = new FilterRegistrationBean(filter);
+            registration.setName(FILTER_NAME);
+            registration.setDispatcherTypes(REQUEST, ASYNC);
+            registration.setOrder(Ordered.HIGHEST_PRECEDENCE);
+            return registration;
         }
 
     }
