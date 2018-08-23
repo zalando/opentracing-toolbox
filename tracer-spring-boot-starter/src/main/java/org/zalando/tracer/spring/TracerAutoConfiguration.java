@@ -204,7 +204,7 @@ public class TracerAutoConfiguration {
             "org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration", // Spring Boot 1.x
             "org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration" // Spring Boot 2.x
     })
-    public class TracerWebMvcAutoConfiguration {
+    static class TracerWebMvcAutoConfiguration {
 
         public static final String FILTER_NAME = "tracerFilter";
 
