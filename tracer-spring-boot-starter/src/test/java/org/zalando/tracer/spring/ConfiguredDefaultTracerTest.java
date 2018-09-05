@@ -2,6 +2,7 @@ package org.zalando.tracer.spring;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,7 +29,8 @@ final class ConfiguredDefaultTracerTest {
         tracer.start();
         tracer.get("X-Trace-ID");
 
-        assertThrows(IllegalStateException.class, tracer::start);
+        final Executable start = tracer::start;
+        assertThrows(IllegalStateException.class, start);
     }
 
 }
