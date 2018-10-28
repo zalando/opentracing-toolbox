@@ -323,6 +323,12 @@ tracer:
 
 The `TracerAutoConfiguration` will automatically pick up any `TraceListener` bound in the application context.
 
+## Known Issues
+
+Hystrix timeouts don't preserve the thread-local traces and applications get stuck. Please follow 
+[Netflix/Hystrix#1767](https://github.com/Netflix/Hystrix/issues/1767) for more details. The only known viable
+workaround for now is to downgrade Hystrix at least to version 1.5.11.
+
 ## Getting Help with Tracer
 
 If you have questions, concerns, bug reports, etc., please file an issue in this repository's [Issue Tracker](../../issues).
