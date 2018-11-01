@@ -19,13 +19,12 @@ public final class TracerFactory {
 
     public static class Builder {
 
-        public Builder stacked(final boolean stacked) {
-            this.stacked = stacked;
-            return this;
+        public Builder stacked() {
+            return stacked(true);
         }
 
-        public Builder stacked() {
-            this.stacked = true;
+        public Builder stacked(final boolean stacked) {
+            this.stacked = stacked;
             return this;
         }
 
