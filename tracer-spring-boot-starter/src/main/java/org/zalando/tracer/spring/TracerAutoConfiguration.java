@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -23,7 +24,6 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.annotation.SchedulingConfiguration;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
@@ -61,6 +61,13 @@ import static org.zalando.tracer.concurrent.TracingExecutors.tryPreserve;
 @Configuration
 @ConditionalOnClass(Tracer.class)
 @EnableConfigurationProperties(TracerProperties.class)
+@AutoConfigureBefore(name = {
+        "org.springframework.boot.autoconfigure.task.TaskSchedulingAutoConfiguration" // Spring Boot 2.1+
+})
+@AutoConfigureAfter(name = {
+        "org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration", // Spring Boot 1.x
+        "org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration" // Spring Boot 2.x
+})
 @Import({DefaultGeneratorResolver.class, TracerAutoConfiguration.AspectConfiguration.class})
 public class TracerAutoConfiguration {
 
@@ -136,7 +143,6 @@ public class TracerAutoConfiguration {
     @Configuration
     @ConditionalOnClass(Scheduled.class)
     @ConditionalOnProperty(name = "tracer.scheduling.enabled", havingValue = "true", matchIfMissing = true)
-    @AutoConfigureAfter(SchedulingConfiguration.class)
     static class SchedulingAutoConfiguration implements SchedulingConfigurer {
 
         /**
@@ -200,10 +206,6 @@ public class TracerAutoConfiguration {
     @ConditionalOnClass({Filter.class, FilterRegistrationBean.class})
     @ConditionalOnWebApplication
     @ConditionalOnProperty(name = "tracer.filter.enabled", havingValue = "true", matchIfMissing = true)
-    @AutoConfigureAfter(name = {
-            "org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration", // Spring Boot 1.x
-            "org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration" // Spring Boot 2.x
-    })
     static class TracerWebMvcAutoConfiguration {
 
         public static final String FILTER_NAME = "tracerFilter";
