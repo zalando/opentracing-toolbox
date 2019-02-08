@@ -189,12 +189,6 @@
             </dependency>
             <!-- testing: common -->
             <dependency>
-                <groupId>org.junit.platform</groupId>
-                <artifactId>junit-platform-launcher</artifactId>
-                <version>${junit-platform.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
                 <version>${junit-jupiter.version}</version>
@@ -303,7 +297,13 @@
         <!-- testing: common -->
         <dependency>
             <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-launcher</artifactId>
+            <artifactId>junit-platform-engine</artifactId>
+            <version>${junit-platform.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-commons</artifactId>
+            <version>${junit-platform.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

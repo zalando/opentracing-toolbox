@@ -56,13 +56,6 @@
             <!-- see https://github.com/spring-projects/spring-boot/issues/6520 -->
             <version>2.24.0</version>
         </dependency>
-        <!-- for some reason, this is needed to make spring-test-junit5 work -->
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-commons</artifactId>
-            <version>${junit-platform.version}</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
@@ -133,13 +126,6 @@
                 <dependency>
                     <groupId>com.github.sbrannen</groupId>
                     <artifactId>spring-test-junit5</artifactId>
-                </dependency>
-                <!-- for some reason, this is needed to make spring-test-junit5 work -->
-                <dependency>
-                    <groupId>org.junit.platform</groupId>
-                    <artifactId>junit-platform-commons</artifactId>
-                    <version>${junit-platform.version}</version>
-                    <scope>test</scope>
                 </dependency>
             </dependencies>
             <repositories>
