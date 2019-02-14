@@ -12,7 +12,7 @@ import static org.zalando.tracer.Flow.Logging.SPAN_ID;
 import static org.zalando.tracer.Flow.Logging.TRACE_ID;
 
 /**
- * %equals{%X{flow_id}}{}{%X{Trace-ID}}
+ * %equals{%X{flow_id}}{}{%X{trace_id}}
  */
 public final class MDCSpanObserver implements TracerObserver, SpanObserver {
 
