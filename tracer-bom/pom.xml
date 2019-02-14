@@ -19,23 +19,11 @@
         <dependencies>
             <dependency>
                 <groupId>org.zalando</groupId>
-                <artifactId>tracer-aspectj</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>org.zalando</groupId>
                 <artifactId>tracer-core</artifactId>
             </dependency>
             <dependency>
                 <groupId>org.zalando</groupId>
                 <artifactId>tracer-httpclient</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>org.zalando</groupId>
-                <artifactId>tracer-hystrix</artifactId>
-            </dependency>
-            <dependency>
-                <groupId>org.zalando</groupId>
-                <artifactId>tracer-junit</artifactId>
             </dependency>
             <dependency>
                 <groupId>org.zalando</groupId>

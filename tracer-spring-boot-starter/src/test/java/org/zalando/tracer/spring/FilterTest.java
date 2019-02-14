@@ -19,11 +19,11 @@ import static org.hamcrest.Matchers.notNullValue;
 class FilterTest {
 
     @Autowired
-    @Qualifier("tracerFilter")
-    private FilterRegistrationBean tracerFilter;
+    @Qualifier("flowFilter")
+    private FilterRegistrationBean flowFilter;
 
     @Test
     void shouldInitializeFilter() {
-        assertThat(tracerFilter, is(notNullValue()));
+        assertThat(flowFilter, is(notNullValue()));
     }
 }

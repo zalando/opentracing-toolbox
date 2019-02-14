@@ -1,29 +1,19 @@
-package org.zalando.tracer.spring;
+package org.zalando.tracer;
 
 import io.opentracing.Span;
-import io.opentracing.Tracer;
+import io.opentracing.contrib.api.tracer.APIExtensionsTracer;
+import io.opentracing.mock.MockTracer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = Application.class)
-@ImportAutoConfiguration(TracerAutoConfiguration.class)
-final class MDCTest {
-
-    @Autowired
-    private Tracer tracer;
+class MDCSpanObserverTest {
 
     @BeforeEach
     @AfterEach
@@ -32,7 +22,10 @@ final class MDCTest {
     }
 
     @Test
-    void shouldEnableMdcByDefault() {
+    void shouldUpdateMdc() {
+        final APIExtensionsTracer tracer = new APIExtensionsTracer(new MockTracer());
+        tracer.addTracerObserver(new MDCSpanObserver());
+
         assertThat(MDC.get("trace_id"), is(nullValue()));
         assertThat(MDC.get("span_id"), is(nullValue()));
 

@@ -1,6 +1,6 @@
 package org.zalando.tracer.servlet.example;
 
-import org.zalando.tracer.Trace;
+import org.zalando.tracer.Flow;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -9,15 +9,15 @@ import java.io.IOException;
 
 public final class TraceServlet extends HttpServlet {
 
-    private final Trace trace;
+    private final Flow flow;
 
-    public TraceServlet(final Trace trace) {
-        this.trace = trace;
+    public TraceServlet(final Flow flow) {
+        this.flow = flow;
     }
 
     @Override
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-        response.getWriter().println(trace.getValue());
+        response.getWriter().print(flow.currentId());
     }
 
 }
