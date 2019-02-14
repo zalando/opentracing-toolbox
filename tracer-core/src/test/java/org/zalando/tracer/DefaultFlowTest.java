@@ -5,12 +5,15 @@ import io.opentracing.Span;
 import io.opentracing.Tracer;
 import io.opentracing.mock.MockTracer;
 import org.junit.jupiter.api.Test;
+import org.zalando.tracer.Flow.Baggage;
+import org.zalando.tracer.Flow.Header;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DefaultFlowTest {
@@ -23,21 +26,23 @@ class DefaultFlowTest {
         final Span span = tracer.buildSpan("test").start();
 
         try (final Scope ignored = tracer.activateSpan(span)) {
-            unit.readFrom(singletonMap(Flow.Header.FLOW_ID, "REcCvlqMSReeo7adheiYFA")::get);
+            unit.readFrom(singletonMap(Header.FLOW_ID, "REcCvlqMSReeo7adheiYFA")::get);
 
             assertEquals("REcCvlqMSReeo7adheiYFA", unit.currentId());
+            assertEquals("REcCvlqMSReeo7adheiYFA", span.getBaggageItem(Baggage.FLOW_ID));
         }
     }
 
     @Test
     void shouldReadFlowIdFromBaggage() {
         final Span span = tracer.buildSpan("test").start()
-                .setBaggageItem(Flow.Baggage.FLOW_ID, "REcCvlqMSReeo7adheiYFA");
+                .setBaggageItem(Baggage.FLOW_ID, "REcCvlqMSReeo7adheiYFA");
 
         try (final Scope ignored = tracer.activateSpan(span)) {
             unit.readFrom(name -> null);
 
             assertEquals("REcCvlqMSReeo7adheiYFA", unit.currentId());
+            assertEquals("REcCvlqMSReeo7adheiYFA", span.getBaggageItem(Baggage.FLOW_ID));
         }
     }
 
@@ -49,18 +54,20 @@ class DefaultFlowTest {
             unit.readFrom(name -> null);
 
             assertEquals(span.context().toTraceId(), unit.currentId());
+            assertNull(span.getBaggageItem(Baggage.FLOW_ID));
         }
     }
 
     @Test
     void shouldPreferBaggageOverHeaderIfDiffer() {
         final Span span = tracer.buildSpan("test").start()
-                .setBaggageItem(Flow.Baggage.FLOW_ID, "REcCvlqMSReeo7adheiYFA");
+                .setBaggageItem(Baggage.FLOW_ID, "REcCvlqMSReeo7adheiYFA");
 
         try (final Scope ignored = tracer.activateSpan(span)) {
-            unit.readFrom(singletonMap(Flow.Header.FLOW_ID, "Rso72qSgLWPNlYIF_OGjvA")::get);
+            unit.readFrom(singletonMap(Header.FLOW_ID, "Rso72qSgLWPNlYIF_OGjvA")::get);
 
             assertEquals("REcCvlqMSReeo7adheiYFA", unit.currentId());
+            assertEquals("REcCvlqMSReeo7adheiYFA", span.getBaggageItem(Baggage.FLOW_ID));
         }
     }
 
@@ -70,21 +77,23 @@ class DefaultFlowTest {
 
         try (final Scope ignored = tracer.activateSpan(span)) {
             final String traceId = span.context().toTraceId();
-            unit.readFrom(singletonMap(Flow.Header.FLOW_ID, traceId)::get);
+            unit.readFrom(singletonMap(Header.FLOW_ID, traceId)::get);
 
             assertEquals(traceId, unit.currentId());
+            assertNull(span.getBaggageItem(Baggage.FLOW_ID));
         }
     }
 
     @Test
     void shouldSupportSameFlowIdInHeaderAndBaggage() {
         final Span span = tracer.buildSpan("test").start()
-                .setBaggageItem(Flow.Baggage.FLOW_ID, "REcCvlqMSReeo7adheiYFA");
+                .setBaggageItem(Baggage.FLOW_ID, "REcCvlqMSReeo7adheiYFA");
 
         try (final Scope ignored = tracer.activateSpan(span)) {
-            unit.readFrom(singletonMap(Flow.Header.FLOW_ID, "REcCvlqMSReeo7adheiYFA")::get);
+            unit.readFrom(singletonMap(Header.FLOW_ID, "REcCvlqMSReeo7adheiYFA")::get);
 
             assertEquals("REcCvlqMSReeo7adheiYFA", unit.currentId());
+            assertEquals("REcCvlqMSReeo7adheiYFA", span.getBaggageItem(Baggage.FLOW_ID));
         }
     }
 
@@ -99,7 +108,7 @@ class DefaultFlowTest {
             unit.writeTo(target::put);
 
 
-            assertEquals(target.get(Flow.Header.FLOW_ID), unit.currentId());
+            assertEquals(target.get(Header.FLOW_ID), unit.currentId());
         }
     }
 
