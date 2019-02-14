@@ -32,7 +32,7 @@ public interface Flow {
 
     void writeTo(BiConsumer<String, String> writer);
 
-    static Flow create(Tracer tracer) {
+    static Flow create(final Tracer tracer) {
         return new DefaultFlow(tracer);
     }
 

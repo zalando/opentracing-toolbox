@@ -35,7 +35,7 @@ final class DefaultFlow implements Flow {
             if (!traceId.equals(header)) {
                 log.debug("Received {} header ({}); keeping it as {} baggage",
                         Header.FLOW_ID, header, Baggage.FLOW_ID);
-                span.setBaggageItem(Baggage.FLOW_ID, traceId);
+                span.setBaggageItem(Baggage.FLOW_ID, header);
             }
 
             return;
