@@ -23,12 +23,12 @@ public final class MDCSpanObserver implements TracerObserver, SpanObserver {
 
     @Override
     public void onSetOperationName(final SpanData data, final String operationName) {
-
+        // nothing to do
     }
 
     @Override
     public void onSetTag(final SpanData data, final String key, final Object value) {
-
+        // nothing to do
     }
 
     @Override
@@ -40,12 +40,12 @@ public final class MDCSpanObserver implements TracerObserver, SpanObserver {
 
     @Override
     public void onLog(final SpanData data, final long timestamp, final Map<String, ?> fields) {
-
+        // nothing to do
     }
 
     @Override
     public void onLog(final SpanData data, final long timestamp, final String fields) {
-
+        // nothing to do
     }
 
     @Override
