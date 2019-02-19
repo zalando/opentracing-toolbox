@@ -58,7 +58,7 @@
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <slf4j.version>1.7.25</slf4j.version>
+        <slf4j.version>1.7.26</slf4j.version>
         <spring.version>5.1.5.RELEASE</spring.version>
         <spring-boot.version>2.1.2.RELEASE</spring-boot.version>
         <junit-platform.version>1.4.0</junit-platform.version>
