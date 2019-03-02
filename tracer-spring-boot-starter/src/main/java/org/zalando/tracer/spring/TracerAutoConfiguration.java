@@ -27,7 +27,6 @@ import static org.apiguardian.api.API.Status.STABLE;
 
 @API(status = STABLE)
 @Configuration
-@ConditionalOnClass(Flow.class)
 @ConditionalOnBean(Tracer.class)
 @AutoConfigureAfter(name = {
         "org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration", // Spring Boot 1.x

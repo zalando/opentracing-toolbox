@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.zalando.tracer.Flow.Baggage;
 import org.zalando.tracer.Flow.Header;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -98,7 +99,7 @@ class DefaultFlowTest {
     }
 
     @Test
-    void shouldWriteId() {
+    void shouldWriteTo() {
         final Span span = tracer.buildSpan("test").start();
 
         try (final Scope ignored = tracer.activateSpan(span)) {
@@ -107,6 +108,19 @@ class DefaultFlowTest {
             final Map<String, String> target = new HashMap<>();
             unit.writeTo(target::put);
 
+
+            assertEquals(target.get(Header.FLOW_ID), unit.currentId());
+        }
+    }
+
+    @Test
+    void shouldWrite() {
+        final Span span = tracer.buildSpan("test").start();
+
+        try (final Scope ignored = tracer.activateSpan(span)) {
+            unit.readFrom(name -> null);
+
+            final Map<String, String> target = unit.write(Collections::singletonMap);
 
             assertEquals(target.get(Header.FLOW_ID), unit.currentId());
         }

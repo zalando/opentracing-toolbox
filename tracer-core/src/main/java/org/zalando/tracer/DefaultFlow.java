@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Nullable;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 @Slf4j
@@ -63,6 +64,11 @@ final class DefaultFlow implements Flow {
     @Override
     public void writeTo(final BiConsumer<String, String> writer) {
         writer.accept(Header.FLOW_ID, currentId());
+    }
+
+    @Override
+    public <T> T write(final BiFunction<String, String, T> writer) {
+        return writer.apply(Header.FLOW_ID, currentId());
     }
 
     private Span activeSpan() {
