@@ -75,7 +75,7 @@ public class TracerAutoConfiguration {
             final FilterRegistrationBean registration = new FilterRegistrationBean(filter);
             registration.setName(FILTER_NAME);
             registration.setDispatcherTypes(REQUEST);
-            // see https://github.com/opentracing-contrib/java-spring-web/blob/master/opentracing-spring-web-starter/src/main/java/io/opentracing/contrib/spring/web/starter/WebTracingProperties.java#L22
+            // see https://github.com/opentracing-contrib/java-spring-web/blob/master/opentracing-spring-web-starter/src/main/java/io/opentracing/contrib/spring/web/starter/WebTracingProperties.java
             registration.setOrder(Ordered.HIGHEST_PRECEDENCE + 1);
             return registration;
         }

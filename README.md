@@ -104,7 +104,7 @@ Alternatively, you can import our *bill of materials*...
 After adding the dependency, create a `Flow`:
 
 ```java
-Flow Flow = Flow.create(tracer);
+Flow flow = Flow.create(tracer);
 ```
 
 If you need access to the current flow's id, call `currentId()` on it:
@@ -145,10 +145,10 @@ APIExtensionsTracer tracer = new APIExtensionsTracer(delegate);
 tracer.addTracerObserver(new MDCSpanObserver());
 ```
 
-It allows you to add the trace id to every log line:
+It allows you to add the `trace_id`, `span_id` and/or `flow_id` to every log line:
 
 ```xml
-<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} [%equals{%X{flow_id}}{}{%X{trace_id}}] - %msg%n"/>
+<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} [%X{trace_id}] [%X{flow_id}] - %msg%n"/>
 ```
 
 ## Servlet
@@ -164,7 +164,7 @@ context.addFilter("FlowFilter", new FlowFilter(flow))
 
 ## Apache HTTP Client
 
-Many client-side HTTP libraries on the JVM use the Apache HTTPClient, which is why *Tracer* comes with a request interceptor:
+Many client-side HTTP libraries on the JVM use the Apache HTTPClient, which is why `tracer-httpclient` comes with a request interceptor:
 
 ```java
 DefaultHttpClient client = new DefaultHttpClient();

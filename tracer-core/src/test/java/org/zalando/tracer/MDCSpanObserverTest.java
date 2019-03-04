@@ -12,7 +12,6 @@ import org.zalando.tracer.Flow.Baggage;
 import static java.util.Collections.singletonMap;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.zalando.tracer.Flow.Logging.FLOW_ID;
 import static org.zalando.tracer.Flow.Logging.SPAN_ID;
@@ -43,9 +42,8 @@ class MDCSpanObserverTest {
                 .log("event")
                 .log(singletonMap("key", "value"));
 
-        // TODO specify test when actual trace id is available
-        assertThat(MDC.get(TRACE_ID), is(notNullValue()));
-        assertThat(MDC.get(SPAN_ID), is(notNullValue()));
+        assertThat(MDC.get(TRACE_ID), is(span.context().toTraceId()));
+        assertThat(MDC.get(SPAN_ID), is(span.context().toSpanId()));
 
         span.finish();
 

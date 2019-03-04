@@ -15,9 +15,8 @@ public final class MDCSpanObserver implements TracerObserver, SpanObserver {
 
     @Override
     public SpanObserver onStart(final SpanData data) {
-        // TODO https://github.com/opentracing-contrib/java-api-extensions/issues/17
-        MDC.put(TRACE_ID, data.getCorrelationId().toString());
-        MDC.put(SPAN_ID, data.getCorrelationId().toString());
+        MDC.put(TRACE_ID, data.getTraceId());
+        MDC.put(SPAN_ID, data.getSpanId());
         return this;
     }
 

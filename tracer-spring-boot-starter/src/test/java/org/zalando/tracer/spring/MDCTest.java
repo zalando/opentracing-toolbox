@@ -14,7 +14,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
 @ExtendWith(SpringExtension.class)
@@ -38,9 +37,8 @@ final class MDCTest {
 
         final Span span = tracer.buildSpan("test").start();
 
-        // TODO specify test when actual trace id is available
-        assertThat(MDC.get("trace_id"), is(notNullValue()));
-        assertThat(MDC.get("span_id"), is(notNullValue()));
+        assertThat(MDC.get("trace_id"), is(span.context().toTraceId()));
+        assertThat(MDC.get("span_id"), is(span.context().toSpanId()));
 
         span.finish();
 
