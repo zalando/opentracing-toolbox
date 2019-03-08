@@ -1,6 +1,0 @@
-spring.main.banner_mode: 'OFF'
-
-tracer:
-  scheduling.pool-size: 16
-  traces:
-    X-Trace-ID: uuid

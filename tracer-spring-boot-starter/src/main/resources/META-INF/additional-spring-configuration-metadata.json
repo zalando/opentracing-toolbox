@@ -10,40 +10,10 @@
       "description": "Enables/disables servlet filter support."
     },
     {
-      "name": "tracer.aspect.enabled",
-      "type": "java.lang.Boolean",
-      "defaultValue": true,
-      "description": "Enables/disables AOP support for @Traced."
-    },
-    {
       "name": "tracer.mdc.enabled",
       "type": "java.lang.Boolean",
       "defaultValue": true,
       "description": "Enables/disables support for Slf4j's MDC."
-    },
-    {
-      "name": "tracer.logging.enabled",
-      "type": "java.lang.Boolean",
-      "defaultValue": true,
-      "description": "Enables/disables logging of traces being started and stopped."
-    },
-    {
-      "name": "tracer.scheduling.enabled",
-      "type": "java.lang.Boolean",
-      "defaultValue": true,
-      "description": "Enables/disables @Scheduled support."
-    },
-    {
-      "name": "tracer.async.enabled",
-      "type": "java.lang.Boolean",
-      "defaultValue": true,
-      "description": "Enables/disables @Async support."
-    },
-    {
-      "name": "tracer.scheduling.pool-size",
-      "type": "java.lang.Integer",
-      "defaultValue": 0,
-      "description": "Specifies the thread pool size for the task scheduler, if no scheduler was provided. Defaults to number of processors."
     }
   ]
 }
