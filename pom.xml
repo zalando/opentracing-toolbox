@@ -32,6 +32,7 @@
         <module>tracer-httpclient</module>
         <module>tracer-okhttp</module>
         <module>tracer-servlet</module>
+        <module>tracer-spring-boot-autoconfigure</module>
         <module>tracer-spring-boot-starter</module>
     </modules>
     <scm>
@@ -83,6 +84,11 @@
             <dependency>
                 <groupId>org.zalando</groupId>
                 <artifactId>tracer-servlet</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.zalando</groupId>
+                <artifactId>tracer-spring-boot-autoconfigure</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -453,6 +459,7 @@
                         <parallel>classesAndMethods</parallel>
                         <threadCount>1</threadCount>
                         <perCoreThreadCount>true</perCoreThreadCount>
+                        <failIfNoTests>true</failIfNoTests>
                         <useFile>false</useFile>
                     </configuration>
                 </plugin>

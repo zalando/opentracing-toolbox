@@ -1,4 +1,4 @@
-package org.zalando.tracer.spring;
+package org.zalando.tracer.autoconfigure;
 
 import io.opentracing.Tracer;
 import io.opentracing.mock.MockTracer;

@@ -1,4 +1,4 @@
-package org.zalando.tracer.spring;
+package org.zalando.tracer.autoconfigure;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

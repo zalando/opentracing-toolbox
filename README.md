@@ -181,7 +181,7 @@ OkHttpClient client = new OkHttpClient.Builder()
         .build();
 ```
 
-## Spring Boot Starter
+## Spring Boot Auto Configuration
 
 *Tracer* comes with a convenient auto configuration for Spring Boot users that sets up aspect, servlet filter and MDC support automatically with sensible defaults:
 
