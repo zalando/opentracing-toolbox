@@ -15,7 +15,7 @@
         <developerConnection>scm:git:git@github.com:zalando/tracer.git</developerConnection>
     </scm>
     <properties>
-        <httpclient.version>4.5.7</httpclient.version>
+        <httpclient.version>4.5.8</httpclient.version>
     </properties>
     <dependencies>
         <dependency>
