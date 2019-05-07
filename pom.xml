@@ -60,7 +60,7 @@
         <spring-boot.version>2.1.4.RELEASE</spring-boot.version>
         <junit-platform.version>1.4.2</junit-platform.version>
         <junit-jupiter.version>5.4.2</junit-jupiter.version>
-        <opentracing.version>0.32.0</opentracing.version>
+        <opentracing.version>0.33.0</opentracing.version>
         <log4j.version>2.11.2</log4j.version>
     </properties>
     <dependencyManagement>
