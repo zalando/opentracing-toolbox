@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import static com.jayway.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 
@@ -37,7 +39,8 @@ final class FlowFilterTest {
                 .header("spanid", "1")
                 .get(url())
                 .then()
-                .content(equalTo("1"));
+                .content(equalTo("1"))
+                .header("x-flow-id", is(nullValue()));
     }
 
     @Test
@@ -49,7 +52,20 @@ final class FlowFilterTest {
                 .header("baggage-flow_id", "REcCvlqMSReeo7adheiYFA")
                 .get(url())
                 .then()
-                .content(equalTo("REcCvlqMSReeo7adheiYFA"));
+                .content(equalTo("REcCvlqMSReeo7adheiYFA"))
+                .header("x-flow-id", is(nullValue()));
+    }
+
+    @Test
+    void shouldPropagateFlowAsFlowIdHeader() {
+        given().
+                when()
+                .header("traceid", "1")
+                .header("spanid", "2")
+                .header("x-flow-id", "3")
+                .get(url())
+                .then()
+                .header("x-flow-id", equalTo("3"));
     }
 
     @Test

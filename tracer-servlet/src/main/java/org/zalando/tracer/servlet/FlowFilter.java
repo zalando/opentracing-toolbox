@@ -2,7 +2,6 @@ package org.zalando.tracer.servlet;
 
 import org.apiguardian.api.API;
 import org.zalando.tracer.Flow;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +23,14 @@ public final class FlowFilter implements HttpFilter {
     public void doFilter(final HttpServletRequest request, final HttpServletResponse response,
             final FilterChain chain) throws IOException, ServletException {
         flow.readFrom(request::getHeader);
+        if (isLegacyRequest(request)) {
+            flow.writeTo(response::setHeader);
+        }
         chain.doFilter(request, response);
+    }
+
+    private boolean isLegacyRequest(final HttpServletRequest request) {
+        return request.getHeader(Flow.Header.FLOW_ID) != null;
     }
 
 }
