@@ -4,7 +4,7 @@ import io.opentracing.Tracer;
 
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 public interface Flow {
 
@@ -22,7 +22,7 @@ public interface Flow {
         String FLOW_ID = "flow_id";
     }
 
-    void readFrom(Function<String, String> reader);
+    void readFrom(UnaryOperator<String> reader);
 
     /**
      *
