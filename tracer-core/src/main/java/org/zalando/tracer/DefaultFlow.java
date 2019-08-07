@@ -5,12 +5,19 @@ import io.opentracing.Tracer;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 @Slf4j
 final class DefaultFlow implements Flow {
+
+    private final Extractor extractor = new CompositeExtractor(
+            new BaggageExtractor(),
+            new HeaderExtractor(),
+            new TraceExtractor()
+    );
 
     private final Tracer tracer;
 
@@ -19,46 +26,26 @@ final class DefaultFlow implements Flow {
     }
 
     @Override
-    public void readFrom(final Function<String, String> reader) {
+    public void readFrom(final UnaryOperator<String> reader) {
         final Span span = activeSpan();
 
-        @Nullable final String header = reader.apply(Header.FLOW_ID);
+        final Optional<String> now = extractor.extract(span, reader);
+        final Optional<String> later = extractor.extract(span);
 
-        if (header == null) {
+        if (now.equals(later)) {
+            // We proved that we could extract the same flow id without the given reader,
+            // hence we don't need to remember it.
             return;
         }
 
-        @Nullable final String baggage = span.getBaggageItem(Baggage.FLOW_ID);
-
-        if (baggage == null) {
-            final String traceId = span.context().toTraceId();
-
-            if (!traceId.equals(header)) {
-                log.debug("Received {} header ({}); keeping it as {} baggage",
-                        Header.FLOW_ID, header, Baggage.FLOW_ID);
-                span.setBaggageItem(Baggage.FLOW_ID, header);
-            }
-
-            return;
-        }
-
-        if (!header.equals(baggage)) {
-            log.warn("{} header ({}) and {} baggage ({}) differ; using baggage",
-                    Header.FLOW_ID, header, Baggage.FLOW_ID, baggage);
-        }
+        now.ifPresent(flowId ->
+                span.setBaggageItem(Baggage.FLOW_ID, flowId));
     }
 
     @Override
     public String currentId() {
-        final Span span = activeSpan();
-
-        @Nullable final String baggage = span.getBaggageItem(Baggage.FLOW_ID);
-
-        if (baggage == null) {
-            return span.context().toTraceId();
-        }
-
-        return baggage;
+        return extractor.extract(activeSpan())
+                .orElseThrow(IllegalStateException::new);
     }
 
     @Override
