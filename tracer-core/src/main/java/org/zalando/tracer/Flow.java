@@ -6,10 +6,16 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.UnaryOperator;
 
+import static org.zalando.tracer.FlowListener.composite;
+
 public interface Flow {
 
     interface Header {
         String FLOW_ID = "X-Flow-ID";
+    }
+
+    interface Tag {
+        String FLOW_ID = "flow_id";
     }
 
     interface Baggage {
@@ -36,8 +42,11 @@ public interface Flow {
     <T> T write(BiFunction<String, String, T> writer);
 
     static Flow create(final Tracer tracer) {
-        return new DefaultFlow(tracer);
+        return create(tracer, new TagFlowListener());
     }
 
+    static Flow create(final Tracer tracer, final FlowListener... listeners) {
+        return new DefaultFlow(tracer, composite(listeners));
+    }
 
 }

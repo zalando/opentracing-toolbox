@@ -20,7 +20,7 @@ final class CompositeExtractor implements Extractor {
     }
 
     @Override
-    public Optional<String> extract(final Span span, final UnaryOperator<String> reader) {
+    public Optional<FlowId> extract(final Span span, final UnaryOperator<String> reader) {
         return strategies.stream()
                 .map(strategy -> strategy.extract(span, reader))
                 .filter(Optional::isPresent)

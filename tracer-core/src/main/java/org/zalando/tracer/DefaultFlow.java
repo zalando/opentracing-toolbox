@@ -2,6 +2,7 @@ package org.zalando.tracer;
 
 import io.opentracing.Span;
 import io.opentracing.Tracer;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Nullable;
@@ -11,6 +12,7 @@ import java.util.function.BiFunction;
 import java.util.function.UnaryOperator;
 
 @Slf4j
+@AllArgsConstructor
 final class DefaultFlow implements Flow {
 
     private final Extractor extractor = new CompositeExtractor(
@@ -20,31 +22,38 @@ final class DefaultFlow implements Flow {
     );
 
     private final Tracer tracer;
-
-    DefaultFlow(final Tracer tracer) {
-        this.tracer = tracer;
-    }
+    private final FlowListener listener;
 
     @Override
     public void readFrom(final UnaryOperator<String> reader) {
         final Span span = activeSpan();
 
-        final Optional<String> now = extractor.extract(span, reader);
-        final Optional<String> later = extractor.extract(span);
+        final Optional<FlowId> now = extractor.extract(span, reader);
+        final Optional<FlowId> later = extractor.extract(span);
 
-        if (now.equals(later)) {
-            // We proved that we could extract the same flow id without the given reader,
-            // hence we don't need to remember it.
-            return;
+        final Optional<String> nowId = now.map(FlowId::getValue);
+        final Optional<String> laterId = later.map(FlowId::getValue);
+
+        if (nowId.equals(laterId)) {
+            later.ifPresent(flowId -> {
+                listener.onRead(span, flowId);
+            });
+        } else {
+            now.ifPresent(flowId -> {
+                bag(span, flowId);
+                listener.onRead(span, flowId);
+            });
         }
+    }
 
-        now.ifPresent(flowId ->
-                span.setBaggageItem(Baggage.FLOW_ID, flowId));
+    private void bag(final Span span, final FlowId flowId) {
+        span.setBaggageItem(Baggage.FLOW_ID, flowId.getValue());
     }
 
     @Override
     public String currentId() {
         return extractor.extract(activeSpan())
+                .map(FlowId::getValue)
                 .orElseThrow(IllegalStateException::new);
     }
 
