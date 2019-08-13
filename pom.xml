@@ -352,7 +352,7 @@
                 <plugin>
                     <groupId>org.owasp</groupId>
                     <artifactId>dependency-check-maven</artifactId>
-                    <version>3.3.1</version>
+                    <version>5.2.1</version>
                     <executions>
                         <execution>
                             <goals>
@@ -362,6 +362,7 @@
                     </executions>
                     <configuration>
                         <failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
+                        <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
                     </configuration>
                 </plugin>
                 <plugin>
