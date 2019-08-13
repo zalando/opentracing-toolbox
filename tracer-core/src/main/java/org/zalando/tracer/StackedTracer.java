@@ -1,9 +1,9 @@
 package org.zalando.tracer;
 
 import javax.annotation.Nullable;
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -25,7 +25,7 @@ final class StackedTracer implements Tracer {
     StackedTracer(final Map<String, Generator> generators,
             final Collection<TraceListener> listeners) {
         this.traces = generators.keySet().stream()
-                .collect(toMap(identity(), name -> ThreadLocal.withInitial(LinkedList::new)));
+                .collect(toMap(identity(), name -> ThreadLocal.withInitial(ArrayDeque::new)));
         this.generators = generators;
 
         final Map<Boolean, List<TraceListener>> partitions = listeners.stream()
