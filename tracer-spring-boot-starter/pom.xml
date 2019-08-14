@@ -54,7 +54,7 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <!-- see https://github.com/spring-projects/spring-boot/issues/6520 -->
-            <version>2.21.0</version>
+            <version>3.0.0</version>
         </dependency>
         <!-- for some reason, this is needed to make spring-test-junit5 work -->
         <dependency>
