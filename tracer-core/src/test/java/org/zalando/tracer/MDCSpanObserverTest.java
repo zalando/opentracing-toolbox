@@ -52,7 +52,7 @@ class MDCSpanObserverTest {
     }
     
     @Test
-    void shoulPutFlowIdToMdc() {
+    void shouldPutFlowIdToMdc() {
         assertThat(MDC.get(FLOW_ID), is(nullValue()));
 
         final Span span = tracer.buildSpan("test").start()
