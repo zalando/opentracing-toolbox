@@ -12,7 +12,7 @@ class FlowTest {
     }
 
     @Test
-    void shouldUseBagaggeKey() {
+    void shouldUseBaggageKey() {
         assertEquals("flow_id", Flow.Baggage.FLOW_ID);
     }
 
