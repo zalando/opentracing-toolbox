@@ -30,12 +30,7 @@ public interface Flow {
 
     void readFrom(UnaryOperator<String> reader);
 
-    /**
-     *
-     * @return
-     * @throws IllegalStateException
-     */
-    String currentId();
+    String currentId() throws IllegalStateException;
 
     void writeTo(BiConsumer<String, String> writer);
 
