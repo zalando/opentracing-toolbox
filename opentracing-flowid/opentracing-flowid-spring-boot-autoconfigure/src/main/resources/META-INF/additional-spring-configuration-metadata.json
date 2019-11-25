@@ -1,0 +1,13 @@
+{
+  "hints": [],
+  "groups": [
+  ],
+  "properties": [
+    {
+      "name": "flowid.filter.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "Enables/disables servlet filter support."
+    }
+  ]
+}

@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.zalando</groupId>
-    <artifactId>tracer-parent</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <artifactId>opentracing-toolbox</artifactId>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>Tracer</name>
-    <url>https://github.com/zalando/tracer</url>
-    <inceptionYear>2015</inceptionYear>
+    <name>OpenTracing Toolbox</name>
+    <url>https://github.com/zalando/opentracing-toolbox</url>
+    <inceptionYear>2019</inceptionYear>
     <organization>
         <name>Zalando SE</name>
     </organization>
@@ -27,18 +27,12 @@
         </developer>
     </developers>
     <modules>
-        <module>tracer-bom</module>
-        <module>tracer-core</module>
-        <module>tracer-httpclient</module>
-        <module>tracer-okhttp</module>
-        <module>tracer-servlet</module>
-        <module>tracer-spring-boot-autoconfigure</module>
-        <module>tracer-spring-boot-starter</module>
+        <module>opentracing-flowid</module>
     </modules>
     <scm>
-        <url>https://github.com/zalando/tracer</url>
-        <connection>scm:git:git@github.com:zalando/tracer.git</connection>
-        <developerConnection>scm:git:git@github.com:zalando/tracer.git</developerConnection>
+        <url>https://github.com/zalando/opentracing-toolbox</url>
+        <connection>scm:git:git@github.com:zalando/opentracing-toolbox.git</connection>
+        <developerConnection>scm:git:git@github.com:zalando/opentracing-toolbox.git</developerConnection>
     </scm>
     <distributionManagement>
         <snapshotRepository>
@@ -64,37 +58,6 @@
     </properties>
     <dependencyManagement>
         <dependencies>
-            <!-- tracer -->
-            <dependency>
-                <groupId>org.zalando</groupId>
-                <artifactId>tracer-core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.zalando</groupId>
-                <artifactId>tracer-httpclient</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.zalando</groupId>
-                <artifactId>tracer-okhttp</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.zalando</groupId>
-                <artifactId>tracer-servlet</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.zalando</groupId>
-                <artifactId>tracer-spring-boot-autoconfigure</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.zalando</groupId>
-                <artifactId>tracer-spring-boot-starter</artifactId>
-                <version>${project.version}</version>
-            </dependency>
             <!--common -->
             <dependency>
                 <groupId>org.apiguardian</groupId>
@@ -118,11 +81,6 @@
                 <version>1.18.10</version>
                 <scope>provided</scope>
             </dependency>
-            <dependency>
-                <groupId>org.zalando</groupId>
-                <artifactId>faux-pas</artifactId>
-                <version>0.8.0</version>
-            </dependency>
             <!-- opentracing -->
             <dependency>
                 <groupId>io.opentracing</groupId>
@@ -139,13 +97,6 @@
                 <artifactId>opentracing-mock</artifactId>
                 <version>${opentracing.version}</version>
                 <scope>test</scope>
-            </dependency>
-            <!-- javax -->
-            <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>javax.servlet-api</artifactId>
-                <version>4.0.1</version>
-                <scope>provided</scope>
             </dependency>
             <!-- logging -->
             <dependency>
@@ -322,6 +273,7 @@
         <dependency>
             <groupId>org.zalando</groupId>
             <artifactId>faux-pas</artifactId>
+            <version>0.8.0</version>
         </dependency>
         <!-- logging -->
         <dependency>
