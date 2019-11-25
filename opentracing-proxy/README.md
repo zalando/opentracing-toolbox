@@ -1,11 +1,19 @@
 # OpenTracing: Proxy
 
 [![Stability: Active](https://masterminds.github.io/stability/active.svg)](https://masterminds.github.io/stability/active.html)
+![Build Status](https://github.com/zalando/opentracing-toolbox/workflows/Test/badge.svg)
+[![Coverage Status](https://img.shields.io/coveralls/zalando/opentracing-toolbox/master.svg)](https://coveralls.io/r/zalando/opentracing-toolbox)
+[![Code Quality](https://img.shields.io/codacy/grade/69e173024eec403797466e147a2051a3/master.svg)](https://www.codacy.com/app/whiskeysierra/opentracing-toolbox)
+[![Javadoc](http://javadoc.io/badge/org.zalando/opentracing-proxy.svg)](http://www.javadoc.io/doc/org.zalando/opentracing-proxy)
+[![Release](https://img.shields.io/github/release/zalando/opentracing-toolbox.svg)](https://github.com/zalando/opentracing-toolbox/releases)
+[![Maven Central](https://img.shields.io/maven-central/v/org.zalando/opentracing-proxy.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/opentracing-proxy)
+[![OpenTracing](https://img.shields.io/badge/OpenTracing-enabled-blue.svg)](http://opentracing.io)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/zalando/opentracing-toolbox/master/LICENSE)
 
-_OpenTracing Proxy_ is a library that adds the ability to observe and react to span activities in OpenTracing.
+*OpenTracing Proxy* is a library that adds the ability to observe and react to span activities in OpenTracing.
 
 - **Technology stack**: Java 8+, OpenTracing
-- **Status**:  0.x
+- **Status**: Under development and used in production
 
 ## Why not [opentracing-contrib/java-api-extensions](https://github.com/opentracing-contrib/java-api-extensions):question: 
 
@@ -155,9 +163,9 @@ The `AutoBaggage` is pretty much the same as [*Auto-Tagging*](#auto-tagging) but
 
 ### Tag Propagation
 
-OpenTracing does not propagate tags to child tags, unless they are explicitly set on the child span. Since tags can't be extracted from a span one would need to carry relevant tags out of band from parent span to child span. That can be a cumbersome task if both locations are relative *far* away from each other, e.g. a servlet filter (parent span) and a client interceptor (child span).
+OpenTracing does not propagate tags to child spans, unless they are explicitly set on the child span. Since tags can't be extracted from a span one would need to carry relevant tags out of band from parent span to child span by hand. That can be a cumbersome task if both locations are relative *far* away from each other, e.g. a servlet filter (parent span) and a client interceptor (child span).
 
-The `TagPropagation` plugin eases this pain by automatically carrying over certain tags from parent to child tags:
+The `TagPropagation` plugin eases this pain by automatically carrying over certain tags from parent to child spans:
 
 ```java
 Tracer tracer = new ProxyTracer(original)

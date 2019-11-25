@@ -27,6 +27,7 @@
     </developers>
     <modules>
         <module>opentracing-flowid</module>
+        <module>opentracing-jdbc</module>
         <module>opentracing-proxy</module>
     </modules>
     <scm>
