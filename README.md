@@ -127,30 +127,6 @@ The following table describes the contract how a flow id is propagated in differ
 | e28a8414294acf36 | n/a                        | e28a8414294acf36            | n/a                          | e28a8414294acf36              |
 | e28a8414294acf36 | REcCvlqMSReeo7adheiYFA     | REcCvlqMSReeo7adheiYFA      | REcCvlqMSReeo7adheiYFA       | REcCvlqMSReeo7adheiYFA        |
 
-### Logging
-
-```xml
-<dependency>
-    <groupId>io.opentracing.contrib</groupId>
-    <artifactId>opentracing-api-extensions-tracer</artifactId>
-    <version>0.2.0</version>
-</dependency>
-```
-
-*Tracer* comes with a very useful `SpanObserver` by default, the `MDCSpanObserver`:
-
-```java
-Tracer delegate = ...; // your OpenTracing implementation of choice
-APIExtensionsTracer tracer = new APIExtensionsTracer(delegate);
-tracer.addTracerObserver(new MDCSpanObserver());
-```
-
-It allows you to add the `trace_id`, `span_id` and/or `flow_id` to every log line:
-
-```xml
-<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} [%X{trace_id}] [%X{flow_id}] - %msg%n"/>
-```
-
 ## Servlet
 
 On the server side is a single filter that you must be register in your filter chain. Make sure it runs very early — otherwise you might miss some crucial information when debugging.
@@ -183,17 +159,15 @@ OkHttpClient client = new OkHttpClient.Builder()
 
 ## Spring Boot Auto Configuration
 
-*Tracer* comes with a convenient auto configuration for Spring Boot users that sets up aspect, servlet filter and MDC support automatically with sensible defaults:
+*Tracer* comes with a convenient auto configuration for Spring Boot users that sets up aspect and servlet filter automatically with sensible defaults:
 
 | Configuration                 | Description                               | Default                     |
 |-------------------------------|-------------------------------------------|-----------------------------|
 | `tracer.filter.enabled`       | Enables the [`FlowFilter`](#servlet)      | `true`                      |
-| `tracer.mdc.enabled`          | Enables the [`MDCSpanObserver`](#logging) | `true`                      |
 
 ```yaml
 tracer:
     filter.enabled: true
-    mdc.enabled: true
 ```
 
 ## Getting Help with Tracer

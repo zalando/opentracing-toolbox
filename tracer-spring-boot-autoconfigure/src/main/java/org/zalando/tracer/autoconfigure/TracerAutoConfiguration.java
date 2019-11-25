@@ -1,7 +1,6 @@
 package org.zalando.tracer.autoconfigure;
 
 import io.opentracing.Tracer;
-import io.opentracing.contrib.api.tracer.APIExtensionsTracer;
 import org.apiguardian.api.API;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -12,10 +11,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
 import org.zalando.tracer.Flow;
-import org.zalando.tracer.MDCSpanObserver;
 import org.zalando.tracer.httpclient.FlowHttpRequestInterceptor;
 import org.zalando.tracer.servlet.FlowFilter;
 
@@ -46,16 +43,6 @@ public class TracerAutoConfiguration {
     @ConditionalOnMissingBean(FlowHttpRequestInterceptor.class)
     public FlowHttpRequestInterceptor flowHttpRequestInterceptor(final Flow flow) {
         return new FlowHttpRequestInterceptor(flow);
-    }
-
-    @API(status = INTERNAL)
-    @Bean
-    @Primary
-    @ConditionalOnProperty(name = "tracer.mdc.enabled", havingValue = "true", matchIfMissing = true)
-    public Tracer mdcTracer(final Tracer tracer) {
-        final APIExtensionsTracer extensionsTracer = new APIExtensionsTracer(tracer);
-        extensionsTracer.addTracerObserver(new MDCSpanObserver());
-        return extensionsTracer;
     }
 
     @Configuration

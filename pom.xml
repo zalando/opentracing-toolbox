@@ -140,13 +140,6 @@
                 <version>${opentracing.version}</version>
                 <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>io.opentracing.contrib</groupId>
-                <artifactId>opentracing-api-extensions-tracer</artifactId>
-                <version>0.6.0</version>
-                <!-- Needed for pushing trace/span/flow id to MDC-->
-                <optional>true</optional>
-            </dependency>
             <!-- javax -->
             <dependency>
                 <groupId>javax.servlet</groupId>
