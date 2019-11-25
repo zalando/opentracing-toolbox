@@ -13,15 +13,15 @@ import static java.util.function.Function.identity;
 @AllArgsConstructor
 final class CompositeExtractor implements Extractor {
 
-    private final Collection<Extractor> strategies;
+    private final Collection<Extractor> extractors;
 
-    CompositeExtractor(final Extractor... strategies) {
-        this(Arrays.asList(strategies));
+    CompositeExtractor(final Extractor... extractors) {
+        this(Arrays.asList(extractors));
     }
 
     @Override
     public Optional<FlowId> extract(final Span span, final UnaryOperator<String> reader) {
-        return strategies.stream()
+        return extractors.stream()
                 .map(strategy -> strategy.extract(span, reader))
                 .filter(Optional::isPresent)
                 .findFirst()
