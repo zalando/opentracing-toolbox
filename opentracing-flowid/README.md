@@ -3,7 +3,7 @@
 ![Build Status](https://github.com/zalando/opentracing-toolbox/workflows/Test/badge.svg)
 [![Coverage Status](https://img.shields.io/coveralls/zalando/opentracing-toolbox/master.svg)](https://coveralls.io/r/zalando/opentracing-toolbox)
 [![Code Quality](https://img.shields.io/codacy/grade/213bb62c41b34a32951929e37a2d20ac/master.svg)](https://www.codacy.com/app/whiskeysierra/opentracing-toolbox)
-[![Javadoc](http://javadoc.io/badge/org.zalando/opentracing-flowid-core.svg)](http://www.javadoc.io/doc/org.zalando/opentracing-flowid-core)
+[![Javadoc](http://javadoc.io/badge/org.zalando/opentracing-flowid.svg)](http://www.javadoc.io/doc/org.zalando/opentracing-flowid)
 [![Release](https://img.shields.io/github/release/zalando/opentracing-toolbox.svg)](https://github.com/zalando/opentracing-toolbox/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/org.zalando/opentracing-toolbox.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/opentracing-toolbox)
 [![OpenTracing](https://img.shields.io/badge/OpenTracing-enabled-blue.svg)](http://opentracing.io)
@@ -44,7 +44,7 @@ Add the following dependency to your project:
 ```xml
 <dependency>
     <groupId>org.zalando</groupId>
-    <artifactId>opentracing-flowid-core</artifactId>
+    <artifactId>opentracing-flowid</artifactId>
     <version>${opentracing-toolbox.version}</version>
 </dependency>
 ```
@@ -72,7 +72,7 @@ Alternatively, you can import our *bill of materials*...
 ```xml
 <dependency>
     <groupId>org.zalando</groupId>
-    <artifactId>opentracing-flowid-core</artifactId>
+    <artifactId>opentracing-flowid</artifactId>
 </dependency>
 <dependency>
     <groupId>org.zalando</groupId>

@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.zalando</groupId>
-        <artifactId>opentracing-toolbox</artifactId>
+        <artifactId>opentracing-flowid-parent</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>opentracing-flowid-parent</artifactId>
+    <artifactId>opentracing-flowid-bom</artifactId>
     <packaging>pom</packaging>
-    <modules>
-        <module>bom</module>
-        <module>core</module>
-        <module>httpclient</module>
-        <module>okhttp</module>
-        <module>servlet</module>
-        <module>spring-boot-autoconfigure</module>
-        <module>spring-boot-starter</module>
-    </modules>
+    <description>Tracing requests through a distributed system.</description>
     <scm>
         <url>https://github.com/zalando/opentracing-toolbox</url>
         <connection>scm:git:git@github.com:zalando/opentracing-toolbox.git</connection>
@@ -29,32 +19,32 @@
             <dependency>
                 <groupId>org.zalando</groupId>
                 <artifactId>opentracing-flowid</artifactId>
-                <version>${project.version}</version>
+                <version>3.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.zalando</groupId>
                 <artifactId>opentracing-flowid-httpclient</artifactId>
-                <version>${project.version}</version>
+                <version>3.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.zalando</groupId>
                 <artifactId>opentracing-flowid-okhttp</artifactId>
-                <version>${project.version}</version>
+                <version>3.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.zalando</groupId>
                 <artifactId>opentracing-flowid-servlet</artifactId>
-                <version>${project.version}</version>
+                <version>3.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.zalando</groupId>
                 <artifactId>opentracing-flowid-spring-boot-autoconfigure</artifactId>
-                <version>${project.version}</version>
+                <version>3.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.zalando</groupId>
                 <artifactId>opentracing-flowid-spring-boot-starter</artifactId>
-                <version>${project.version}</version>
+                <version>3.0.0-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
