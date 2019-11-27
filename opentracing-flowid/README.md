@@ -86,10 +86,6 @@ Alternatively, you can import our *bill of materials*...
     <groupId>org.zalando</groupId>
     <artifactId>opentracing-flowid-okhttp</artifactId>
 </dependency>
-<dependency>
-    <groupId>org.zalando</groupId>
-    <artifactId>opentracing-flowid-spring-boot-starter</artifactId>
-</dependency>
 ```
 
 ## Usage

@@ -1,6 +1,7 @@
 package org.zalando.opentracing.flowid.autoconfigure;
 
 import io.opentracing.Tracer;
+import org.apache.http.client.HttpClient;
 import org.apiguardian.api.API;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -30,7 +31,7 @@ import static org.apiguardian.api.API.Status.STABLE;
         "org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration", // Spring Boot 2.x
         "io.opentracing.contrib.spring.web.starter.ServerTracingAutoConfiguration"
 })
-public class FlowIdAutoConfiguration {
+public class OpenTracingFlowIdAutoConfiguration {
 
     @API(status = INTERNAL)
     @Bean
@@ -39,21 +40,29 @@ public class FlowIdAutoConfiguration {
     }
 
     @API(status = INTERNAL)
-    @Bean
+    @Configuration
+    @ConditionalOnClass(HttpClient.class)
     @ConditionalOnMissingBean(FlowHttpRequestInterceptor.class)
-    public FlowHttpRequestInterceptor flowHttpRequestInterceptor(final Flow flow) {
-        return new FlowHttpRequestInterceptor(flow);
+    @ConditionalOnProperty(name = "flowid.httpclient.enabled", havingValue = "true", matchIfMissing = true)
+    static class OpenTracingFlowIdHttpClientAutoConfiguration {
+
+        @Bean
+        @ConditionalOnMissingBean(FlowHttpRequestInterceptor.class)
+        public FlowHttpRequestInterceptor flowHttpRequestInterceptor(final Flow flow) {
+            return new FlowHttpRequestInterceptor(flow);
+        }
+
     }
 
+    @API(status = INTERNAL)
     @Configuration
     @ConditionalOnClass({Filter.class, FilterRegistrationBean.class})
     @ConditionalOnWebApplication
     @ConditionalOnProperty(name = "flowid.filter.enabled", havingValue = "true", matchIfMissing = true)
-    static class FlowIdWebMvcAutoConfiguration {
+    static class OpenTracingFlowIdWebMvcAutoConfiguration {
 
         public static final String FILTER_NAME = "flowFilter";
 
-        @API(status = INTERNAL)
         @Bean
         @ConditionalOnMissingBean(name = FILTER_NAME)
         public FilterRegistrationBean flowFilter(final Flow flow) {

@@ -8,6 +8,12 @@
       "type": "java.lang.Boolean",
       "defaultValue": true,
       "description": "Enables/disables servlet filter support."
+    },
+    {
+      "name": "flowid.httpclient.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "Enables/disables Apache HTTP client support."
     }
   ]
 }

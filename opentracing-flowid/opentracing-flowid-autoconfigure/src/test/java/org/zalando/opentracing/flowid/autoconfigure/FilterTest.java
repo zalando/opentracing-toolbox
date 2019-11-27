@@ -15,7 +15,7 @@ import static org.hamcrest.Matchers.notNullValue;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = Application.class)
-@ImportAutoConfiguration(FlowIdAutoConfiguration.class)
+@ImportAutoConfiguration(OpenTracingFlowIdAutoConfiguration.class)
 class FilterTest {
 
     @Autowired

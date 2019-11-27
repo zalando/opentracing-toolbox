@@ -16,8 +16,7 @@
         <module>opentracing-flowid-httpclient</module>
         <module>opentracing-flowid-okhttp</module>
         <module>opentracing-flowid-servlet</module>
-        <module>opentracing-flowid-spring-boot-autoconfigure</module>
-        <module>opentracing-flowid-spring-boot-starter</module>
+        <module>opentracing-flowid-autoconfigure</module>
     </modules>
     <scm>
         <url>https://github.com/zalando/opentracing-toolbox</url>
@@ -48,12 +47,7 @@
             </dependency>
             <dependency>
                 <groupId>org.zalando</groupId>
-                <artifactId>opentracing-flowid-spring-boot-autoconfigure</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.zalando</groupId>
-                <artifactId>opentracing-flowid-spring-boot-starter</artifactId>
+                <artifactId>opentracing-flowid-autoconfigure</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
