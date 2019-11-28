@@ -1,11 +1,12 @@
 # OpenTracing FlowID
 
+[![Stability: Active](https://masterminds.github.io/stability/active.svg)](https://masterminds.github.io/stability/active.html)
 ![Build Status](https://github.com/zalando/opentracing-toolbox/workflows/Test/badge.svg)
 [![Coverage Status](https://img.shields.io/coveralls/zalando/opentracing-toolbox/master.svg)](https://coveralls.io/r/zalando/opentracing-toolbox)
-[![Code Quality](https://img.shields.io/codacy/grade/213bb62c41b34a32951929e37a2d20ac/master.svg)](https://www.codacy.com/app/whiskeysierra/opentracing-toolbox)
+[![Code Quality](https://img.shields.io/codacy/grade/69e173024eec403797466e147a2051a3/master.svg)](https://www.codacy.com/app/whiskeysierra/opentracing-toolbox)
 [![Javadoc](http://javadoc.io/badge/org.zalando/opentracing-flowid.svg)](http://www.javadoc.io/doc/org.zalando/opentracing-flowid)
 [![Release](https://img.shields.io/github/release/zalando/opentracing-toolbox.svg)](https://github.com/zalando/opentracing-toolbox/releases)
-[![Maven Central](https://img.shields.io/maven-central/v/org.zalando/opentracing-toolbox.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/opentracing-toolbox)
+[![Maven Central](https://img.shields.io/maven-central/v/org.zalando/opentracing-flowid.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/opentracing-flowid)
 [![OpenTracing](https://img.shields.io/badge/OpenTracing-enabled-blue.svg)](http://opentracing.io)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/zalando/opentracing-toolbox/master/LICENSE)
 
@@ -28,9 +29,8 @@ This library historically originates from a closed-source implementation called 
 
 ## Dependencies
 
-- Java 8
-- Any build tool using Maven Central, or direct download
-- [OpenTracing](https://opentracing.io/guides/java/) 0.32.0 or higher
+- Java 8 or higher
+- [OpenTracing](https://github.com/opentracing/opentracing-java)
 - Servlet Container (optional)
 - Apache HTTP Client (optional)
 - OkHttp (optional)
@@ -45,7 +45,7 @@ Add the following dependency to your project:
 <dependency>
     <groupId>org.zalando</groupId>
     <artifactId>opentracing-flowid</artifactId>
-    <version>${opentracing-toolbox.version}</version>
+    <version>${opentracing-flowid.version}</version>
 </dependency>
 ```
 
@@ -59,7 +59,7 @@ Alternatively, you can import our *bill of materials*...
     <dependency>
       <groupId>org.zalando</groupId>
       <artifactId>opentracing-flowid-bom</artifactId>
-      <version>${opentracing-toolbox.version}</version>
+      <version>${opentracing-flowid.version}</version>
       <type>pom</type>
       <scope>import</scope>
     </dependency>

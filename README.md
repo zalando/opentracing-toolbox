@@ -1,9 +1,9 @@
 # OpenTracing Toolbox
 
-![Build Status](https://github.com/zalando/opentracing-toolbox/workflows/Test/badge.svg)
 [![Stability: Active](https://masterminds.github.io/stability/active.svg)](https://masterminds.github.io/stability/active.html)
+![Build Status](https://github.com/zalando/opentracing-toolbox/workflows/Test/badge.svg)
 [![Coverage Status](https://img.shields.io/coveralls/zalando/opentracing-toolbox/master.svg)](https://coveralls.io/r/zalando/opentracing-toolbox)
-[![Code Quality](https://img.shields.io/codacy/grade/213bb62c41b34a32951929e37a2d20ac/master.svg)](https://www.codacy.com/app/whiskeysierra/opentracing-toolbox)
+[![Code Quality](https://img.shields.io/codacy/grade/69e173024eec403797466e147a2051a3/master.svg)](https://www.codacy.com/app/whiskeysierra/opentracing-toolbox)
 [![Release](https://img.shields.io/github/release/zalando/opentracing-toolbox.svg)](https://github.com/zalando/opentracing-toolbox/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/org.zalando/opentracing-toolbox.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/opentracing-toolbox)
 [![OpenTracing](https://img.shields.io/badge/OpenTracing-enabled-blue.svg)](http://opentracing.io)
@@ -21,9 +21,21 @@
 
 ## Modules
 
+### OpenTracing Proxy
+
+The `opentracing-proxy` module is a direct competitor to [opentracing-contrib/java-api-extensions](https://github.com/opentracing-contrib/java-api-extensions). 
+
+Go checkout out its [README](opentracing-proxy) for details. 
+
+### OpenTracing JDBC
+
+The `opentracing-jdbc` module is a direct competitor to [opentracing-contrib/java-jdbc](https://github.com/opentracing-contrib/java-jdbc). 
+
+Go checkout out its [README](opentracing-jdbc) for details. 
+
 ### Opentracing FlowID
 
-The *opentracing-flowid* module replaces the former [`zalando/tracer`](https://github.com/zalando/tracer) library by providing support for the `X-Flow-ID` header propagation on top of OpenTracing.
+The `opentracing-flowid` module replaces the former [`zalando/tracer`](https://github.com/zalando/tracer) library by providing support for the `X-Flow-ID` header propagation on top of OpenTracing.
 
 Go checkout out its [README](opentracing-flowid) for details. 
 

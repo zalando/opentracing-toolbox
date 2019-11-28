@@ -8,10 +8,10 @@
         <artifactId>opentracing-toolbox</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>opentracing-proxy-parent</artifactId>
+    <artifactId>opentracing-jdbc-parent</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>opentracing-proxy</module>
+        <module>opentracing-jdbc</module>
     </modules>
     <scm>
         <url>https://github.com/zalando/opentracing-toolbox</url>
