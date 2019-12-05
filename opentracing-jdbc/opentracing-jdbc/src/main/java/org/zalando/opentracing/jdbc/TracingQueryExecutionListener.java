@@ -2,6 +2,7 @@ package org.zalando.opentracing.jdbc;
 
 import io.opentracing.Span;
 import io.opentracing.Tracer;
+import io.opentracing.tag.Tags;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import net.ttddyy.dsproxy.ExecutionInfo;
@@ -35,7 +36,9 @@ final class TracingQueryExecutionListener implements QueryExecutionListener {
                 .collect(toList());
 
         final String name = operationName.generate(method, queries);
-        final Span span = tracer.buildSpan(name).start();
+        final Span span = tracer.buildSpan(name)
+                .withTag(Tags.SPAN_KIND, Tags.SPAN_KIND_CLIENT)
+                .start();
         final Statement statement = info.getStatement();
 
         decorator.onQuery(span, statement, queries);

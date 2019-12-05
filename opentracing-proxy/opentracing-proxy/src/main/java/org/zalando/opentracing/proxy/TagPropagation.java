@@ -92,6 +92,8 @@ public final class TagPropagation implements SpanBuilderInterceptor {
                 return span;
             }
 
+            // TODO the call to unwrap here prevents any meaningful composing
+            //      of span builders
             ifPropagating(unwrap(active), parent ->
                     parent.propagateTo(span));
 

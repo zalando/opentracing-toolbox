@@ -7,11 +7,6 @@
         <version>3.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>opentracing-flowid-autoconfigure</artifactId>
-    <scm>
-        <url>https://github.com/zalando/opentracing-toolbox</url>
-        <connection>scm:git:git@github.com:zalando/opentracing-toolbox.git</connection>
-        <developerConnection>scm:git:git@github.com:zalando/opentracing-toolbox.git</developerConnection>
-    </scm>
     <dependencies>
         <dependency>
             <groupId>org.zalando</groupId>
@@ -55,6 +50,7 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
         </dependency>
+        <!-- TODO needed? -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
@@ -102,10 +98,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
             <exclusions>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                </exclusion>
                 <exclusion>
                     <groupId>org.junit.vintage</groupId>
                     <artifactId>junit-vintage-engine</artifactId>

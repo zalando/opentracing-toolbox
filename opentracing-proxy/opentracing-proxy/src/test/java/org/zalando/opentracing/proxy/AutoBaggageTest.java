@@ -13,30 +13,30 @@ class AutoBaggageTest {
 
     private final MockTracer tracer = new MockTracer();
     private final Tracer unit = new ProxyTracer(tracer)
-            .with(new AutoBaggage("special"));
+            .with(new AutoBaggage("priority"));
 
     @Test
     void shouldAutoBagSpecialTag() {
         unit.buildSpan("test").start()
-                .setTag("special", "yes")
+                .setTag("priority", 1.0)
                 .finish();
 
         final MockSpan span = getOnlyElement(tracer.finishedSpans());
 
-        assertEquals("yes", span.tags().get("special"));
-        assertEquals("yes", span.getBaggageItem("special"));
+        assertEquals(1.0, span.tags().get("priority"));
+        assertEquals("1.0", span.getBaggageItem("priority"));
     }
 
     @Test
     void shouldNotAutoBagOrdinaryTag() {
         unit.buildSpan("test").start()
-                .setTag("ordinary", "yes")
+                .setTag("preference", 0.1)
                 .finish();
 
         final MockSpan span = getOnlyElement(tracer.finishedSpans());
 
-        assertEquals("yes", span.tags().get("ordinary"));
-        assertNull(span.getBaggageItem("ordinary"));
+        assertEquals(0.1, span.tags().get("preference"));
+        assertNull(span.getBaggageItem("preference"));
     }
 
 }

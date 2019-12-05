@@ -1,9 +1,8 @@
 package org.zalando.opentracing.jdbc.span;
 
 import lombok.AllArgsConstructor;
-import lombok.Generated;
 import lombok.Getter;
-import lombok.experimental.Wither;
+import lombok.With;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -13,16 +12,16 @@ final class Peer {
 
     static final Peer EMPTY = new Peer(null, null, null, null);
 
-    @Wither(onMethod = @__(@Generated))
+    @With
     private final String hostname;
 
-    @Wither(onMethod = @__(@Generated))
+    @With
     private final String ipv4;
 
-    @Wither(onMethod = @__(@Generated))
+    @With
     private final String ipv6;
 
-    @Wither(onMethod = @__(@Generated))
+    @With
     private final Integer port;
 
 }

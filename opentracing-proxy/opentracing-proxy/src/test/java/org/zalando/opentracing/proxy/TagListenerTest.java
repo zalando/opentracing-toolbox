@@ -15,7 +15,7 @@ import static org.mockito.Mockito.verify;
 
 class TagListenerTest {
 
-    private final SimpleTagListener listener = mock(SimpleTagListener.class,
+    private final TagListener listener = mock(TagListener.class,
             InvocationOnMock::callRealMethod);
 
     private final Tracer unit = new ProxyTracer(new MockTracer())
@@ -27,7 +27,6 @@ class TagListenerTest {
                 .withTag("k1", "v");
 
         verify(listener).onTag(eq(builder), tag("k1"), eq("v"));
-        verify(listener).onTag(tag("k1"), eq("v"));
     }
 
     @Test
@@ -36,7 +35,6 @@ class TagListenerTest {
                 .withTag("k2", false);
 
         verify(listener).onTag(eq(builder), tag("k2"), eq(false));
-        verify(listener).onTag(tag("k2"), eq(false));
     }
 
     @Test
@@ -45,7 +43,6 @@ class TagListenerTest {
                 .withTag("k3", 0);
 
         verify(listener).onTag(eq(builder), tag("k3"), eq(0));
-        verify(listener).onTag(tag("k3"), eq(0));
     }
 
     @Test
@@ -54,7 +51,6 @@ class TagListenerTest {
                 .withTag(new StringTag("k4"), "v");
 
         verify(listener).onTag(eq(builder), tag("k4"), eq("v"));
-        verify(listener).onTag(tag("k4"), eq("v"));
     }
 
     @Test
@@ -63,7 +59,6 @@ class TagListenerTest {
                 .setTag("k1", "v");
 
         verify(listener).onTag(eq(span), tag("k1"), eq("v"));
-        verify(listener).onTag(tag("k1"), eq("v"));
     }
 
     @Test
@@ -72,7 +67,6 @@ class TagListenerTest {
                 .setTag("k2", false);
 
         verify(listener).onTag(eq(span), tag("k2"), eq(false));
-        verify(listener).onTag(tag("k2"), eq(false));
     }
 
     @Test
@@ -81,7 +75,6 @@ class TagListenerTest {
                 .setTag("k3", 0);
 
         verify(listener).onTag(eq(span), tag("k3"), eq(0));
-        verify(listener).onTag(tag("k3"), eq(0));
     }
 
     @Test
@@ -90,7 +83,6 @@ class TagListenerTest {
                 .setTag(new NumberTag("k4"), 17);
 
         verify(listener).onTag(eq(span), tag("k4"), eq(17));
-        verify(listener).onTag(tag("k4"), eq(17));
     }
 
     private static <T> Tag<T> tag(final String key) {

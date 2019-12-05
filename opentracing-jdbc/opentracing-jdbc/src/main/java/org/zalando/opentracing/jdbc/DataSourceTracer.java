@@ -16,7 +16,6 @@ import org.zalando.opentracing.jdbc.span.ErrorSpanDecorator;
 import org.zalando.opentracing.jdbc.span.ErrorStackSpanDecorator;
 import org.zalando.opentracing.jdbc.span.PeerSpanDecorator;
 import org.zalando.opentracing.jdbc.span.SpanDecorator;
-import org.zalando.opentracing.jdbc.span.SpanKindSpanDecorator;
 
 import javax.annotation.CheckReturnValue;
 import javax.sql.DataSource;
@@ -45,7 +44,6 @@ public final class DataSourceTracer {
                 new ErrorSpanDecorator(),
                 new ErrorStackSpanDecorator(),
                 new PeerSpanDecorator(),
-                new SpanKindSpanDecorator(),
                 composite(load(SpanDecorator.class))
         ));
     }
