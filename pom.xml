@@ -29,6 +29,7 @@
         <module>opentracing-flowid</module>
         <module>opentracing-jdbc</module>
         <module>opentracing-proxy</module>
+        <module>opentracing-toolbox-spring-boot-starter</module>
     </modules>
     <scm>
         <url>https://github.com/zalando/opentracing-toolbox</url>
