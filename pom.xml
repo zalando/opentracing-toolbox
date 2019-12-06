@@ -29,6 +29,7 @@
         <module>opentracing-flowid</module>
         <module>opentracing-jdbc</module>
         <module>opentracing-proxy</module>
+        <module>opentracing-spring-extension</module>
         <module>opentracing-toolbox-spring-boot-starter</module>
     </modules>
     <scm>
@@ -99,6 +100,16 @@
                 <artifactId>opentracing-mock</artifactId>
                 <version>${opentracing.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.opentracing.contrib</groupId>
+                <artifactId>opentracing-spring-web</artifactId>
+                <version>3.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>io.opentracing.contrib</groupId>
+                <artifactId>opentracing-spring-web-starter</artifactId>
+                <version>3.0.0</version>
             </dependency>
             <!-- logging -->
             <dependency>
