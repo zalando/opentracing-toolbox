@@ -18,7 +18,7 @@ final class Options implements Registry<Options> {
             NONE;
 
             @Override
-            public SpanBuilder intercept(Tracer tracer, final SpanBuilder builder) {
+            public SpanBuilder intercept(final Tracer tracer, final SpanBuilder builder) {
                 return builder;
             }
         }

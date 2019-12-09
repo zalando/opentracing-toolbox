@@ -76,7 +76,6 @@ The following tags/logs are supported out of the box:
 | `peer.ipv4`          | `PeerSpanDecorator`              | `127.0.0.1`                       |
 | `peer.ipv6`          | `PeerSpanDecorator`              | `::1`                             |
 | `peer.port`          | `PeerSpanDecorator`              | `5432`                            |
-| `span.kind`          | `SpanKindSpanDecorator`          | `client`                          |
 | `error`              | `ErrorSpanDecorator`             | `true`                            |
 | `error.kind` (log)   | `ErrorSpanDecorator`             | `SocketTimeoutException`          |
 | `error.object` (log) | `ErrorSpanDecorator`             | (exception instance)              |

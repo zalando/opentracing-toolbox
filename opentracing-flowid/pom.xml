@@ -18,11 +18,6 @@
         <module>opentracing-flowid-servlet</module>
         <module>opentracing-flowid-autoconfigure</module>
     </modules>
-    <scm>
-        <url>https://github.com/zalando/opentracing-toolbox</url>
-        <connection>scm:git:git@github.com:zalando/opentracing-toolbox.git</connection>
-        <developerConnection>scm:git:git@github.com:zalando/opentracing-toolbox.git</developerConnection>
-    </scm>
     <dependencyManagement>
         <dependencies>
             <dependency>

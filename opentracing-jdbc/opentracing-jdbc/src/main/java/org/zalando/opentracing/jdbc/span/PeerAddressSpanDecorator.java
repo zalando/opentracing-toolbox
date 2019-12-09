@@ -22,15 +22,17 @@ import static org.apiguardian.api.API.Status.INTERNAL;
 public final class PeerAddressSpanDecorator implements SpanDecorator {
 
     /**
-     * Remote "address", suitable for use in a networking client library. This may be a "ip:port", a bare "hostname",
-     * a FQDN, or even a JDBC substring like "mysql://prod-db:3306".
+     * Remote "address", suitable for use in a networking client library. This
+     * may be a "ip:port", a bare "hostname", a FQDN, or even a JDBC substring
+     * like "mysql://prod-db:3306".
      *
-     * <strong>Be aware that this will be removed as soon as {@link io.opentracing.tag.Tags} contains it.</strong>
+     * <strong>Be aware that this will be removed as soon as
+     * {@link io.opentracing.tag.Tags} contains it.</strong>
      *
      * @see <a href="https://github.com/opentracing/opentracing-java/pull/358">opentracing/opentracing-java#358</a>
      */
-    @API(status = INTERNAL)
-    private static final Tag<String> PEER_ADDRESS = new StringTag("peer.address");
+    @API(status = EXPERIMENTAL)
+    public static final Tag<String> PEER_ADDRESS = new StringTag("peer.address");
 
     @Override
     public void onQuery(

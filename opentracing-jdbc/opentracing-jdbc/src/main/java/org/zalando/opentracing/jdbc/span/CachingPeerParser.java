@@ -1,6 +1,5 @@
 package org.zalando.opentracing.jdbc.span;
 
-
 import lombok.AllArgsConstructor;
 
 import java.util.concurrent.ConcurrentHashMap;

@@ -38,7 +38,7 @@ final class TagPropagationTest {
     @Test
     void shouldPropagateSpecialTagsFromExplicitParent() {
         final Span parent = tracer.buildSpan("parent")
-                .withTag("special", true)
+                .withTag("special", 1.0)
                 .start();
 
         tracer.buildSpan("child")
@@ -46,13 +46,13 @@ final class TagPropagationTest {
                 .start()
                 .finish();
 
-        assertThat(tags(), hasEntry("special", true));
+        assertThat(tags(), hasEntry("special", 1.0));
     }
 
     @Test
     void shouldNotPropagateOrdinaryTagsToChild() {
         final Span parent = tracer.buildSpan("parent")
-                .withTag("ordinary", true)
+                .withTag("ordinary", "yes")
                 .start();
 
         tracer.buildSpan("child")

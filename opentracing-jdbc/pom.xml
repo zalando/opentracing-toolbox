@@ -13,9 +13,4 @@
     <modules>
         <module>opentracing-jdbc</module>
     </modules>
-    <scm>
-        <url>https://github.com/zalando/opentracing-toolbox</url>
-        <connection>scm:git:git@github.com:zalando/opentracing-toolbox.git</connection>
-        <developerConnection>scm:git:git@github.com:zalando/opentracing-toolbox.git</developerConnection>
-    </scm>
 </project>
