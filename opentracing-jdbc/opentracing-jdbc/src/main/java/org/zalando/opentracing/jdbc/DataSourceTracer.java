@@ -15,12 +15,12 @@ import org.zalando.opentracing.jdbc.span.ErrorMessageSpanDecorator;
 import org.zalando.opentracing.jdbc.span.ErrorSpanDecorator;
 import org.zalando.opentracing.jdbc.span.ErrorStackSpanDecorator;
 import org.zalando.opentracing.jdbc.span.PeerSpanDecorator;
+import org.zalando.opentracing.jdbc.span.ServiceLoaderSpanDecorator;
 import org.zalando.opentracing.jdbc.span.SpanDecorator;
 
 import javax.annotation.CheckReturnValue;
 import javax.sql.DataSource;
 
-import static java.util.ServiceLoader.load;
 import static lombok.AccessLevel.PRIVATE;
 import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 import static org.zalando.opentracing.jdbc.span.SpanDecorator.composite;
@@ -31,30 +31,53 @@ public final class DataSourceTracer {
 
     private final Tracer tracer;
     private final OperationName operationName;
+    private final Lifecycle lifecycle;
+    private final Activation activation;
     private final SpanDecorator decorator;
 
     public DataSourceTracer(final Tracer tracer) {
-        this(tracer, new DefaultOperationName(), composite(
-                new ComponentSpanDecorator(),
-                new DatabaseInstanceSpanDecorator(),
-                new DatabaseStatementSpanDecorator(),
-                new DatabaseTypeSpanDecorator(),
-                new DatabaseUserSpanDecorator(),
-                new ErrorMessageSpanDecorator(),
-                new ErrorSpanDecorator(),
-                new ErrorStackSpanDecorator(),
-                new PeerSpanDecorator(),
-                composite(load(SpanDecorator.class))
-        ));
+        this(tracer,
+                new DefaultOperationName(),
+                new NewSpanLifecycle(),
+                new NoOpActivation(),
+                composite(
+                        new ComponentSpanDecorator(),
+                        new DatabaseInstanceSpanDecorator(),
+                        new DatabaseStatementSpanDecorator(),
+                        new DatabaseTypeSpanDecorator(),
+                        new DatabaseUserSpanDecorator(),
+                        new ErrorMessageSpanDecorator(),
+                        new ErrorSpanDecorator(),
+                        new ErrorStackSpanDecorator(),
+                        new PeerSpanDecorator(),
+                        new ServiceLoaderSpanDecorator()
+                ));
     }
 
     @CheckReturnValue
-    public DataSourceTracer withOperationName(final OperationName operationName) {
-        return new DataSourceTracer(tracer, operationName, decorator);
+    public DataSourceTracer withOperationName(
+            final OperationName operationName) {
+
+        return new DataSourceTracer(
+                tracer, operationName, lifecycle, activation, decorator);
+    }
+
+    @CheckReturnValue
+    public DataSourceTracer withLifecycle(final Lifecycle lifecycle) {
+        return new DataSourceTracer(
+                tracer, operationName, lifecycle, activation, decorator);
+
+    }
+
+    @CheckReturnValue
+    public DataSourceTracer withActivation(final Activation activation) {
+        return new DataSourceTracer(
+                tracer, operationName, lifecycle, activation, decorator);
     }
 
     /**
-     * Creates a new {@link DataSourceTracer tracer} by <strong>combining</strong> the {@link SpanDecorator decorator(s)} of
+     * Creates a new {@link DataSourceTracer tracer} by
+     * <strong>combining</strong> the {@link SpanDecorator decorator(s)} of
      * {@code this} plugin with the supplied ones.
      *
      * @param first      first decorator
@@ -62,13 +85,14 @@ public final class DataSourceTracer {
      * @return a new {@link DataSourceTracer}
      */
     @CheckReturnValue
-    public DataSourceTracer withAdditionalSpanDecorators(final SpanDecorator first,
-            final SpanDecorator... decorators) {
+    public DataSourceTracer withAdditionalSpanDecorators(
+            final SpanDecorator first, final SpanDecorator... decorators) {
         return withSpanDecorators(decorator, composite(first, decorators));
     }
 
     /**
-     * Creates a new {@link DataSourceTracer plugin} by <strong>replacing</strong> the {@link SpanDecorator decorator(s)} of
+     * Creates a new {@link DataSourceTracer plugin} by
+     * <strong>replacing</strong> the {@link SpanDecorator decorator(s)} of
      * {@code this} plugin with the supplied ones.
      *
      * @param decorator  first decorator
@@ -76,14 +100,18 @@ public final class DataSourceTracer {
      * @return a new {@link DataSourceTracer}
      */
     @CheckReturnValue
-    public DataSourceTracer withSpanDecorators(final SpanDecorator decorator, final SpanDecorator... decorators) {
-        return new DataSourceTracer(tracer, operationName, composite(decorator, decorators));
+    public DataSourceTracer withSpanDecorators(
+            final SpanDecorator decorator, final SpanDecorator... decorators) {
+        return new DataSourceTracer(
+                tracer, operationName, lifecycle, activation,
+                composite(decorator, decorators));
     }
 
     @CheckReturnValue
     public DataSource trace(final DataSource dataSource) {
         return ProxyDataSourceBuilder.create(dataSource)
-                .listener(new TracingQueryExecutionListener(tracer, operationName, decorator))
+                .listener(new TracingQueryExecutionListener(
+                        tracer, operationName, lifecycle, activation, decorator))
                 .build();
     }
 
