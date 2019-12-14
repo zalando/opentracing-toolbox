@@ -4,13 +4,13 @@ The quality of different OpenTracing instrumentation libraries that exist out th
 
 ## 🌧️ Level 1: Take it or leave it
 
-The most basic kinds of instrumentation libraries allow for virtually **zero customization** whatsoever. As a user the only choice that is left up to you is whether to use the library or not. Characteristics include:
+The most basic kind of instrumentation libraries allow for virtually **zero customization** whatsoever. As a user the only choice that is left up to you is whether to use the library or not. Characteristics include:
 
 - Default tags/logs are pre-defined and hard-coded
-- Disabling, replacing, extending tags/logs is not supported
-- Default tags/logs are often used incorrect in regards to the [semantic conventions](https://opentracing.io/specification/conventions/)
+- Disabling, replacing and/or extending tags/logs is not supported
+- Default tags/logs are often used incorrectly in regards to the [semantic conventions](https://opentracing.io/specification/conventions/)
 - Operation names are not customizable
-- Span life cycles are not customizable
+- Span life cycle is not customizable
 - Span activation (scope) is not customizable
 - Span context extraction/injection is not customizable
 
@@ -46,7 +46,7 @@ With this ability a library is open for custom extensions from users, just by re
 - [OpenTracing Spring RabbitMQ](https://github.com/opentracing-contrib/java-spring-rabbitmq)
 - [OpenTracing Spring Web](https://github.com/opentracing-contrib/java-spring-web)
 
-## ⛅ Level 3: Tags and logs à la carte
+## 🌥️ Level 3: Tags and logs à la carte
 
 Instrumentation libraries at level 3 are pretty much following the logical next step after level 2. Instead of having a single, default span decorator all meaningful tags/logs are spread across multiple, independent span decorators. Those span decorators can then be reused, excluded and combined freely. Characteristics include:
 
@@ -82,7 +82,7 @@ Level-3 instrumentation libraries are all about customization of span tags and l
 
 ## ☀️ Level 5: Span context à la carte
 
-The 5. and final level allows to customize the last aspect of an instrumentation library - the [extraction and injection of the span context](https://opentracing.io/guides/java/inject-extract/) from and into a carrier respectively. Characteristics include:
+The 5th and final level allows to customize the last aspect of an instrumentation library - the [extraction and injection of the span context](https://opentracing.io/guides/java/inject-extract/) from and into a carrier respectively. Characteristics include:
 
 - Enabled/disable span context extraction/injection
 
