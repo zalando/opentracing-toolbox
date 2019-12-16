@@ -2,6 +2,7 @@ package org.zalando.opentracing.spring.webflux.extension.autoconfigure;
 
 import io.opentracing.mock.MockSpan;
 import io.opentracing.mock.MockTracer;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -66,6 +68,8 @@ class OpenTracingWebFluxExtensionAutoConfigurationTest {
 
         assertThat(body, is("Hello, Alice!"));
 
+        waitFor(Duration.ofSeconds(1));
+
         final Map<String, Object> tags = tags();
 
         assertThat(tags, hasEntry("component", "Spring WebFlux"));
@@ -77,6 +81,12 @@ class OpenTracingWebFluxExtensionAutoConfigurationTest {
         assertThat(tags, hasEntry("peer.ipv4", "127.0.0.1"));
         assertThat(tags, hasKey("peer.port"));
         assertThat(tags, hasEntry("span.kind", "server"));
+    }
+
+    @SneakyThrows
+    private void waitFor(final Duration duration) {
+        // not exactly sure why this is needed, but it is for some reason
+        Thread.sleep(duration.toMillis());
     }
 
     private Map<String, Object> tags() {

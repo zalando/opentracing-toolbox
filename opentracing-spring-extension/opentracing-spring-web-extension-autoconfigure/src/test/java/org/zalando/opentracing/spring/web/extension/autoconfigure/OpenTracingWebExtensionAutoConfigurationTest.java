@@ -6,6 +6,7 @@ import io.opentracing.contrib.spring.web.interceptor.TracingHandlerInterceptor;
 import io.opentracing.contrib.web.servlet.filter.TracingFilter;
 import io.opentracing.mock.MockSpan;
 import io.opentracing.mock.MockTracer;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -117,7 +119,15 @@ class OpenTracingWebExtensionAutoConfigurationTest {
         assertThat(response.getStatusCode(), is(OK));
         assertThat(response.getBody(), is("Hello, Alice!"));
 
+        waitFor(Duration.ofSeconds(1));
+
         assertThat(tags(), hasEntry("http.path", "/greet"));
+    }
+
+    @SneakyThrows
+    private void waitFor(final Duration duration) {
+        // not exactly sure why this is needed, but it is for some reason
+        Thread.sleep(duration.toMillis());
     }
 
     private Map<String, Object> tags() {
