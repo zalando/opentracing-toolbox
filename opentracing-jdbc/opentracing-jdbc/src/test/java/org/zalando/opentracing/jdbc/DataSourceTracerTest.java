@@ -29,6 +29,7 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.zalando.opentracing.jdbc.Iterables.getOnlyElement;
 
 class DataSourceTracerTest {
 
@@ -223,16 +224,6 @@ class DataSourceTracerTest {
         assertThat(entries.get(1).fields(), hasEntry(equalTo("error.object"), instanceOf(SQLException.class)));
 
         assertThat(entries.get(2).fields().get("stack").toString(), containsString("at org.h2.jdbc"));
-    }
-
-    private static <T> T getOnlyElement(final Collection<T> collection) {
-        final int size = collection.size();
-
-        if (size == 1) {
-            return collection.iterator().next();
-        }
-
-        throw new IllegalArgumentException("Unexpected size: " + size);
     }
 
 }

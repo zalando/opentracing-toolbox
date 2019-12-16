@@ -13,4 +13,11 @@
     <modules>
         <module>opentracing-jdbc</module>
     </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.zalando</groupId>
+            <artifactId>faux-pas</artifactId>
+            <version>0.8.0</version>
+        </dependency>
+    </dependencies>
 </project>

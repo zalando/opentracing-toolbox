@@ -19,6 +19,8 @@ public interface SpanDecorator {
         // nothing to do
     }
 
+    // TODO onResult?
+
     default void onError(final Span span, final Statement statement, final Throwable error) throws SQLException {
         // nothing to do
     }
