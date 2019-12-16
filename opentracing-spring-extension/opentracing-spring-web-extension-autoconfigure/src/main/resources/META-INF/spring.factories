@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
+  org.zalando.opentracing.spring.web.extension.autoconfigure.OpenTracingWebExtensionAutoConfiguration
