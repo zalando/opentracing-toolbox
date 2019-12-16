@@ -1,7 +1,7 @@
 # OpenTracing Toolbox
 
 [![Stability: Active](https://masterminds.github.io/stability/active.svg)](https://masterminds.github.io/stability/active.html)
-![Build Status](https://github.com/zalando/opentracing-toolbox/workflows/Test/badge.svg)
+![Build Status](https://github.com/zalando/opentracing-toolbox/workflows/build/badge.svg)
 [![Coverage Status](https://img.shields.io/coveralls/zalando/opentracing-toolbox/master.svg)](https://coveralls.io/r/zalando/opentracing-toolbox)
 [![Code Quality](https://img.shields.io/codacy/grade/69e173024eec403797466e147a2051a3/master.svg)](https://www.codacy.com/app/whiskeysierra/opentracing-toolbox)
 [![Release](https://img.shields.io/github/release/zalando/opentracing-toolbox.svg)](https://github.com/zalando/opentracing-toolbox/releases)
