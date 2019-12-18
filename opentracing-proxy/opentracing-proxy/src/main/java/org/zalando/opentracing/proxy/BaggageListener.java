@@ -1,6 +1,7 @@
 package org.zalando.opentracing.proxy;
 
 import io.opentracing.Span;
+import io.opentracing.Tracer;
 import org.apiguardian.api.API;
 
 import java.util.Arrays;
@@ -10,11 +11,11 @@ import static org.apiguardian.api.API.Status.MAINTAINED;
 @API(status = MAINTAINED)
 public interface BaggageListener extends Plugin {
 
-    BaggageListener DEFAULT = (span, key, value) -> {
+    BaggageListener DEFAULT = (tracer, span, key, value) -> {
         // nothing to implement
     };
 
-    void onBaggage(Span span, String key, String value);
+    void onBaggage(Tracer tracer, Span span, String key, String value);
 
     @Override
     default <R extends Registry<R>> R registerTo(final R registry) {

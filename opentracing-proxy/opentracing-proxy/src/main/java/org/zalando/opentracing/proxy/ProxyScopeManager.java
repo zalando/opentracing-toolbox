@@ -3,6 +3,7 @@ package org.zalando.opentracing.proxy;
 import io.opentracing.Scope;
 import io.opentracing.ScopeManager;
 import io.opentracing.Span;
+import io.opentracing.Tracer;
 import lombok.AllArgsConstructor;
 
 import javax.annotation.Nullable;
@@ -13,6 +14,7 @@ import static org.zalando.opentracing.proxy.ProxySpan.unwrap;
 @AllArgsConstructor
 final class ProxyScopeManager extends ForwardingScopeManager {
 
+    private final Tracer tracer;
     private final ScopeManager delegate;
     private final Options options;
 
@@ -42,7 +44,7 @@ final class ProxyScopeManager extends ForwardingScopeManager {
     }
 
     private ProxySpan decorate(final Span span) {
-        return new ProxySpan(span, options);
+        return new ProxySpan(tracer, span, options);
     }
 
 }

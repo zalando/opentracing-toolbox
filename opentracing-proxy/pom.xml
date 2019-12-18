@@ -12,5 +12,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>opentracing-proxy</module>
+        <module>opentracing-proxy-autoconfigure</module>
     </modules>
 </project>

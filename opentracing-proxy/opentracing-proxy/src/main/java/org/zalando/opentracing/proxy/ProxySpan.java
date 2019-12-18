@@ -1,17 +1,21 @@
 package org.zalando.opentracing.proxy;
 
 import io.opentracing.Span;
-import io.opentracing.tag.BooleanTag;
-import io.opentracing.tag.StringTag;
+import io.opentracing.Tracer;
 import io.opentracing.tag.Tag;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 import java.util.Map;
 import java.util.Optional;
 
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 final class ProxySpan extends ForwardingSpan {
 
+    private final Tracer tracer;
+
+    @EqualsAndHashCode.Include
     private final Span delegate;
     private final Options options;
 
@@ -58,7 +62,7 @@ final class ProxySpan extends ForwardingSpan {
     @Override
     public Span setBaggageItem(final String key, final String value) {
         super.setBaggageItem(key, value);
-        options.baggage().onBaggage(this, key, value);
+        options.baggage().onBaggage(tracer, this, key, value);
         return this;
     }
 

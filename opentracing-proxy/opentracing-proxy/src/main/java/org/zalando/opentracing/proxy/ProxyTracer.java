@@ -53,12 +53,12 @@ public final class ProxyTracer extends ForwardingTracer {
                 options.naming().rename(operationName));
 
         return options.spanBuilders()
-                .intercept(this, new ProxySpanBuilder(builder, options));
+                .intercept(this, new ProxySpanBuilder(this, builder, options));
     }
 
     @Override
     public ScopeManager scopeManager() {
-        return new ProxyScopeManager(super.scopeManager(), options);
+        return new ProxyScopeManager(this, super.scopeManager(), options);
     }
 
     @Override
@@ -82,7 +82,7 @@ public final class ProxyTracer extends ForwardingTracer {
     }
 
     private ProxySpan decorate(final Span span) {
-        return new ProxySpan(span, options);
+        return new ProxySpan(this, span, options);
     }
 
 }

@@ -1,0 +1,6 @@
+opentracing:
+  flowid:
+    filter:
+      enabled: false
+    httpclient:
+      enabled: false

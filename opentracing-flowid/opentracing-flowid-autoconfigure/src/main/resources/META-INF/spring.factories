@@ -1,1 +1,2 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration = org.zalando.opentracing.flowid.autoconfigure.OpenTracingFlowIdAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration = \
+  org.zalando.opentracing.flowid.autoconfigure.OpenTracingFlowIdAutoConfiguration

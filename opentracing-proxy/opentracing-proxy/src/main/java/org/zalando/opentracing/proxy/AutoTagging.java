@@ -1,6 +1,7 @@
 package org.zalando.opentracing.proxy;
 
 import io.opentracing.Span;
+import io.opentracing.Tracer;
 import lombok.AllArgsConstructor;
 import org.apiguardian.api.API;
 
@@ -33,7 +34,7 @@ public final class AutoTagging implements SpanListener, BaggageListener {
 
     @Override
     public void onBaggage(
-            final Span span,
+            Tracer tracer, final Span span,
             final String key,
             final String value) {
 

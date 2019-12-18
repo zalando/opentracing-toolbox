@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -29,7 +30,11 @@ public final class TagPropagation implements SpanBuilderInterceptor {
     private final Set<String> keys;
 
     public TagPropagation(final String... keys) {
-        this(new HashSet<>(Arrays.asList(keys)));
+        this(Arrays.asList(keys));
+    }
+
+    public TagPropagation(final List<String> keys) {
+        this(new HashSet<>(keys));
     }
 
     @Override

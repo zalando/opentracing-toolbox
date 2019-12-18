@@ -1,6 +1,7 @@
 package org.zalando.opentracing.proxy;
 
 import io.opentracing.Span;
+import io.opentracing.Tracer;
 import io.opentracing.Tracer.SpanBuilder;
 import io.opentracing.tag.Tag;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import static org.zalando.opentracing.proxy.ProxySpan.unwrap;
 @AllArgsConstructor
 final class ProxySpanBuilder extends ForwardingSpanBuilder {
 
+    private final Tracer tracer;
     private final SpanBuilder delegate;
     private final Options options;
 
@@ -38,7 +40,7 @@ final class ProxySpanBuilder extends ForwardingSpanBuilder {
 
     @Override
     public Span start() {
-        final ProxySpan span = new ProxySpan(super.start(), options);
+        final ProxySpan span = new ProxySpan(tracer, super.start(), options);
         options.spans().onStarted(span);
         return span;
     }

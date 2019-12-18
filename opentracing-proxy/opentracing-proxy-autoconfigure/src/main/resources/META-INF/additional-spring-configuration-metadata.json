@@ -1,0 +1,31 @@
+{
+  "hints": [],
+  "groups": [
+  ],
+  "properties": [
+    {
+      "name": "opentracing.proxy.auto-tagging.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "Enables/disables auto-tagging of baggage items."
+    },
+    {
+      "name": "opentracing.proxy.log-correlation.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "Enables/disables automatic MDC log correlation."
+    },
+    {
+      "name": "opentracing.proxy.rename.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "Enables/disables renaming of operation names."
+    },
+    {
+      "name": "opentracing.proxy.tag-propagation.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "Enables/disables in-process tag propagation from parents to child spans."
+    }
+  ]
+}

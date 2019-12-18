@@ -1,0 +1,16 @@
+opentracing:
+  proxy:
+    auto-tagging:
+      keys:
+        - request_id
+    log-correlation:
+      trace-id: trace
+      span-id: span
+      baggage:
+        - request_id
+    rename:
+      format: lower_camel
+    tag-propagation:
+      keys:
+        - payment_method
+        - sales_channel

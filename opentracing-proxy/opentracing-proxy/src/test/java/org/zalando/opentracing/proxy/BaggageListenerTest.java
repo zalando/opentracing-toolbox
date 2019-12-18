@@ -15,7 +15,7 @@ class BaggageListenerTest {
     @SuppressWarnings("Convert2Lambda")
     private final BaggageListener listener = spy(new BaggageListener() {
         @Override
-        public void onBaggage(final Span span, final String key, final String value) {
+        public void onBaggage(Tracer tracer, final Span span, final String key, final String value) {
             // nothing to do
         }
     });
@@ -33,7 +33,7 @@ class BaggageListenerTest {
         final Span span = unit.buildSpan("test").start()
                 .setBaggageItem("k", "v");
 
-        verify(listener).onBaggage(span, "k", "v");
+        verify(listener).onBaggage(unit, span, "k", "v");
     }
 
 }
