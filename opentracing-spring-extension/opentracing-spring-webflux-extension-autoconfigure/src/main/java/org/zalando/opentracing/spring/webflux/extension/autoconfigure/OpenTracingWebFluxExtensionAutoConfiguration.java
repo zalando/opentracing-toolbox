@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.zalando.opentracing.spring.webflux.extension.StandardSpanDecorator;
 
 import static org.apiguardian.api.API.Status.EXPERIMENTAL;
+import static org.apiguardian.api.API.Status.INTERNAL;
 import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.REACTIVE;
 
 @API(status = EXPERIMENTAL)
@@ -24,6 +25,7 @@ import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebA
 @AutoConfigureBefore(WebFluxTracingAutoConfiguration.class)
 public class OpenTracingWebFluxExtensionAutoConfiguration {
 
+    @API(status = INTERNAL)
     @Bean
     @ConditionalOnMissingBean(WebFluxSpanDecorator.class)
     public WebFluxSpanDecorator standardWebFluxSpanDecorator() {

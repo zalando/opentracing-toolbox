@@ -1,0 +1,13 @@
+{
+  "hints": [],
+  "groups": [
+  ],
+  "properties": [
+    {
+      "name": "opentracing.jdbc.enabled",
+      "type": "java.lang.Boolean",
+      "defaultValue": true,
+      "description": "Enables/disables instrumentation of all data sources."
+    }
+  ]
+}
