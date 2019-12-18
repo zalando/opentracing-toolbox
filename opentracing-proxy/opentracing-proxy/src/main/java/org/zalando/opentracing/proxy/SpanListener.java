@@ -10,6 +10,10 @@ import static org.apiguardian.api.API.Status.MAINTAINED;
 @API(status = MAINTAINED)
 public interface SpanListener extends Plugin {
 
+    SpanListener DEFAULT = new SpanListener() {
+        // nothing to implement
+    };
+
     default void onStarted(final Span span) {
         // nothing to do
     }

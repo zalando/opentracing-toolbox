@@ -8,8 +8,11 @@ import java.util.Arrays;
 import static org.apiguardian.api.API.Status.MAINTAINED;
 
 @API(status = MAINTAINED)
-@FunctionalInterface
 public interface BaggageListener extends Plugin {
+
+    BaggageListener DEFAULT = (span, key, value) -> {
+        // nothing to implement
+    };
 
     void onBaggage(Span span, String key, String value);
 
