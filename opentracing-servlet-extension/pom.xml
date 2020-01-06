@@ -12,5 +12,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>opentracing-servlet-extension</module>
+        <module>opentracing-servlet-extension-autoconfigure</module>
     </modules>
 </project>
