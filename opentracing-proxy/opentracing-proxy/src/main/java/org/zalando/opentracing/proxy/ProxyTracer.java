@@ -3,7 +3,9 @@ package org.zalando.opentracing.proxy;
 import io.opentracing.Scope;
 import io.opentracing.ScopeManager;
 import io.opentracing.Span;
+import io.opentracing.SpanContext;
 import io.opentracing.Tracer;
+import io.opentracing.propagation.Format;
 import lombok.AllArgsConstructor;
 import org.apiguardian.api.API;
 
@@ -28,6 +30,17 @@ public final class ProxyTracer extends ForwardingTracer {
     @Override
     protected Tracer delegate() {
         return delegate;
+    }
+
+    @Override
+    public <C> void inject(
+            final SpanContext context,
+            final Format<C> format,
+            final C carrier) {
+
+        options.injections()
+                .intercept(super::inject, context, format)
+                .inject(context, format, carrier);
     }
 
     public ProxyTracer with(final Plugin plugin) {

@@ -11,6 +11,10 @@ import static org.apiguardian.api.API.Status.MAINTAINED;
 @API(status = MAINTAINED)
 public interface ScopeListener extends Plugin {
 
+    ScopeListener DEFAULT = new ScopeListener() {
+        // nothing to implement
+    };
+
     default void onActivated(final Scope scope, final Span span) {
         // nothing to do
     }

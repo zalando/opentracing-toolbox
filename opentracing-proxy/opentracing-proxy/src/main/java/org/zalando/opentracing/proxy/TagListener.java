@@ -12,6 +12,10 @@ import static org.apiguardian.api.API.Status.MAINTAINED;
 @API(status = MAINTAINED)
 public interface TagListener extends Plugin {
 
+    TagListener DEFAULT = new TagListener() {
+        // nothing to implement
+    };
+
     default <T> void onTag(
             final SpanBuilder builder,
             final Tag<T> tag,

@@ -1,6 +1,6 @@
 # Maturity Levels
 
-The quality of different OpenTracing instrumentation libraries that exist out there in the wild varies greatly. The following maturity levels can be used to classify different libraries and highlight there capabilities or shortcomings.
+The quality of different OpenTracing instrumentation libraries that exist out there in the wild varies greatly. The following maturity levels can be used to classify different libraries and highlight their capabilities or shortcomings.
 
 ## 🌧️ Level 1: Take it or leave it
 

@@ -7,8 +7,9 @@ import java.util.function.UnaryOperator;
 import static org.apiguardian.api.API.Status.MAINTAINED;
 
 @API(status = MAINTAINED)
-@FunctionalInterface
 public interface Naming extends Plugin {
+
+    Naming DEFAULT = name -> name;
 
     String rename(String operationName);
 

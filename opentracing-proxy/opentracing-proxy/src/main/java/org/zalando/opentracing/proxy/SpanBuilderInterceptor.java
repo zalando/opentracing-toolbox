@@ -12,6 +12,8 @@ import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 @API(status = EXPERIMENTAL)
 public interface SpanBuilderInterceptor extends Plugin {
 
+    SpanBuilderInterceptor DEFAULT = (tracer, builder) -> builder;
+
     SpanBuilder intercept(Tracer tracer, SpanBuilder builder);
 
     @Override

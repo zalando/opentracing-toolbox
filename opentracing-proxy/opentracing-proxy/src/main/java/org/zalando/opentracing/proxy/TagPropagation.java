@@ -33,7 +33,8 @@ public final class TagPropagation implements SpanBuilderInterceptor {
     }
 
     @Override
-    public SpanBuilder intercept(final Tracer tracer, final SpanBuilder builder) {
+    public SpanBuilder intercept(
+            final Tracer tracer, final SpanBuilder builder) {
         return new PropagatingSpanBuilder(tracer, builder);
     }
 

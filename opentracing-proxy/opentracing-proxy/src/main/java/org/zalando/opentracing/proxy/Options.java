@@ -1,59 +1,9 @@
 package org.zalando.opentracing.proxy;
 
-import io.opentracing.Span;
-import io.opentracing.Tracer;
-import io.opentracing.Tracer.SpanBuilder;
 import lombok.AllArgsConstructor;
-
-import java.util.Map;
 
 @AllArgsConstructor
 final class Options implements Registry<Options> {
-
-    private static final class Defaults {
-
-        static final Naming ORIGINAL = name -> name;
-
-        enum SpanBuilderInterceptors implements SpanBuilderInterceptor {
-            NONE;
-
-            @Override
-            public SpanBuilder intercept(final Tracer tracer, final SpanBuilder builder) {
-                return builder;
-            }
-        }
-
-        enum TagListeners implements TagListener {
-            NONE
-        }
-
-        enum LogListeners implements LogListener {
-            NONE;
-
-            @Override
-            public void onLog(final Span span, final Map<String, ?> fields) {
-                // nothing to do
-            }
-        }
-
-        enum BaggageListeners implements BaggageListener {
-            NONE;
-
-            @Override
-            public void onBaggage(final Span span, final String key, final String value) {
-                // nothing to do
-            }
-        }
-
-        enum SpanListeners implements SpanListener {
-            NONE
-        }
-
-        enum ScopeListeners implements ScopeListener {
-            NONE
-        }
-
-    }
 
     private final Naming naming;
     private final SpanBuilderInterceptor spanBuilderInterceptor;
@@ -62,16 +12,18 @@ final class Options implements Registry<Options> {
     private final BaggageListener baggageListener;
     private final SpanListener spanListener;
     private final ScopeListener scopeListener;
+    private final Injection injection;
 
     Options() {
         this(
-                Defaults.ORIGINAL,
-                Defaults.SpanBuilderInterceptors.NONE,
-                Defaults.TagListeners.NONE,
-                Defaults.LogListeners.NONE,
-                Defaults.BaggageListeners.NONE,
-                Defaults.SpanListeners.NONE,
-                Defaults.ScopeListeners.NONE);
+                Naming.DEFAULT,
+                SpanBuilderInterceptor.DEFAULT,
+                TagListener.DEFAULT,
+                LogListener.DEFAULT,
+                BaggageListener.DEFAULT,
+                SpanListener.DEFAULT,
+                ScopeListener.DEFAULT,
+                Injection.DEFAULT);
     }
 
     @Override
@@ -83,7 +35,8 @@ final class Options implements Registry<Options> {
                 logListener,
                 baggageListener,
                 spanListener,
-                scopeListener);
+                scopeListener,
+                injection);
     }
 
     @Override
@@ -100,7 +53,8 @@ final class Options implements Registry<Options> {
                 logListener,
                 baggageListener,
                 spanListener,
-                scopeListener);
+                scopeListener,
+                injection);
     }
 
     @Override
@@ -114,7 +68,8 @@ final class Options implements Registry<Options> {
                 logListener,
                 baggageListener,
                 spanListener,
-                scopeListener);
+                scopeListener,
+                injection);
     }
 
     @Override
@@ -128,7 +83,8 @@ final class Options implements Registry<Options> {
                         additionalLogListener),
                 baggageListener,
                 spanListener,
-                scopeListener);
+                scopeListener,
+                injection);
     }
 
     @Override
@@ -144,7 +100,8 @@ final class Options implements Registry<Options> {
                         baggageListener,
                         additionalBaggageListener),
                 spanListener,
-                scopeListener);
+                scopeListener,
+                injection);
     }
 
     @Override
@@ -160,7 +117,8 @@ final class Options implements Registry<Options> {
                 SpanListener.composite(
                         spanListener,
                         additionalSpanListener),
-                scopeListener);
+                scopeListener,
+                injection);
     }
 
     @Override
@@ -176,7 +134,25 @@ final class Options implements Registry<Options> {
                 spanListener,
                 ScopeListener.composite(
                         scopeListener,
-                        additionalScopeListener));
+                        additionalScopeListener),
+                injection);
+    }
+
+    public Options withInjection(
+            final Injection additionalInjection) {
+
+        return new Options(
+                naming,
+                spanBuilderInterceptor,
+                tagListener,
+                logListener,
+                baggageListener,
+                spanListener,
+                scopeListener,
+                Injection.composite(
+                        injection,
+                        additionalInjection
+                ));
     }
 
     Naming naming() {
@@ -205,6 +181,10 @@ final class Options implements Registry<Options> {
 
     ScopeListener scopes() {
         return scopeListener;
+    }
+
+    Injection injections() {
+        return injection;
     }
 
 }

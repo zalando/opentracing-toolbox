@@ -10,8 +10,11 @@ import static java.util.Collections.singletonMap;
 import static org.apiguardian.api.API.Status.MAINTAINED;
 
 @API(status = MAINTAINED)
-@FunctionalInterface
 public interface LogListener extends Plugin {
+
+    LogListener DEFAULT = (span, fields) -> {
+        // nothing to implement
+    };
 
     default void onLog(
             final Span span,

@@ -8,7 +8,6 @@ import java.util.List;
 import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 
 @API(status = EXPERIMENTAL)
-@FunctionalInterface
 public interface OperationName {
 
     String generate(Method method, List<String> queries);

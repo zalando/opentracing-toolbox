@@ -14,5 +14,6 @@ public interface Registry<R extends Registry<R>> {
     R withBaggageListener(BaggageListener baggageListener);
     R withSpanListener(SpanListener spanListener);
     R withScopeListener(ScopeListener scopeListener);
+    R withInjection(Injection interceptor);
 
 }

@@ -20,6 +20,7 @@
             <artifactId>guava</artifactId>
             <version>28.2-jre</version>
         </dependency>
+        <!-- TODO only used in one place right now... -->
         <dependency>
             <groupId>org.organicdesign</groupId>
             <artifactId>Paguro</artifactId>
