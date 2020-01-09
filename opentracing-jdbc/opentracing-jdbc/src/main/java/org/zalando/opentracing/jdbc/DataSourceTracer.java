@@ -6,17 +6,8 @@ import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder;
 import org.apiguardian.api.API;
 import org.zalando.opentracing.jdbc.operation.DefaultOperationName;
 import org.zalando.opentracing.jdbc.operation.OperationName;
-import org.zalando.opentracing.jdbc.span.ComponentSpanDecorator;
-import org.zalando.opentracing.jdbc.span.DatabaseInstanceSpanDecorator;
-import org.zalando.opentracing.jdbc.span.DatabaseStatementSpanDecorator;
-import org.zalando.opentracing.jdbc.span.DatabaseTypeSpanDecorator;
-import org.zalando.opentracing.jdbc.span.DatabaseUserSpanDecorator;
-import org.zalando.opentracing.jdbc.span.ErrorMessageSpanDecorator;
-import org.zalando.opentracing.jdbc.span.ErrorSpanDecorator;
-import org.zalando.opentracing.jdbc.span.ErrorStackSpanDecorator;
-import org.zalando.opentracing.jdbc.span.PeerSpanDecorator;
-import org.zalando.opentracing.jdbc.span.ServiceLoaderSpanDecorator;
 import org.zalando.opentracing.jdbc.span.SpanDecorator;
+import org.zalando.opentracing.jdbc.span.StandardSpanDecorator;
 
 import javax.annotation.CheckReturnValue;
 import javax.sql.DataSource;
@@ -40,18 +31,7 @@ public final class DataSourceTracer {
                 new DefaultOperationName(),
                 new NewSpanLifecycle(),
                 new NoOpActivation(),
-                composite(
-                        new ComponentSpanDecorator(),
-                        new DatabaseInstanceSpanDecorator(),
-                        new DatabaseStatementSpanDecorator(),
-                        new DatabaseTypeSpanDecorator(),
-                        new DatabaseUserSpanDecorator(),
-                        new ErrorMessageSpanDecorator(),
-                        new ErrorSpanDecorator(),
-                        new ErrorStackSpanDecorator(),
-                        new PeerSpanDecorator(),
-                        new ServiceLoaderSpanDecorator()
-                ));
+                new StandardSpanDecorator());
     }
 
     @CheckReturnValue

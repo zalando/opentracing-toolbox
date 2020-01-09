@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.zalando.opentracing.spring.web.extension.StandardSpanDecorator;
 
 import static org.apiguardian.api.API.Status.EXPERIMENTAL;
+import static org.apiguardian.api.API.Status.INTERNAL;
 
 @API(status = EXPERIMENTAL)
 @Configuration
@@ -23,6 +24,7 @@ import static org.apiguardian.api.API.Status.EXPERIMENTAL;
         "io.opentracing.contrib.spring.web.starter.ServerTracingAutoConfiguration")
 public class OpenTracingWebExtensionAutoConfiguration {
 
+    @API(status = INTERNAL)
     @Bean
     @ConditionalOnMissingBean(HandlerInterceptorSpanDecorator.class)
     public HandlerInterceptorSpanDecorator standardHandlerInterceptorSpanDecorator() {

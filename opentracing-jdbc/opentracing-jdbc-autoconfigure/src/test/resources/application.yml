@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:database
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+    type: org.h2.jdbcx.JdbcDataSource
+
