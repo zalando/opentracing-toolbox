@@ -11,7 +11,7 @@
     <artifactId>opentracing-spring-webflux-extension-autoconfigure</artifactId>
     <properties>
         <spring.version>5.2.2.RELEASE</spring.version>
-        <spring-boot.version>2.2.1.RELEASE</spring-boot.version>
+        <spring-boot.version>2.2.2.RELEASE</spring-boot.version>
     </properties>
     <dependencies>
         <dependency>

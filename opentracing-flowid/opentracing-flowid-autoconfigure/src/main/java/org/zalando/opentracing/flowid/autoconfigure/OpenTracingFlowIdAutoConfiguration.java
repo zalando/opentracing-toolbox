@@ -43,7 +43,7 @@ public class OpenTracingFlowIdAutoConfiguration {
     @Configuration
     @ConditionalOnClass(HttpClient.class)
     @ConditionalOnMissingBean(FlowHttpRequestInterceptor.class)
-    @ConditionalOnProperty(name = "flowid.httpclient.enabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(name = "opentracing.flowid.httpclient.enabled", havingValue = "true", matchIfMissing = true)
     static class OpenTracingFlowIdHttpClientAutoConfiguration {
 
         @Bean
@@ -58,7 +58,7 @@ public class OpenTracingFlowIdAutoConfiguration {
     @Configuration
     @ConditionalOnClass({Filter.class, FilterRegistrationBean.class})
     @ConditionalOnWebApplication
-    @ConditionalOnProperty(name = "flowid.filter.enabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(name = "opentracing.flowid.filter.enabled", havingValue = "true", matchIfMissing = true)
     static class OpenTracingFlowIdWebMvcAutoConfiguration {
 
         public static final String FILTER_NAME = "flowFilter";

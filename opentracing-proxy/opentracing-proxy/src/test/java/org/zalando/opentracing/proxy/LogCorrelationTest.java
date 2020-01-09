@@ -30,7 +30,7 @@ class LogCorrelationTest {
                     .withBaggage("request-id", "request_id"));
 
     @Test
-    void shouldCorrelateTraceId() {
+    void correlatesTraceId() {
         final Span span = unit.buildSpan("test").start();
 
         try (final Scope ignored = unit.activateSpan(span)) {
@@ -39,7 +39,7 @@ class LogCorrelationTest {
     }
 
     @Test
-    void shouldCorrelateSpanId() {
+    void correlatesSpanId() {
         final Span span = unit.buildSpan("test").start();
 
         try (final Scope ignored = unit.activateSpan(span)) {
@@ -48,7 +48,7 @@ class LogCorrelationTest {
     }
 
     @Test
-    void shouldCorrelateInitialBaggage() {
+    void correlatesInitialBaggage() {
         final Span span = unit.buildSpan("test")
                 .asChildOf(unit.buildSpan("parent")
                         .asChildOf(context("flow_id", "REcCvlqMSReeo7adheiYFA"))
@@ -64,7 +64,7 @@ class LogCorrelationTest {
     }
 
     @Test
-    void shouldCorrelateNewBaggage() {
+    void correlatesNewBaggage() {
         final Span span = unit.buildSpan("test").start();
 
         try (final Scope ignored = unit.activateSpan(span)) {
@@ -88,6 +88,26 @@ class LogCorrelationTest {
         assertNull(MDC.get("trace_id"));
         assertNull(MDC.get("span_id"));
         assertNull(MDC.get("request-id"));
+    }
+
+    @Test
+    void doesntCorrelateWithoutScope() {
+        final Span span = unit.buildSpan("test").start();
+
+        span.setBaggageItem("request-id", "P6QQkzZHfza9GO");
+
+        assertNull(MDC.get("request_id"));
+    }
+
+    @Test
+    void doesntCorrelateWhenSpanIsNotActive() {
+        final Span parent = unit.buildSpan("parent").start();
+
+        try (final Scope ignored = unit.activateSpan(parent)) {
+            final Span child = unit.buildSpan("child").start();
+            child.setBaggageItem("request-id", "P6QQkzZHfza9GO");
+            assertNull(MDC.get("request_id"));
+        }
     }
 
     private SpanContext context(final String key, final String value) {

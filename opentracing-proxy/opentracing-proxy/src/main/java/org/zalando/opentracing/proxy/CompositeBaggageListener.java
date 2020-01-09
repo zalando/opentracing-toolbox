@@ -1,6 +1,7 @@
 package org.zalando.opentracing.proxy;
 
 import io.opentracing.Span;
+import io.opentracing.Tracer;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -10,12 +11,13 @@ final class CompositeBaggageListener implements BaggageListener {
 
     @Override
     public void onBaggage(
+            final Tracer tracer,
             final Span span,
             final String key,
             final String value) {
 
         listeners.forEach(listener ->
-                listener.onBaggage(span, key, value));
+                listener.onBaggage(tracer, span, key, value));
     }
 
 }
