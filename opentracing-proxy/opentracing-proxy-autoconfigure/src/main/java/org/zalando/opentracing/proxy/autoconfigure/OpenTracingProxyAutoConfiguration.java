@@ -11,13 +11,13 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.zalando.opentracing.proxy.AutoTagging;
-import org.zalando.opentracing.proxy.LogCorrelation;
-import org.zalando.opentracing.proxy.Naming;
-import org.zalando.opentracing.proxy.Plugin;
-import org.zalando.opentracing.proxy.ProxyTracer;
-import org.zalando.opentracing.proxy.Rename;
-import org.zalando.opentracing.proxy.TagPropagation;
+import org.zalando.opentracing.proxy.core.ProxyTracer;
+import org.zalando.opentracing.proxy.intercept.name.Naming;
+import org.zalando.opentracing.proxy.intercept.name.Rename;
+import org.zalando.opentracing.proxy.plugin.AutoTagging;
+import org.zalando.opentracing.proxy.plugin.LogCorrelation;
+import org.zalando.opentracing.proxy.plugin.TagPropagation;
+import org.zalando.opentracing.proxy.spi.Plugin;
 
 import java.util.List;
 import java.util.Map;

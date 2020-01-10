@@ -13,8 +13,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.zalando.opentracing.proxy.LogCorrelation;
-import org.zalando.opentracing.proxy.ProxyTracer;
+import org.zalando.opentracing.proxy.plugin.LogCorrelation;
+import org.zalando.opentracing.proxy.core.ProxyTracer;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
