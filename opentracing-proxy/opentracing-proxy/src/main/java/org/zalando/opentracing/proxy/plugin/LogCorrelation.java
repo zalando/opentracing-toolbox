@@ -1,12 +1,11 @@
 package org.zalando.opentracing.proxy.plugin;
 
+import com.google.common.collect.ImmutableMap;
 import io.opentracing.Scope;
 import io.opentracing.Span;
 import io.opentracing.Tracer;
 import lombok.AllArgsConstructor;
 import org.apiguardian.api.API;
-import org.organicdesign.fp.collections.ImMap;
-import org.organicdesign.fp.collections.PersistentHashMap;
 import org.slf4j.MDC;
 import org.zalando.opentracing.proxy.listen.baggage.BaggageListener;
 import org.zalando.opentracing.proxy.listen.scope.ScopeListener;
@@ -14,6 +13,7 @@ import org.zalando.opentracing.proxy.listen.scope.ScopeListener;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
@@ -34,21 +34,21 @@ public final class LogCorrelation implements ScopeListener, BaggageListener {
         String valueOf(Span span);
     }
 
-    private final ImMap<Seed, String> seeds;
-    private final ImMap<String, String> baggage;
+    private final ImmutableMap<Seed, String> seeds;
+    private final ImmutableMap<String, String> baggage;
 
     public LogCorrelation() {
-        this(PersistentHashMap.empty(), PersistentHashMap.empty());
+        this(ImmutableMap.of(), ImmutableMap.of());
     }
 
     public LogCorrelation withTraceId(final String contextKey) {
         final Seed seed = span -> span.context().toTraceId();
-        return new LogCorrelation(seeds.assoc(seed, contextKey), baggage);
+        return new LogCorrelation(assoc(seeds, seed, contextKey), baggage);
     }
 
     public LogCorrelation withSpanId(final String contextKey) {
         final Seed seed = span -> span.context().toSpanId();
-        return new LogCorrelation(seeds.assoc(seed, contextKey), baggage);
+        return new LogCorrelation(assoc(seeds, seed, contextKey), baggage);
     }
 
     public LogCorrelation withBaggage(final String key) {
@@ -68,8 +68,8 @@ public final class LogCorrelation implements ScopeListener, BaggageListener {
     public LogCorrelation withBaggage(final Map<String, String> mapping) {
         return new LogCorrelation(
                 reduce(mapping.entrySet(), seeds, (seeds, e) ->
-                        seeds.assoc(baggageSeed(e.getKey()), e.getValue())),
-                reduce(mapping.entrySet(), baggage, ImMap::assoc));
+                        assoc(seeds, baggageSeed(e.getKey()), e.getValue())),
+                reduce(mapping.entrySet(), baggage, LogCorrelation::assoc));
     }
 
     @Override
@@ -98,6 +98,22 @@ public final class LogCorrelation implements ScopeListener, BaggageListener {
     public void onClosing(final Scope scope, final Span span) {
         seeds.forEach((ignored, key) -> MDC.remove(key));
         baggage.forEach((ignored, key) -> MDC.remove(key));
+    }
+
+
+    private static <K, V> ImmutableMap<K, V> assoc(
+            final ImmutableMap<K, V> map, final Entry<K, V> entry) {
+
+        return assoc(map, entry.getKey(), entry.getValue());
+    }
+
+    private static <K, V> ImmutableMap<K, V> assoc(
+            final ImmutableMap<K, V> map, final K key, final V value) {
+
+        return ImmutableMap.<K, V>builder()
+                .putAll(map)
+                .put(key, value)
+                .build();
     }
 
     private static Seed baggageSeed(final String key) {

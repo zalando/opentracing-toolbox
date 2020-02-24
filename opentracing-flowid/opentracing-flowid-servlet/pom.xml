@@ -11,6 +11,7 @@
         <dependency>
             <groupId>org.zalando</groupId>
             <artifactId>opentracing-flowid</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -20,7 +21,6 @@
         <dependency>
             <groupId>io.opentracing.contrib</groupId>
             <artifactId>opentracing-web-servlet-filter</artifactId>
-            <version>0.4.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>

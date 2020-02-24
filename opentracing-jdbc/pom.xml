@@ -13,5 +13,6 @@
     <modules>
         <module>opentracing-jdbc</module>
         <module>opentracing-jdbc-autoconfigure</module>
+        <module>opentracing-jdbc-starter</module>
     </modules>
 </project>

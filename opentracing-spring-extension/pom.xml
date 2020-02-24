@@ -13,21 +13,9 @@
     <modules>
         <module>opentracing-spring-web-extension</module>
         <module>opentracing-spring-web-extension-autoconfigure</module>
+        <module>opentracing-spring-web-extension-starter</module>
         <module>opentracing-spring-webflux-extension</module>
         <module>opentracing-spring-webflux-extension-autoconfigure</module>
+        <module>opentracing-spring-webflux-extension-starter</module>
     </modules>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.zalando</groupId>
-                <artifactId>opentracing-spring-web-extension</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.zalando</groupId>
-                <artifactId>opentracing-spring-webflux-extension</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 </project>

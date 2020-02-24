@@ -11,15 +11,19 @@
         <dependency>
             <groupId>org.zalando</groupId>
             <artifactId>opentracing-flowid</artifactId>
+            <version>${project.version}</version>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.zalando</groupId>
             <artifactId>opentracing-flowid-httpclient</artifactId>
+            <version>${project.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.zalando</groupId>
             <artifactId>opentracing-flowid-servlet</artifactId>
+            <version>${project.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -49,13 +53,6 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-slf4j-impl</artifactId>
-        </dependency>
-        <!-- TODO needed? -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <!-- see https://github.com/spring-projects/spring-boot/issues/6520 -->
-            <version>3.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

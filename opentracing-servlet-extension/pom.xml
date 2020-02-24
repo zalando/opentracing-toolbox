@@ -13,5 +13,6 @@
     <modules>
         <module>opentracing-servlet-extension</module>
         <module>opentracing-servlet-extension-autoconfigure</module>
+        <module>opentracing-servlet-extension-starter</module>
     </modules>
 </project>

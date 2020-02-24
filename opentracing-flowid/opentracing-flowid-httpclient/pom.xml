@@ -14,6 +14,7 @@
         <dependency>
             <groupId>org.zalando</groupId>
             <artifactId>opentracing-flowid</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

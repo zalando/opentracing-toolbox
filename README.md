@@ -15,29 +15,50 @@
 
 ## Features
 
-- **OpenTracing** extensions
-- Legacy [FlowID](#opentracing-flowid) compatibility support 
--  Sensible defaults
+- Legacy [FlowID](#flowid) compatibility support 
+- JDBC support
+- Extensible [OpenTracing Proxy](#proxy) (wrapper) w/ support for listeners and interceptors
+- Servlet support
+- Spring Web and Webflux support
+- Sensible defaults
 
 ## Modules
 
-### OpenTracing Proxy
-
-The `opentracing-proxy` module is a direct competitor to [opentracing-contrib/java-api-extensions](https://github.com/opentracing-contrib/java-api-extensions). 
-
-Go checkout out its [README](opentracing-proxy) for details. 
-
-### OpenTracing JDBC
-
-The `opentracing-jdbc` module is a direct competitor to [opentracing-contrib/java-jdbc](https://github.com/opentracing-contrib/java-jdbc). 
-
-Go checkout out its [README](opentracing-jdbc) for details. 
-
-### Opentracing FlowID
+### FlowID
 
 The `opentracing-flowid` module replaces the former [`zalando/tracer`](https://github.com/zalando/tracer) library by providing support for the `X-Flow-ID` header propagation on top of OpenTracing.
 
 Go checkout out its [README](opentracing-flowid) for details. 
+
+### JDBC
+
+The `opentracing-jdbc` module is a direct **competitor** to [opentracing-contrib/java-jdbc](https://github.com/opentracing-contrib/java-jdbc). 
+
+Go checkout out its [README](opentracing-jdbc) for details. 
+
+### Proxy
+
+The `opentracing-proxy` module is a direct **competitor** to [opentracing-contrib/java-api-extensions](https://github.com/opentracing-contrib/java-api-extensions). 
+
+Go checkout out its [README](opentracing-proxy) for details. 
+
+### Servlet Extension
+
+The `opentracing-servlet-extension` module is an **extension** to `io.opentracing.contrib:opentracing-web-servlet-filter` and only useful if used in conjunction.
+
+Go checkout out its [README](opentracing-servlet-extension) for details. 
+
+### Spring Web Extension
+
+The `opentracing-spring-web-extension` module is an **extension** to `io.opentracing.contrib:opentracing-spring-web` and only useful if used in conjunction.
+
+Go checkout out its [README](opentracing-spring-extension/opentracing-spring-web-extension) for details. 
+
+### Spring Webflux Extension
+
+The `opentracing-spring-webflux-extension` module is an **extension** to `io.opentracing.contrib:opentracing-spring-web` and only useful if used in conjunction.
+
+Go checkout out its [README](opentracing-spring-extension/opentracing-spring-webflux-extension) for details. 
 
 ## Getting Help
 

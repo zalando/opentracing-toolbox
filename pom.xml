@@ -85,6 +85,11 @@
                 <version>1.18.12</version>
                 <scope>provided</scope>
             </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>28.2-jre</version>
+            </dependency>
             <!-- opentracing -->
             <dependency>
                 <groupId>io.opentracing</groupId>
@@ -101,6 +106,11 @@
                 <artifactId>opentracing-mock</artifactId>
                 <version>${opentracing.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.opentracing.contrib</groupId>
+                <artifactId>opentracing-web-servlet-filter</artifactId>
+                <version>0.4.1</version>
             </dependency>
             <dependency>
                 <groupId>io.opentracing.contrib</groupId>

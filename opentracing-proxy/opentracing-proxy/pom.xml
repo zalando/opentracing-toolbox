@@ -14,17 +14,9 @@
     </properties>
     <dependencies>
         <!-- Functionally important -->
-        <!-- TODO needed? -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>28.2-jre</version>
-        </dependency>
-        <!-- TODO only used in one place right now... -->
-        <dependency>
-            <groupId>org.organicdesign</groupId>
-            <artifactId>Paguro</artifactId>
-            <version>3.1.2</version>
         </dependency>
 
         <!-- Testing -->
