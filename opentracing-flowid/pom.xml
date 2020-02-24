@@ -16,35 +16,7 @@
         <module>opentracing-flowid-httpclient</module>
         <module>opentracing-flowid-okhttp</module>
         <module>opentracing-flowid-servlet</module>
+        <module>opentracing-flowid-starter</module>
         <module>opentracing-flowid-autoconfigure</module>
     </modules>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.zalando</groupId>
-                <artifactId>opentracing-flowid</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.zalando</groupId>
-                <artifactId>opentracing-flowid-httpclient</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.zalando</groupId>
-                <artifactId>opentracing-flowid-okhttp</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.zalando</groupId>
-                <artifactId>opentracing-flowid-servlet</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.zalando</groupId>
-                <artifactId>opentracing-flowid-autoconfigure</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 </project>

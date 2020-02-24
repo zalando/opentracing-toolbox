@@ -13,5 +13,6 @@
     <modules>
         <module>opentracing-proxy</module>
         <module>opentracing-proxy-autoconfigure</module>
+        <module>opentracing-proxy-starter</module>
     </modules>
 </project>

@@ -3,40 +3,31 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.zalando</groupId>
-        <artifactId>opentracing-toolbox</artifactId>
+        <artifactId>opentracing-flowid-parent</artifactId>
         <version>3.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>opentracing-toolbox-spring-boot-starter</artifactId>
+    <artifactId>opentracing-flowid-starter</artifactId>
     <dependencies>
         <dependency>
             <groupId>org.zalando</groupId>
-            <artifactId>opentracing-flowid-starter</artifactId>
+            <artifactId>opentracing-flowid</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.zalando</groupId>
-            <artifactId>opentracing-jdbc-starter</artifactId>
+            <artifactId>opentracing-flowid-httpclient</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.zalando</groupId>
-            <artifactId>opentracing-proxy-starter</artifactId>
+            <artifactId>opentracing-flowid-servlet</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.zalando</groupId>
-            <artifactId>opentracing-servlet-extension-starter</artifactId>
+            <artifactId>opentracing-flowid-autoconfigure</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.zalando</groupId>
-            <artifactId>opentracing-spring-web-extension-starter</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <!--
-            opentracing-spring-webflux-extension-starter is not considered to
-            be part of our standard stack, hence it's missing here on purpose.
-        -->
     </dependencies>
     <build>
         <plugins>
@@ -45,13 +36,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <failIfNoTests>false</failIfNoTests>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.basepom.maven</groupId>
-                <artifactId>duplicate-finder-maven-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>
