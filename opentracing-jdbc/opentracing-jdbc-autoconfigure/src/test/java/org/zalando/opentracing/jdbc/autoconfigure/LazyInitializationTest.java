@@ -12,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Role;
-import org.springframework.core.Ordered;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.zalando.opentracing.jdbc.Activation;
 import org.zalando.opentracing.jdbc.DataSourceTracer;
@@ -80,6 +79,11 @@ class LazyInitializationTest {
 
         expectedTypes.forEach(type ->
                 assertFalse(isEarlyInitialized(type), String.format("Expected [%s] to be pre-processable", type)));
+    }
+
+    @Test
+    void wontEarlyInitializeConfiguration() {
+        assertFalse(isEarlyInitialized(OpenTracingJdbcAutoConfiguration.class));
     }
 
     private boolean isEarlyInitialized(final Class<?> type) {

@@ -3,12 +3,14 @@ package org.zalando.opentracing.jdbc.autoconfigure;
 import io.opentracing.Tracer;
 import org.apiguardian.api.API;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Role;
 import org.zalando.opentracing.jdbc.Activation;
 import org.zalando.opentracing.jdbc.DataSourceTracer;
 import org.zalando.opentracing.jdbc.Lifecycle;
@@ -80,8 +82,9 @@ public class OpenTracingJdbcAutoConfiguration {
 
     @API(status = INTERNAL)
     @Bean
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     @ConditionalOnProperty(name = "opentracing.jdbc.enabled", havingValue = "true", matchIfMissing = true)
-    public BeanPostProcessor tracingDataSourceBeanPostProcessor(final BeanFactory beanFactory) {
+    public static BeanPostProcessor tracingDataSourceBeanPostProcessor(final BeanFactory beanFactory) {
         return new TracingProcessor(beanFactory);
     }
 
