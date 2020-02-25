@@ -19,10 +19,11 @@ import org.zalando.opentracing.jdbc.Lifecycle;
 import org.zalando.opentracing.jdbc.operation.OperationName;
 import org.zalando.opentracing.jdbc.span.SpanDecorator;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import static com.google.common.collect.Sets.newHashSet;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
@@ -69,7 +70,7 @@ class LazyInitializationTest {
 
     @Test
     void wontEarlyInitializeTracingBeans() {
-        final Set<Class<?>> expectedTypes = newHashSet(
+        final List<Class<?>> expectedTypes = Arrays.asList(
                 DataSourceTracer.class,
                 SpanDecorator.class,
                 Activation.class,
