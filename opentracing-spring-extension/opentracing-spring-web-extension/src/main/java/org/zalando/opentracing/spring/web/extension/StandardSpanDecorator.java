@@ -14,6 +14,7 @@ public final class StandardSpanDecorator extends ForwardingSpanDecorator {
                 new ErrorSpanDecorator(),
                 new ErrorStackSpanDecorator(),
                 new HttpPathSpanDecorator(),
+                HANDLER_METHOD_OPERATION_NAME,
                 new ServiceLoaderSpanDecorator()
         ));
     }
