@@ -120,6 +120,14 @@ class StandardSpanDecoratorTest {
     }
 
     @Test
+    void shouldNameOperation() {
+        client.getForEntity("http://localhost:8080/names/123", String.class);
+        waitFor(Duration.ofSeconds(1));
+
+        assertThat(span().operationName(), is("getName"));
+    }
+
+    @Test
     void shouldTagRegularPath() {
         final ResponseEntity<String> response = client
                 .getForEntity("http://localhost:8080/greet?name=Alice", String.class);
