@@ -56,7 +56,7 @@
         <slf4j.version>1.7.30</slf4j.version>
         <spring.version>5.2.4.RELEASE</spring.version>
         <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
-        <junit.version>5.6.0</junit.version>
+        <junit.version>5.6.1</junit.version>
         <opentracing.version>0.33.0</opentracing.version>
         <log4j.version>2.13.1</log4j.version>
     </properties>
