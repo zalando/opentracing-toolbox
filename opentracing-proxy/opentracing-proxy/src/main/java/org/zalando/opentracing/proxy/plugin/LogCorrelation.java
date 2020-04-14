@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonMap;
@@ -86,9 +87,13 @@ public final class LogCorrelation implements ScopeListener, BaggageListener {
             final String baggageKey,
             final String value) {
 
-        @Nullable final Span activeSpan = tracer.activeSpan();
+        final Function<Span, String> toSpanId = s -> s.context().toSpanId();
 
-        if (span.equals(activeSpan)) {
+        @Nullable final String activeSpanId = Optional.ofNullable(tracer.activeSpan())
+                .map(toSpanId)
+                .orElse(null);
+
+        if (toSpanId.apply(span).equals(activeSpanId)) {
             Optional.ofNullable(baggage.get(baggageKey))
                     .ifPresent(contextKey -> MDC.put(contextKey, value));
         }
