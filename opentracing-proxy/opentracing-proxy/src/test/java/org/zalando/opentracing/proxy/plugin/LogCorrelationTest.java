@@ -10,8 +10,8 @@ import io.opentracing.propagation.TextMapAdapter;
 import io.opentracing.propagation.TextMapExtractAdapter;
 import org.junit.jupiter.api.Test;
 import org.slf4j.MDC;
+import org.zalando.opentracing.proxy.base.ForwardingSpan;
 import org.zalando.opentracing.proxy.core.ProxyTracer;
-import org.zalando.opentracing.proxy.plugin.LogCorrelation;
 
 import java.util.HashMap;
 
@@ -109,6 +109,17 @@ class LogCorrelationTest {
             final Span child = unit.buildSpan("child").start();
             child.setBaggageItem("request-id", "P6QQkzZHfza9GO");
             assertNull(MDC.get("request_id"));
+        }
+    }
+
+    @Test
+    void correlatesBaggageWhenSpanIsForwarding() {
+        final Span span = unit.buildSpan("test").start();
+        final ForwardingSpan wrapped = () -> span;
+
+        try (final Scope ignored = unit.activateSpan(wrapped)) {
+            span.setBaggageItem("request-id", "P6QQkzZHfza9GO");
+            assertEquals("P6QQkzZHfza9GO", MDC.get("request_id"));
         }
     }
 
