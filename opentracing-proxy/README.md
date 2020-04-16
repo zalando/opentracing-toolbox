@@ -120,7 +120,7 @@ Interceptors, compared to [listeners](#listeners) are not merely reacting to an 
 
 Correlating log messages (referring to local log files, not OpenTracing span logs) is a very common use case. OpenTracing exposes the *Trace-Context identifiers* (Trace and Span ID) for this very [purpose](https://github.com/opentracing/specification/blob/master/rfc/trace_identifiers.md#log-correlation).
 
-The built-in `LogCorrelation` plugin combines the reactive abilities of a `ScopeListener` and a `BaggageListener` with the [MDC](https://www.slf4j.org/manual.html#mdc) to create an out-of-the-box solution for log correlation. The every active `Span` will be correlated to the logs by pushing the relevant pieces to the mapped diagnostic context.
+The built-in `LogCorrelation` plugin combines the reactive abilities of a `ScopeListener` and a `BaggageListener` with the [MDC](https://www.slf4j.org/manual.html#mdc) to create an out-of-the-box solution for log correlation. Every active `Span` will be correlated to the logs by pushing the relevant pieces to the mapped diagnostic context.
 
 The following setup configures the plugin to expose the *Trace ID* as `trace_id`, the *Span ID* as `span_id` and the baggage item `flow_id` *as-is* to the MDC.
 
@@ -130,7 +130,15 @@ Tracer tracer = new ProxyTracer(original)
         .withTraceId("trace_id")
         .withSpanId("span_id")
         .withBaggage("flow_id"));
-```
+```                          
+
+It's also possible to map `request-id` baggage item to the `request_id` MDC: 
+
+```java
+Tracer tracer = new ProxyTracer(original)
+    .with(new LogCorrelation()
+        .withBaggage("request-id", "request_id"));
+```                          
 
 ### Auto-Tagging
 
