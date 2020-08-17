@@ -56,7 +56,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <slf4j.version>1.7.30</slf4j.version>
         <spring.version>5.2.8.RELEASE</spring.version>
-        <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
+        <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
         <junit.version>5.6.2</junit.version>
         <opentracing.version>0.33.0</opentracing.version>
         <log4j.version>2.13.3</log4j.version>
