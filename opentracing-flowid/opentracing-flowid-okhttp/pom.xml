@@ -7,6 +7,9 @@
         <version>3.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>opentracing-flowid-okhttp</artifactId>
+    <properties>
+        <kotlin.version>1.4.10</kotlin.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.zalando</groupId>
@@ -23,13 +26,13 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <!--suppress KotlinMavenPluginPhase -->
             <artifactId>kotlin-stdlib</artifactId>
-            <version>1.4.10</version>
+            <version>${kotlin.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <!--suppress KotlinMavenPluginPhase -->
             <artifactId>kotlin-stdlib-common</artifactId>
-            <version>1.4.0</version>
+            <version>${kotlin.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
