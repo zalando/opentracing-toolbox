@@ -29,7 +29,7 @@
             <groupId>org.jetbrains.kotlin</groupId>
             <!--suppress KotlinMavenPluginPhase -->
             <artifactId>kotlin-stdlib-common</artifactId>
-            <version>1.4.0</version>
+            <version>1.4.10</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
