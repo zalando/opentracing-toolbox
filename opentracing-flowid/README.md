@@ -2,13 +2,13 @@
 
 [![Stability: Active](https://masterminds.github.io/stability/active.svg)](https://masterminds.github.io/stability/active.html)
 ![Build Status](https://github.com/zalando/opentracing-toolbox/workflows/Test/badge.svg)
-[![Coverage Status](https://img.shields.io/coveralls/zalando/opentracing-toolbox/master.svg)](https://coveralls.io/r/zalando/opentracing-toolbox)
-[![Code Quality](https://img.shields.io/codacy/grade/69e173024eec403797466e147a2051a3/master.svg)](https://www.codacy.com/app/whiskeysierra/opentracing-toolbox)
+[![Coverage Status](https://img.shields.io/coveralls/zalando/opentracing-toolbox/main.svg)](https://coveralls.io/r/zalando/opentracing-toolbox)
+[![Code Quality](https://img.shields.io/codacy/grade/69e173024eec403797466e147a2051a3/main.svg)](https://www.codacy.com/app/whiskeysierra/opentracing-toolbox)
 [![Javadoc](http://javadoc.io/badge/org.zalando/opentracing-flowid.svg)](http://www.javadoc.io/doc/org.zalando/opentracing-flowid)
 [![Release](https://img.shields.io/github/release/zalando/opentracing-toolbox.svg)](https://github.com/zalando/opentracing-toolbox/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/org.zalando/opentracing-flowid.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/opentracing-flowid)
 [![OpenTracing](https://img.shields.io/badge/OpenTracing-enabled-blue.svg)](http://opentracing.io)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/zalando/opentracing-toolbox/master/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/zalando/opentracing-toolbox/main/LICENSE)
 
 *OpenTracing FlowID* is a library that builds on top of [OpenTracing](https://opentracing.io/) and adds support for our legacy 
 [`X-Flow-ID`](https://opensource.zalando.com/restful-api-guidelines/#233) header.
