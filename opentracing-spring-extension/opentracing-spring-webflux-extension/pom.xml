@@ -10,8 +10,8 @@
     </parent>
     <artifactId>opentracing-spring-webflux-extension</artifactId>
     <properties>
-        <spring.version>5.2.3.RELEASE</spring.version>
-        <spring-boot.version>2.2.4.RELEASE</spring-boot.version>
+        <spring.version>5.2.9.RELEASE</spring.version>
+        <spring-boot.version>2.3.4.RELEASE</spring-boot.version>
     </properties>
     <dependencies>
         <dependency>
@@ -39,6 +39,10 @@
                 <exclusion>
                     <groupId>org.glassfish</groupId>
                     <artifactId>jakarta.el</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-autoconfigure</artifactId>
                 </exclusion>
             </exclusions>
             <scope>test</scope>
