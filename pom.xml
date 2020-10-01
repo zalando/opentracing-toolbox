@@ -525,7 +525,7 @@
         <profile>
             <id>spring4</id>
             <properties>
-                <spring.version>4.3.25.RELEASE</spring.version>
+                <spring.version>4.3.29.RELEASE</spring.version>
                 <spring-boot.version>1.5.22.RELEASE</spring-boot.version>
                 <log4j.version>2.7</log4j.version>
             </properties>
