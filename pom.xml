@@ -29,6 +29,7 @@
     <modules>
         <module>opentracing-flowid</module>
         <module>opentracing-jdbc</module>
+        <module>opentracing-kotlin</module>
         <module>opentracing-proxy</module>
         <module>opentracing-servlet-extension</module>
         <module>opentracing-spring-extension</module>
@@ -61,6 +62,9 @@
         <junit.version>5.7.0</junit.version>
         <opentracing.version>0.33.0</opentracing.version>
         <log4j.version>2.13.3</log4j.version>
+        <kotlin.version>1.4.10</kotlin.version>
+        <kotest.version>4.3.0</kotest.version>
+        <kotlin.code.style>official</kotlin.code.style>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -282,6 +286,12 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-bom</artifactId>
+                <version>${kotlin.version}</version>
+                <type>pom</type>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -466,6 +476,9 @@
                                 <goal>check</goal>
                             </goals>
                             <configuration>
+                                <excludes>
+                                    <exclude>**/TracerExtension*</exclude>
+                                </excludes>
                                 <rules>
                                     <rule>
                                         <element>CLASS</element>
@@ -518,6 +531,30 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <version>${kotlin.version}</version>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>test-compile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jvmTarget>1.8</jvmTarget>
+                </configuration>
             </plugin>
         </plugins>
     </build>
