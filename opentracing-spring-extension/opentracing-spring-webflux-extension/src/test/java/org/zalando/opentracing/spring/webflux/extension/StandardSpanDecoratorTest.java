@@ -17,6 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
@@ -128,7 +129,7 @@ class StandardSpanDecoratorTest {
     void shouldTag5xxErrorResponse() {
         final ClientResponse response = client.get()
                 .uri("/error")
-                .exchange()
+                .exchangeToMono(Mono::just)
                 .block();
 
         assertThat(response.statusCode(), is(SERVICE_UNAVAILABLE));
@@ -143,7 +144,7 @@ class StandardSpanDecoratorTest {
     void shouldTagException() {
         final ClientResponse response = client.get()
                 .uri("/exception")
-                .exchange()
+                .exchangeToMono(Mono::just)
                 .block();
 
         assertTrue(response.statusCode().is5xxServerError());

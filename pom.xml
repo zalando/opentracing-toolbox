@@ -56,9 +56,18 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <slf4j.version>1.7.30</slf4j.version>
-        <spring.version>5.3.1</spring.version>
-        <spring-boot.version>2.4.0</spring-boot.version>
+
+        <spring5.version>5.3.2</spring5.version>
+        <spring-boot2.version>2.4.0</spring-boot2.version>
+
+        <spring4.version>4.3.30.RELEASE</spring4.version>
+        <spring-boot1.version>1.5.22.RELEASE</spring-boot1.version>
+
+        <spring.version>${spring5.version}</spring.version>
+        <spring-boot.version>${spring-boot2.version}</spring-boot.version>
+
         <spring-opentracing.version>4.1.0</spring-opentracing.version>
+        <httpclient.version>4.5.13</httpclient.version>
         <junit.version>5.7.0</junit.version>
         <opentracing.version>0.33.0</opentracing.version>
         <log4j.version>2.14.0</log4j.version>
@@ -132,6 +141,10 @@
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-autoconfigure</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <!-- logging -->
@@ -159,6 +172,12 @@
                 <version>${junit.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <!-- HTTP client (has to come before spring...) -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
             </dependency>
             <!-- spring -->
             <dependency>
@@ -268,6 +287,10 @@
                         <groupId>org.hamcrest</groupId>
                         <artifactId>hamcrest-library</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>commons-logging</groupId>
+                        <artifactId>commons-logging</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -369,6 +392,11 @@
                             <configuration>
                                 <rules>
                                     <reactorModuleConvergence/>
+                                    <bannedDependencies>
+                                        <excludes>
+                                            <exclude>commons-logging:commons-logging</exclude>
+                                        </excludes>
+                                    </bannedDependencies>
                                 </rules>
                             </configuration>
                         </execution>
@@ -562,8 +590,8 @@
         <profile>
             <id>spring4</id>
             <properties>
-                <spring.version>4.3.29.RELEASE</spring.version>
-                <spring-boot.version>1.5.22.RELEASE</spring-boot.version>
+                <spring.version>${spring4.version}</spring.version>
+                <spring-boot.version>${spring-boot1.version}</spring-boot.version>
                 <log4j.version>2.7</log4j.version>
             </properties>
         </profile>
