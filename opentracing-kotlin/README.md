@@ -61,19 +61,4 @@ try {
 }
 ```
 
-Using these extensions will help reduce a lot of boiler plate code. This can even be used from java code as shown below:
-
-```java
-TracerExtensionKT.trace(
-    tracer,
-    "call_backendA",
-    "retry",
-    null,
-    parentSpan,
-    (span) -> {
-        // do something
-        span.setTag("response_status",200)
-        // do something more
-        return something;
-    });
-```
+Using these extensions can help reduce a lot of boiler plate code that is difficult to manage while instrumenting opentracing.
