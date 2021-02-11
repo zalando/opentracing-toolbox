@@ -4,6 +4,7 @@ import io.opentracing.Scope
 import io.opentracing.Span
 import io.opentracing.SpanContext
 import io.opentracing.Tracer
+import io.opentracing.log.Fields
 import io.opentracing.propagation.Format.Builtin.TEXT_MAP
 import io.opentracing.propagation.TextMapAdapter
 import io.opentracing.tag.Tags
@@ -69,8 +70,9 @@ inline fun <R> Tracer.trace(
 fun Span.record(ex: java.lang.Exception) {
     log(
         mapOf(
-            "event" to Tags.ERROR.key,
-            "error.object" to ex
+            Fields.EVENT to Tags.ERROR.key,
+            Fields.ERROR_OBJECT to ex,
+            Fields.MESSAGE to ex.message
         )
     )
     setTag(Tags.ERROR, true)
