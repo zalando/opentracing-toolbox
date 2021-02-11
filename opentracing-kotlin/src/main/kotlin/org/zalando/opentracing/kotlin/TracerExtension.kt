@@ -72,7 +72,8 @@ fun Span.record(ex: java.lang.Exception) {
         mapOf(
             Fields.EVENT to Tags.ERROR.key,
             Fields.ERROR_OBJECT to ex,
-            Fields.MESSAGE to ex.message
+            Fields.MESSAGE to ex.message,
+            Fields.STACK to ex.stackTraceToString()
         )
     )
     setTag(Tags.ERROR, true)
