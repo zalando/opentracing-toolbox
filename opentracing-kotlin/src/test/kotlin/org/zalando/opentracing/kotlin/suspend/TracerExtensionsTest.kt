@@ -1,11 +1,9 @@
-package org.zalando.opentracing.kotlin
+package org.zalando.opentracing.kotlin.suspend
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.atLeastSize
 import io.kotest.matchers.maps.shouldContainAll
-import io.kotest.matchers.maps.shouldContainExactly
 import io.kotest.matchers.maps.shouldNotContainKey
-import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldHave
 import io.opentracing.Span
 import io.opentracing.mock.MockSpan
@@ -31,27 +29,6 @@ class TracerExtensionsTest : FunSpec({
             "works" to true,
             Tags.COMPONENT.key to "test"
         )
-
-        tracer.injectToMap(span)?.shouldContainExactly(
-            mapOf(
-                "spanid" to "6",
-                "traceid" to "5"
-            )
-        )
-    }
-
-    test("get context from map") {
-        val tracer = MockTracer()
-
-        tracer.extract(
-            mapOf(
-                "spanid" to "6",
-                "traceid" to "5"
-            )
-        ).let {
-            it?.toSpanId() shouldBe "6"
-            it?.toTraceId() shouldBe "5"
-        }
     }
 
     test("trace failure") {
