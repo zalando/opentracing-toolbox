@@ -59,7 +59,10 @@ final class DefaultFlow implements Flow {
 
     @Override
     public void writeTo(final BiConsumer<String, String> writer) {
-        writer.accept(Header.FLOW_ID, currentId());
+        extractor.extract(activeSpan())
+                .map(FlowId::getValue)
+                .ifPresent(value ->
+                        writer.accept(Header.FLOW_ID, value));
     }
 
     @Override
