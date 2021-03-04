@@ -32,12 +32,14 @@ class TracerExtensionsTest : FunSpec({
             Tags.COMPONENT.key to "test"
         )
 
-        tracer.injectToMap(span)?.shouldContainExactly(
-            mapOf(
-                "spanid" to "6",
-                "traceid" to "5"
+        (span as MockSpan).let {
+            tracer.injectToMap(it)?.shouldContainExactly(
+                mapOf(
+                    "spanid" to it.context().spanId().toString(),
+                    "traceid" to it.context().traceId().toString()
+                )
             )
-        )
+        }
     }
 
     test("get context from map") {
