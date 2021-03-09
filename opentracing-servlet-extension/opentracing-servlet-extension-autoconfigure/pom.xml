@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.zalando</groupId>
         <artifactId>opentracing-servlet-extension-parent</artifactId>
-        <version>3.0.0-SNAPSHOT</version>
+        <version>4.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>opentracing-servlet-extension-autoconfigure</artifactId>
     <dependencies>
