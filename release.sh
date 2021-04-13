@@ -4,6 +4,7 @@
 
 ./mvnw scm:check-local-modification
 
+# npm install -g semver
 current=$(git describe --abbrev=0 || echo 0.0.0)
 release=$(semver ${current} -i $1 --preid RC)
 next=$(semver ${release} -i minor)
