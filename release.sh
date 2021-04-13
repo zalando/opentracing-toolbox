@@ -2,6 +2,11 @@
 
 : ${1?"Usage: $0 <[pre]major|[pre]minor|[pre]patch|prerelease>"}
 
+if [ "$(semver -h | grep -c 'A JavaScript implementation of the https://semver.org/ specification')" -eq "0" ]; then
+  echo "please install: npm install -g semver"
+  exit 1
+fi
+
 ./mvnw scm:check-local-modification
 
 current=$(git describe --abbrev=0 || echo 0.0.0)
