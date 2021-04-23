@@ -1,18 +1,18 @@
 package org.zalando.opentracing.spring.webflux.extension;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Predicate;
+
 import io.opentracing.Span;
 import io.opentracing.log.Fields;
 import io.opentracing.tag.Tags;
 import lombok.AllArgsConstructor;
 import org.apiguardian.api.API;
+import static org.apiguardian.api.API.Status.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ServerWebExchange;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Predicate;
-
-import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 
 @API(status = EXPERIMENTAL)
 @AllArgsConstructor
@@ -30,7 +30,8 @@ public final class ErrorSpanDecorator
             final ServerWebExchange exchange,
             final Span span) {
 
-        if (predicate.test(exchange.getResponse().getStatusCode())) {
+        HttpStatus statusCode = exchange.getResponse().getStatusCode();
+        if (statusCode == null || predicate.test(statusCode)) {
             span.setTag(Tags.ERROR, true);
         }
     }
