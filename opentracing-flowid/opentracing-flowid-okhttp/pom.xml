@@ -7,9 +7,6 @@
         <version>4.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>opentracing-flowid-okhttp</artifactId>
-    <properties>
-        <kotlin.version>1.5.0</kotlin.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>org.zalando</groupId>
