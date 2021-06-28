@@ -57,9 +57,6 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <slf4j.version>1.7.30</slf4j.version>
 
-        <spring5.version>5.3.2</spring5.version>
-        <spring-boot2.version>2.4.0</spring-boot2.version>
-
         <spring4.version>4.3.30.RELEASE</spring4.version>
         <spring-boot1.version>1.5.22.RELEASE</spring-boot1.version>
 
@@ -74,6 +71,9 @@
         <kotlin.version>1.5.0</kotlin.version>
         <kotest.version>4.6.0</kotest.version>
         <kotlin.code.style>official</kotlin.code.style>
+
+        <!-- testing-->
+        <groovy.version>3.0.8</groovy.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -273,6 +273,26 @@
                 <scope>test</scope>
             </dependency>
             <!-- testing: rest -->
+            <!-- spring4 has older versions of groovy -->
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy</artifactId>
+                <version>${groovy.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-xml</artifactId>
+                <version>${groovy.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-json</artifactId>
+                <version>${groovy.version}</version>
+                <scope>test</scope>
+            </dependency>
+
             <dependency>
                 <groupId>io.rest-assured</groupId>
                 <artifactId>rest-assured</artifactId>
