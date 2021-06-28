@@ -9,10 +9,6 @@
         <version>4.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>opentracing-spring-webflux-extension</artifactId>
-    <properties>
-        <spring.version>${spring5.version}</spring.version>
-        <spring-boot.version>${spring-boot2.version}</spring-boot.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>io.opentracing.contrib</groupId>
