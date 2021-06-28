@@ -1,22 +1,19 @@
 package org.zalando.opentracing.flowid.servlet;
 
-import io.opentracing.mock.MockTracer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
-import org.zalando.opentracing.flowid.Flow;
-
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.jayway.restassured.RestAssured.given;
-import static java.lang.String.format;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
+import io.opentracing.mock.MockTracer;
+import static io.restassured.RestAssured.*;
+import static java.lang.String.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import static org.mockito.Mockito.*;
+import org.zalando.opentracing.flowid.Flow;
 
 final class FlowFilterTest {
 
@@ -39,7 +36,7 @@ final class FlowFilterTest {
                 .header("spanid", "1")
                 .get(url())
                 .then()
-                .content(equalTo("1"))
+                .body(equalTo("1"))
                 .header("x-flow-id", is(nullValue()));
     }
 
@@ -52,7 +49,7 @@ final class FlowFilterTest {
                 .header("baggage-flow_id", "REcCvlqMSReeo7adheiYFA")
                 .get(url())
                 .then()
-                .content(equalTo("REcCvlqMSReeo7adheiYFA"))
+                .body(equalTo("REcCvlqMSReeo7adheiYFA"))
                 .header("x-flow-id", is(nullValue()));
     }
 

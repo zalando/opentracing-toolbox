@@ -274,9 +274,9 @@
             </dependency>
             <!-- testing: rest -->
             <dependency>
-                <groupId>com.jayway.restassured</groupId>
+                <groupId>io.rest-assured</groupId>
                 <artifactId>rest-assured</artifactId>
-                <version>2.9.0</version>
+                <version>4.4.0</version>
                 <scope>test</scope>
                 <exclusions>
                     <exclusion>
