@@ -73,7 +73,7 @@
         <kotlin.code.style>official</kotlin.code.style>
 
         <!-- testing-->
-        <groovy.version>3.0.8</groovy.version>
+        <groovy.version>3.0.9</groovy.version>
     </properties>
     <dependencyManagement>
         <dependencies>
