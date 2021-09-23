@@ -65,7 +65,7 @@
 
         <spring-opentracing.version>4.1.0</spring-opentracing.version>
         <httpclient.version>4.5.13</httpclient.version>
-        <junit.version>5.8.0</junit.version>
+        <junit.version>5.8.1</junit.version>
         <opentracing.version>0.33.0</opentracing.version>
         <log4j.version>2.14.1</log4j.version>
         <kotlin.version>1.5.0</kotlin.version>
