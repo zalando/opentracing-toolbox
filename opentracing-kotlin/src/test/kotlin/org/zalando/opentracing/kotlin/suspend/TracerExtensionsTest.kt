@@ -4,6 +4,7 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.atLeastSize
 import io.kotest.matchers.maps.shouldContainAll
 import io.kotest.matchers.maps.shouldNotContainKey
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldHave
 import io.opentracing.Span
 import io.opentracing.mock.MockSpan
@@ -22,6 +23,8 @@ class TracerExtensionsTest : FunSpec({
         ) {
             it.setTag("works", true)
             span = it
+            span shouldBe tracer.currentSpan()
+            span shouldBe coroutineContext.activeSpan()
         }
 
         (span as MockSpan)
