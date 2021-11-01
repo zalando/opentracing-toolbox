@@ -132,4 +132,43 @@ class LogCorrelationTest {
                 )));
     }
 
+    @Test
+    void correlatesTraceIdAndSpanIdForNestedScopes() {
+        final Span outerSpan = unit.buildSpan("test").start();
+        final Span innerSpan = unit.buildSpan("inner_test").start();
+        try (final Scope ignored = unit.activateSpan(outerSpan)) {
+            assertEquals(outerSpan.context().toTraceId(), MDC.get("trace_id"));
+            assertEquals(outerSpan.context().toSpanId(), MDC.get("span_id"));
+            try (final Scope nested = unit.activateSpan(innerSpan)) {
+                assertEquals(innerSpan.context().toTraceId(), MDC.get("trace_id"));
+                assertEquals(innerSpan.context().toSpanId(), MDC.get("span_id"));
+            }
+            finally {
+                innerSpan.finish();
+            }
+            assertEquals(outerSpan.context().toTraceId(), MDC.get("trace_id"));
+            assertEquals(outerSpan.context().toSpanId(), MDC.get("span_id"));
+        }
+    }
+
+    @Test
+    void shouldCleanUpForNestedScopes() {
+        final Span outerSpan = unit.buildSpan("test").start();
+        final Span innerSpan = unit.buildSpan("inner_test").start();
+        try (final Scope ignored = unit.activateSpan(outerSpan)) {
+            assertEquals(outerSpan.context().toTraceId(), MDC.get("trace_id"));
+            try (final Scope nested = unit.activateSpan(innerSpan)) {
+                assertEquals(innerSpan.context().toTraceId(), MDC.get("trace_id"));
+            }
+            finally {
+                innerSpan.finish();
+            }
+            assertEquals(outerSpan.context().toTraceId(), MDC.get("trace_id"));
+        }
+
+        assertNull(MDC.get("trace_id"));
+        assertNull(MDC.get("span_id"));
+        assertNull(MDC.get("request-id"));
+    }
+
 }

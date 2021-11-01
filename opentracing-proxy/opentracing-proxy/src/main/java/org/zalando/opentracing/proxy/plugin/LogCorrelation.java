@@ -12,9 +12,11 @@ import org.zalando.opentracing.proxy.listen.scope.ScopeListener;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.Stack;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -28,6 +30,7 @@ import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 @API(status = EXPERIMENTAL)
 @AllArgsConstructor(access = PRIVATE)
 public final class LogCorrelation implements ScopeListener, BaggageListener {
+    final ThreadLocal<Stack<Map<String, String>>> existingContextStack = new ThreadLocal<>();
 
     @FunctionalInterface
     private interface Seed {
@@ -75,9 +78,16 @@ public final class LogCorrelation implements ScopeListener, BaggageListener {
 
     @Override
     public void onActivated(final Scope scope, final Span span) {
+        if (existingContextStack.get() == null)
+            existingContextStack.set(new Stack<>());
+        Map<String, String> contextMap = new HashMap<>();
         seeds.forEach((seed, contextKey) ->
-                Optional.ofNullable(seed.valueOf(span)).ifPresent(value ->
-                        MDC.put(contextKey, value)));
+                Optional.ofNullable(seed.valueOf(span)).ifPresent(value -> {
+                    Optional.ofNullable(MDC.get(contextKey)).ifPresent(x -> contextMap.put(contextKey, x));
+                    MDC.put(contextKey, value);
+                }));
+        if (!contextMap.isEmpty())
+            existingContextStack.get().push(contextMap);
     }
 
     @Override
@@ -105,6 +115,19 @@ public final class LogCorrelation implements ScopeListener, BaggageListener {
         baggage.forEach((ignored, key) -> MDC.remove(key));
     }
 
+    @Override
+    public void onClosed(final Scope scope, final Span span) {
+        if (existingContextStack.get() == null)
+            return;
+        Map<String, String> previousContextMap = null;
+        if(!existingContextStack.get().isEmpty())
+            previousContextMap = existingContextStack.get().pop();
+
+        if (previousContextMap != null)
+            previousContextMap.entrySet().forEach((entry) -> MDC.put(entry.getKey(), entry.getValue()));
+        else
+            this.existingContextStack.remove();
+    }
 
     private static <K, V> ImmutableMap<K, V> assoc(
             final ImmutableMap<K, V> map, final Entry<K, V> entry) {
