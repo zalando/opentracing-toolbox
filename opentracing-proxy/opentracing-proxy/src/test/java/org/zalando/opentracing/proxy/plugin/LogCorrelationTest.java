@@ -152,6 +152,31 @@ class LogCorrelationTest {
     }
 
     @Test
+    void correlatesTraceIdAndSpanIdForMultipleNestedScopes() {
+        final Span outerSpan = unit.buildSpan("test").start();
+        outerSpan.setBaggageItem("flow_id","baggage_value_1");
+        final Span innerSpan = unit.buildSpan("inner_test").start();
+        innerSpan.setBaggageItem("flow_id","baggage_value_2");
+        final Span innerMostSpan = unit.buildSpan("inner_most_test").start();
+        innerMostSpan.setBaggageItem("flow_id","baggage_value_3");
+        try (final Scope ignored = unit.activateSpan(outerSpan)) {
+            try (final Scope nested = unit.activateSpan(innerSpan)) {
+                try (final Scope innerMost = unit.activateSpan(innerMostSpan)) {
+                    assertEquals("baggage_value_3", MDC.get("flow_id"));
+                }
+                finally {
+                    innerMostSpan.finish();
+                }
+                assertEquals("baggage_value_2", MDC.get("flow_id"));
+            }
+            finally {
+                innerSpan.finish();
+            }
+            assertEquals("baggage_value_1", MDC.get("flow_id"));
+        }
+    }
+
+    @Test
     void correlatesInitialBaggageInNestedScopes() {
         final Span span = unit.buildSpan("test").start();
         span.setBaggageItem("flow_id","baggage_value");
