@@ -171,4 +171,11 @@ class LogCorrelationTest {
         assertNull(MDC.get("request-id"));
     }
 
+    @Test
+    void closingScopeAgainDoesntCauseException() {
+        final Span span = unit.buildSpan("test").start();
+         Scope ignored = unit.activateSpan(span);
+         ignored.close();
+         ignored.close();
+    }
 }
