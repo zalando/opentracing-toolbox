@@ -18,8 +18,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.google.common.collect.Maps.newHashMapWithExpectedSize;
-import static java.util.Collections.singleton;
-import static java.util.Collections.singletonMap;
+import static java.util.Collections.*;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 import static lombok.AccessLevel.PRIVATE;
@@ -117,16 +116,15 @@ public final class LogCorrelation implements ScopeListener, BaggageListener {
 
     @Override
     public void onClosing(final Scope scope, final Span span) {
-        seeds.forEach((ignored, key) -> MDC.remove(key));
-        baggage.forEach((ignored, key) -> MDC.remove(key));
-    }
-
-    @Override
-    public void onClosed(final Scope scope, final Span span) {
-        Optional.ofNullable(contexts.get().poll())
-                .ifPresent(previous -> previous.forEach(MDC::put));
-        if(contexts.get().isEmpty())
-            contexts.remove();
+        final Map<String, String> previousContext = restoreContext();
+        contextKeys().forEach(key -> {
+            @Nullable final String value = previousContext.get(key);
+            if (value == null) {
+                MDC.remove(key);
+            } else {
+                MDC.put(key, value);
+            }
+        });
     }
 
     private static <K, V> ImmutableMap<K, V> assoc(
@@ -160,6 +158,16 @@ public final class LogCorrelation implements ScopeListener, BaggageListener {
         }
 
         return result;
+    }
+
+    private Map<String, String> restoreContext() {
+        return Optional.ofNullable(contexts.get().poll()).orElse(emptyMap());
+    }
+
+    private Stream<String> contextKeys() {
+        return Stream.concat(
+                seeds.values().stream(),
+                baggage.values().stream());
     }
 
 }
