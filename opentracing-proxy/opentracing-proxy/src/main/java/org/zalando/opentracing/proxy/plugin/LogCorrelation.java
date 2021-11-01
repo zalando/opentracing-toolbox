@@ -125,8 +125,6 @@ public final class LogCorrelation implements ScopeListener, BaggageListener {
                 MDC.put(key, value);
             }
         });
-        if(contexts.get().isEmpty())
-            contexts.remove();
     }
 
     private static <K, V> ImmutableMap<K, V> assoc(
