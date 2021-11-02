@@ -85,7 +85,7 @@ public final class LogCorrelation implements ScopeListener, BaggageListener {
         final Map<String, String> context =
                 newHashMapWithExpectedSize(seeds.size() + baggage.size());
 
-        Stream.concat(seeds.values().stream(), baggage.values().stream())
+        contextKeys()
                 .forEach(contextKey -> {
                     @Nullable final String value = MDC.get(contextKey);
                     if (value == null) return;
