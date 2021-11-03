@@ -11,15 +11,14 @@ import org.zalando.opentracing.proxy.listen.baggage.BaggageListener;
 import org.zalando.opentracing.proxy.listen.scope.ScopeListener;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
-import static java.util.Collections.singleton;
-import static java.util.Collections.singletonMap;
+import static com.google.common.collect.Maps.newHashMapWithExpectedSize;
+import static java.util.Collections.*;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 import static lombok.AccessLevel.PRIVATE;
@@ -28,6 +27,7 @@ import static org.apiguardian.api.API.Status.EXPERIMENTAL;
 @API(status = EXPERIMENTAL)
 @AllArgsConstructor(access = PRIVATE)
 public final class LogCorrelation implements ScopeListener, BaggageListener {
+    private final ThreadLocal<Deque<Map<String, String>>> contexts = ThreadLocal.withInitial(LinkedList::new);
 
     @FunctionalInterface
     private interface Seed {
@@ -75,9 +75,24 @@ public final class LogCorrelation implements ScopeListener, BaggageListener {
 
     @Override
     public void onActivated(final Scope scope, final Span span) {
+        contexts.get().push(preserveContext());
         seeds.forEach((seed, contextKey) ->
-                Optional.ofNullable(seed.valueOf(span)).ifPresent(value ->
-                        MDC.put(contextKey, value)));
+                Optional.ofNullable(seed.valueOf(span))
+                        .ifPresent(value -> MDC.put(contextKey, value)));
+    }
+
+    private Map<String, String> preserveContext() {
+        final Map<String, String> context =
+                newHashMapWithExpectedSize(seeds.size() + baggage.size());
+
+        contextKeys()
+                .forEach(contextKey -> {
+                    @Nullable final String value = MDC.get(contextKey);
+                    if (value == null) return;
+                    context.put(contextKey, value);
+                });
+
+        return context;
     }
 
     @Override
@@ -101,10 +116,16 @@ public final class LogCorrelation implements ScopeListener, BaggageListener {
 
     @Override
     public void onClosing(final Scope scope, final Span span) {
-        seeds.forEach((ignored, key) -> MDC.remove(key));
-        baggage.forEach((ignored, key) -> MDC.remove(key));
+        final Map<String, String> previousContext = restoreContext();
+        contextKeys().forEach(key -> {
+            @Nullable final String value = previousContext.get(key);
+            if (value == null) {
+                MDC.remove(key);
+            } else {
+                MDC.put(key, value);
+            }
+        });
     }
-
 
     private static <K, V> ImmutableMap<K, V> assoc(
             final ImmutableMap<K, V> map, final Entry<K, V> entry) {
@@ -137,6 +158,16 @@ public final class LogCorrelation implements ScopeListener, BaggageListener {
         }
 
         return result;
+    }
+
+    private Map<String, String> restoreContext() {
+        return Optional.ofNullable(contexts.get().poll()).orElse(emptyMap());
+    }
+
+    private Stream<String> contextKeys() {
+        return Stream.concat(
+                seeds.values().stream(),
+                baggage.values().stream());
     }
 
 }
