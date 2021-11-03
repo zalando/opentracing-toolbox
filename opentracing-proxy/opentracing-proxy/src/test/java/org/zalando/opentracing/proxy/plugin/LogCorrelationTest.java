@@ -132,4 +132,92 @@ class LogCorrelationTest {
                 )));
     }
 
+    @Test
+    void correlatesTraceIdAndSpanIdForNestedScopes() {
+        final Span outerSpan = unit.buildSpan("test").start();
+        final Span innerSpan = unit.buildSpan("inner_test").start();
+        try (final Scope ignored = unit.activateSpan(outerSpan)) {
+            assertEquals(outerSpan.context().toTraceId(), MDC.get("trace_id"));
+            assertEquals(outerSpan.context().toSpanId(), MDC.get("span_id"));
+            try (final Scope nested = unit.activateSpan(innerSpan)) {
+                assertEquals(innerSpan.context().toTraceId(), MDC.get("trace_id"));
+                assertEquals(innerSpan.context().toSpanId(), MDC.get("span_id"));
+            }
+            finally {
+                innerSpan.finish();
+            }
+            assertEquals(outerSpan.context().toTraceId(), MDC.get("trace_id"));
+            assertEquals(outerSpan.context().toSpanId(), MDC.get("span_id"));
+        }
+    }
+
+    @Test
+    void correlatesTraceIdAndSpanIdForMultipleNestedScopes() {
+        final Span outerSpan = unit.buildSpan("test").start();
+        outerSpan.setBaggageItem("flow_id","baggage_value_1");
+        final Span innerSpan = unit.buildSpan("inner_test").start();
+        innerSpan.setBaggageItem("flow_id","baggage_value_2");
+        final Span innerMostSpan = unit.buildSpan("inner_most_test").start();
+        innerMostSpan.setBaggageItem("flow_id","baggage_value_3");
+        try (final Scope ignored = unit.activateSpan(outerSpan)) {
+            try (final Scope nested = unit.activateSpan(innerSpan)) {
+                try (final Scope innerMost = unit.activateSpan(innerMostSpan)) {
+                    assertEquals("baggage_value_3", MDC.get("flow_id"));
+                }
+                finally {
+                    innerMostSpan.finish();
+                }
+                assertEquals("baggage_value_2", MDC.get("flow_id"));
+            }
+            finally {
+                innerSpan.finish();
+            }
+            assertEquals("baggage_value_1", MDC.get("flow_id"));
+        }
+    }
+
+    @Test
+    void correlatesInitialBaggageInNestedScopes() {
+        final Span span = unit.buildSpan("test").start();
+        span.setBaggageItem("flow_id","baggage_value");
+        final Span innerSpan = unit.buildSpan("inner_test").start();
+        try (final Scope ignored = unit.activateSpan(span)) {
+            try (final Scope innerIgnored = unit.activateSpan(innerSpan)) {
+                assertEquals("baggage_value", MDC.get("flow_id"));
+            }
+            finally {
+                innerSpan.finish();
+            }
+            assertEquals("baggage_value", MDC.get("flow_id"));
+        }
+    }
+
+
+    @Test
+    void shouldCleanUpForNestedScopes() {
+        final Span outerSpan = unit.buildSpan("test").start();
+        final Span innerSpan = unit.buildSpan("inner_test").start();
+        try (final Scope ignored = unit.activateSpan(outerSpan)) {
+            assertEquals(outerSpan.context().toTraceId(), MDC.get("trace_id"));
+            try (final Scope nested = unit.activateSpan(innerSpan)) {
+                assertEquals(innerSpan.context().toTraceId(), MDC.get("trace_id"));
+            }
+            finally {
+                innerSpan.finish();
+            }
+            assertEquals(outerSpan.context().toTraceId(), MDC.get("trace_id"));
+        }
+
+        assertNull(MDC.get("trace_id"));
+        assertNull(MDC.get("span_id"));
+        assertNull(MDC.get("request-id"));
+    }
+
+    @Test
+    void closingScopeAgainDoesntCauseException() {
+        final Span span = unit.buildSpan("test").start();
+        Scope ignored = unit.activateSpan(span);
+        ignored.close();
+        ignored.close();
+    }
 }
