@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.zalando</groupId>
     <artifactId>opentracing-toolbox</artifactId>
-    <version>4.1.0</version>
+    <version>4.1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <url>https://github.com/zalando/opentracing-toolbox</url>
     <inceptionYear>2019</inceptionYear>
