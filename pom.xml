@@ -70,7 +70,7 @@
         <log4j.version>2.14.1</log4j.version>
         <kotlin.version>1.6.0</kotlin.version>
         <coroutines.version>1.5.2</coroutines.version>
-        <kotest.version>4.6.3</kotest.version>
+        <kotest.version>5.0.0</kotest.version>
         <kotlin.code.style>official</kotlin.code.style>
 
         <!-- testing-->
