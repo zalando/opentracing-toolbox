@@ -148,15 +148,38 @@ OkHttpClient client = new OkHttpClient.Builder()
 
 ## Spring Boot Auto Configuration
 
-*Tracer* comes with a convenient auto configuration for Spring Boot users that sets up aspect and servlet filter automatically with sensible defaults:
+*Tracer* comes with a convenient auto configuration for Spring Boot users. You need only this dependency in your project:
 
-| Configuration                 | Description                               | Default                     |
-|-------------------------------|-------------------------------------------|-----------------------------|
-| `flowid.filter.enabled`       | Enables the [`FlowFilter`](#servlet)      | `true`                      |
+```xml
+<dependency>
+    <groupId>org.zalando</groupId>
+    <artifactId>opentracing-toolbox-spring-boot-starter</artifactId>
+    <version>${opentracing-flowid.version}</version>
+</dependency>
+```
+
+Then you need to initialize your `Tracer` as a bean:
+
+```java
+@Configuration
+public class OpentracingConfig {
+  @Bean
+  public io.opentracing.Tracer tracer() {
+    return ...;
+  }
+}
+```
+
+And then the library will set up aspect and servlet filter automatically with sensible defaults:
+
+| Configuration                       | Description                               | Default                     |
+|-------------------------------------|-------------------------------------------|-----------------------------|
+| `opentracing.flowid.filter.enabled` | Enables the [`FlowFilter`](#servlet)      | `true`                      |
 
 ```yaml
-flowid:
-    filter.enabled: true
+opentracing:
+    flowid:
+        filter.enabled: true
 ```
 
 ## Getting Help
