@@ -69,7 +69,7 @@
         <opentracing.version>0.33.0</opentracing.version>
         <log4j.version>2.17.2</log4j.version>
         <kotlin.version>1.6.20</kotlin.version>
-        <coroutines.version>1.6.0</coroutines.version>
+        <coroutines.version>1.6.1</coroutines.version>
         <kotest.version>5.1.0</kotest.version>
         <kotlin.code.style>official</kotlin.code.style>
 
