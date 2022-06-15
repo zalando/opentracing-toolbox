@@ -13,7 +13,7 @@ import org.apiguardian.api.API;
 import static org.apiguardian.api.API.Status.*;
 
 /**
- * Implement <code>Supplier<Span></code> to support the OpenTracing shim:
+ * Implement {@link Supplier} to support the OpenTracing shim:
  * https://github.com/open-telemetry/opentelemetry-java/pull/4535
  */
 @API(status = EXPERIMENTAL)
