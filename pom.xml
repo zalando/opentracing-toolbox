@@ -20,8 +20,8 @@
     </licenses>
     <developers>
         <developer>
-            <name>Willi Schönborn</name>
-            <email>willi.schoenborn@zalando.de</email>
+            <name>Gregor Zeitlinger</name>
+            <email>gregor.zeitlinger@zalando.de</email>
             <organization>Zalando SE</organization>
             <organizationUrl>https://tech.zalando.com/</organizationUrl>
         </developer>
@@ -57,9 +57,6 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <slf4j.version>1.7.36</slf4j.version>
 
-        <spring4.version>4.3.30.RELEASE</spring4.version>
-        <spring-boot1.version>1.5.22.RELEASE</spring-boot1.version>
-
         <spring.version>5.3.17</spring.version>
         <spring-boot.version>2.6.6</spring-boot.version>
 
@@ -72,9 +69,6 @@
         <coroutines.version>1.6.0</coroutines.version>
         <kotest.version>5.1.0</kotest.version>
         <kotlin.code.style>official</kotlin.code.style>
-
-        <!-- testing-->
-        <groovy.version>3.0.10</groovy.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -274,25 +268,6 @@
                 <scope>test</scope>
             </dependency>
             <!-- testing: rest -->
-            <!-- spring4 has older versions of groovy -->
-            <dependency>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy</artifactId>
-                <version>${groovy.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-xml</artifactId>
-                <version>${groovy.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-json</artifactId>
-                <version>${groovy.version}</version>
-                <scope>test</scope>
-            </dependency>
 
             <dependency>
                 <groupId>io.rest-assured</groupId>
@@ -571,18 +546,6 @@
                 <artifactId>maven-enforcer-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.basepom.maven</groupId>
-                <artifactId>duplicate-finder-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <version>${kotlin.version}</version>
@@ -609,14 +572,6 @@
         </plugins>
     </build>
     <profiles>
-        <profile>
-            <id>spring4</id>
-            <properties>
-                <spring.version>${spring4.version}</spring.version>
-                <spring-boot.version>${spring-boot1.version}</spring-boot.version>
-                <log4j.version>2.7</log4j.version>
-            </properties>
-        </profile>
         <profile>
             <id>release</id>
             <build>

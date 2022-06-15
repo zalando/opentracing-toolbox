@@ -14,22 +14,8 @@
         <module>opentracing-spring-web-extension</module>
         <module>opentracing-spring-web-extension-autoconfigure</module>
         <module>opentracing-spring-web-extension-starter</module>
+        <module>opentracing-spring-webflux-extension</module>
+        <module>opentracing-spring-webflux-extension-autoconfigure</module>
+        <module>opentracing-spring-webflux-extension-starter</module>
     </modules>
-
-    <profiles>
-        <profile>
-            <id>spring4</id>  <!-- just to prevent default profile from taking effect -->
-        </profile>
-        <profile>
-            <id>spring5</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <modules>
-                <module>opentracing-spring-webflux-extension</module>
-                <module>opentracing-spring-webflux-extension-autoconfigure</module>
-                <module>opentracing-spring-webflux-extension-starter</module>
-            </modules>
-        </profile>
-    </profiles>
 </project>
