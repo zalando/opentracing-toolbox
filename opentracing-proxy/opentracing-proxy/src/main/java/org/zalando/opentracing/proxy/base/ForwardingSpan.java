@@ -1,20 +1,30 @@
 package org.zalando.opentracing.proxy.base;
 
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
+
+import javax.annotation.Nullable;
+
 import io.opentracing.Span;
 import io.opentracing.SpanContext;
 import io.opentracing.tag.Tag;
 import org.apiguardian.api.API;
+import static org.apiguardian.api.API.Status.*;
 
-import javax.annotation.Nullable;
-import java.util.Map;
-import java.util.Optional;
-
-import static org.apiguardian.api.API.Status.EXPERIMENTAL;
-
+/**
+ * Implement <code>Supplier<Span></code> to support the OpenTracing shim:
+ * https://github.com/open-telemetry/opentelemetry-java/pull/4535
+ */
 @API(status = EXPERIMENTAL)
-public interface ForwardingSpan extends NormalizingSpan {
+public interface ForwardingSpan extends NormalizingSpan, Supplier<Span> {
 
     Span delegate();
+
+    @Override
+    default Span get() {
+        return delegate();
+    }
 
     @Override
     default SpanContext context() {
