@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.zalando</groupId>
         <artifactId>opentracing-jdbc-parent</artifactId>
-        <version>4.1.1-SNAPSHOT</version>
+        <version>4.2.1</version>
     </parent>
     <artifactId>opentracing-jdbc-starter</artifactId>
     <dependencies>
