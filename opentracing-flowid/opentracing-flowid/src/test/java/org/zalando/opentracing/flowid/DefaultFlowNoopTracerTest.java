@@ -1,21 +1,19 @@
 package org.zalando.opentracing.flowid;
 
-import io.opentracing.noop.NoopTracerFactory;
-import org.junit.jupiter.api.Test;
-
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.util.Collections.emptyMap;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import io.opentracing.noop.NoopTracerFactory;
+import static java.util.Collections.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class DefaultFlowNoopTracerTest {
     private final Flow unit = Flow.create(NoopTracerFactory.create());
 
     @Test
-    void shouldThrowNoActiveSpanFoundException() {
-        assertThrows(IllegalStateException.class, unit::currentId);
+    void shouldReturnNullOnNoActiveSpan() {
+        assertNull(unit.currentId());
     }
 
     @Test

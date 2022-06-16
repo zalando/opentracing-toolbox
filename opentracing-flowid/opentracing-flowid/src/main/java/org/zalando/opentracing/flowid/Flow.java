@@ -1,12 +1,13 @@
 package org.zalando.opentracing.flowid;
 
-import io.opentracing.Tracer;
-
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.UnaryOperator;
 
-import static org.zalando.opentracing.flowid.FlowListener.composite;
+import javax.annotation.Nullable;
+
+import io.opentracing.Tracer;
+import static org.zalando.opentracing.flowid.FlowListener.*;
 
 public interface Flow {
 
@@ -30,11 +31,11 @@ public interface Flow {
 
     void readFrom(UnaryOperator<String> reader);
 
-    String currentId() throws IllegalStateException;
+    @Nullable String currentId();
 
     void writeTo(BiConsumer<String, String> writer);
 
-    <T> T write(BiFunction<String, String, T> writer);
+    @Nullable <T> T write(BiFunction<String, String, T> writer);
 
     static Flow create(final Tracer tracer) {
         return create(tracer, new TagFlowListener());

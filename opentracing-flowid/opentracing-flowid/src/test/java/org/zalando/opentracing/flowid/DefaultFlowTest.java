@@ -1,23 +1,19 @@
 package org.zalando.opentracing.flowid;
 
-import io.opentracing.Scope;
-import io.opentracing.Span;
-import io.opentracing.mock.MockSpan;
-import io.opentracing.mock.MockTracer;
-import org.junit.jupiter.api.Test;
-import org.zalando.opentracing.flowid.Flow.Baggage;
-import org.zalando.opentracing.flowid.Flow.Header;
-import org.zalando.opentracing.flowid.Flow.Tag;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.util.Collections.singletonMap;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import io.opentracing.Scope;
+import io.opentracing.Span;
+import io.opentracing.mock.MockSpan;
+import io.opentracing.mock.MockTracer;
+import static java.util.Collections.*;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import org.zalando.opentracing.flowid.Flow.Baggage;
+import org.zalando.opentracing.flowid.Flow.Header;
+import org.zalando.opentracing.flowid.Flow.Tag;
 
 class DefaultFlowTest {
 
@@ -135,8 +131,8 @@ class DefaultFlowTest {
     }
 
     @Test
-    void shouldFailWithoutActiveSpan() {
-        assertThrows(IllegalStateException.class, unit::currentId);
+    void shouldReturnNullWithoutActiveSpan() {
+        assertNull(unit.currentId());
     }
 
 }
