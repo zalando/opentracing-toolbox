@@ -56,11 +56,16 @@ final class DefaultFlow implements Flow {
     }
 
     @Override
-    public String currentId() {
+    public Optional<String> currentSpanId() {
         return activeSpan()
                 .flatMap(extractor::extract)
-                .map(FlowId::getValue)
-                .orElse(null);
+                .map(FlowId::getValue);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public String currentId() {
+        return currentSpanId().orElseThrow(IllegalStateException::new);
     }
 
     @Override
@@ -74,11 +79,7 @@ final class DefaultFlow implements Flow {
 
     @Override
     public <T> T write(final BiFunction<String, String, T> writer) {
-        String currentId = currentId();
-        if (currentId != null) {
-            return writer.apply(Header.FLOW_ID, currentId);
-        }
-        return null;
+        return currentSpanId().map(currentId -> writer.apply(Header.FLOW_ID, currentId)).orElse(null);
     }
 
     private Optional<Span> activeSpan() {

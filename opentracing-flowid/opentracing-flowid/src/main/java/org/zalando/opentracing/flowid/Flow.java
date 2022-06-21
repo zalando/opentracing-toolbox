@@ -1,5 +1,6 @@
 package org.zalando.opentracing.flowid;
 
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.UnaryOperator;
@@ -31,7 +32,13 @@ public interface Flow {
 
     void readFrom(UnaryOperator<String> reader);
 
-    @Nullable String currentId();
+    /**
+     * deprecated - please use {@link #currentSpanId()} because it doesn't throw an exception
+     */
+    @Deprecated
+    String currentId() throws IllegalStateException;
+
+    Optional<String> currentSpanId();
 
     void writeTo(BiConsumer<String, String> writer);
 
