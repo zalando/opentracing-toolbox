@@ -1,11 +1,12 @@
 package org.zalando.opentracing.flowid.servlet.example;
 
-import org.zalando.opentracing.flowid.Flow;
+import java.io.IOException;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import org.zalando.opentracing.flowid.Flow;
 
 public final class TraceServlet extends HttpServlet {
 
@@ -17,7 +18,7 @@ public final class TraceServlet extends HttpServlet {
 
     @Override
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
-        response.getWriter().print(flow.currentId());
+        response.getWriter().print(flow.currentSpanId().orElse(null));
     }
 
 }
