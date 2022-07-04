@@ -64,7 +64,7 @@
         <httpclient.version>4.5.13</httpclient.version>
         <junit.version>5.8.2</junit.version>
         <opentracing.version>0.33.0</opentracing.version>
-        <log4j.version>2.17.2</log4j.version>
+        <log4j.version>2.18.0</log4j.version>
         <kotlin.version>1.7.0</kotlin.version>
         <coroutines.version>1.6.3</coroutines.version>
         <kotest.version>5.1.0</kotest.version>
