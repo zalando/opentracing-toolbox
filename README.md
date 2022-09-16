@@ -1,5 +1,13 @@
 # OpenTracing Toolbox
 
+> ⚠
+>  
+> This project is in maintenance mode - because OpenTracing has been [archived](https://www.cncf.io/blog/2022/01/31/cncf-archives-the-opentracing-project/).
+> 
+> Please [migrate your OpenTracing applications to OpenTelemetry](https://opentelemetry.io/docs/migration/opentracing/).
+> 
+> We will continue to support this project with bugfixes until most applications in Zalando have been migrated to OpenTelemetry.
+
 [![Stability: Active](https://masterminds.github.io/stability/active.svg)](https://masterminds.github.io/stability/active.html)
 ![Build Status](https://github.com/zalando/opentracing-toolbox/workflows/build/badge.svg)
 [![Coverage Status](https://img.shields.io/coveralls/zalando/opentracing-toolbox/main.svg)](https://coveralls.io/r/zalando/opentracing-toolbox)
