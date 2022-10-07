@@ -75,4 +75,13 @@ public final class ProxyTracer implements ForwardingTracer {
         return scope;
     }
 
+    @Override
+    public Span activeSpan() {
+        Span span = ForwardingTracer.super.activeSpan();
+        if(span == null || span instanceof ProxySpan){
+            return span;
+        }
+        // for opentracing shim, it must still return ProxySpan
+        return new ProxySpan(this, span, registry);
+    }
 }
