@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.zalando</groupId>
         <artifactId>opentracing-servlet-extension-parent</artifactId>
-        <version>4.2.2</version>
+        <version>4.2.3</version>
     </parent>
     <artifactId>opentracing-servlet-extension-starter</artifactId>
     <dependencies>
