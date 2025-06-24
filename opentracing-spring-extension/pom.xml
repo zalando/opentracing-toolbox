@@ -9,6 +9,7 @@
         <version>4.2.4</version>
     </parent>
     <artifactId>opentracing-spring-extension</artifactId>
+    <name>${artifactId}</name>
     <packaging>pom</packaging>
     <modules>
         <module>opentracing-spring-web-extension</module>

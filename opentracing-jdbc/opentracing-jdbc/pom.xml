@@ -9,6 +9,7 @@
         <version>4.2.4</version>
     </parent>
     <artifactId>opentracing-jdbc</artifactId>
+    <name>${artifactId}</name>
     <dependencies>
         <dependency>
             <groupId>net.ttddyy</groupId>
