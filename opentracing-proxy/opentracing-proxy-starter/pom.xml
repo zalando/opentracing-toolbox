@@ -7,6 +7,7 @@
         <version>4.2.4</version>
     </parent>
     <artifactId>opentracing-proxy-starter</artifactId>
+    <name>${artifactId}</name>
     <dependencies>
         <dependency>
             <groupId>org.zalando</groupId>

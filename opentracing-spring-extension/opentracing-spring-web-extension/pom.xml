@@ -9,6 +9,7 @@
         <version>4.2.4</version>
     </parent>
     <artifactId>opentracing-spring-web-extension</artifactId>
+    <name>${artifactId}</name>
     <dependencies>
         <dependency>
             <groupId>io.opentracing.contrib</groupId>

@@ -6,6 +6,8 @@
     <artifactId>opentracing-toolbox</artifactId>
     <version>4.2.4</version>
     <packaging>pom</packaging>
+    <name>opentracing-toolbox</name>
+    <description>A collection of libraries that build on top of OpenTracing and provide extensions and plugins to existing instrumentations</description>
     <url>https://github.com/zalando/opentracing-toolbox</url>
     <inceptionYear>2019</inceptionYear>
     <organization>
@@ -617,14 +619,14 @@
                         </executions>
                     </plugin>
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.13</version>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.8.0</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <publishingServerId>central</publishingServerId>
+                            <deploymentName>${project.name}:${project.version}</deploymentName>
+                            <autoPublish>true</autoPublish>
                         </configuration>
                     </plugin>
                 </plugins>

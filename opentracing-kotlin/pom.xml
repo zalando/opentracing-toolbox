@@ -9,6 +9,7 @@
     <version>4.2.4</version>
   </parent>
   <artifactId>opentracing-kotlin</artifactId>
+  <name>${artifactId}</name>
   <properties>
     <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
   </properties>
@@ -154,4 +155,26 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jetbrains.dokka</groupId>
+            <artifactId>dokka-maven-plugin</artifactId>
+            <version>2.0.0</version>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>javadocJar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
